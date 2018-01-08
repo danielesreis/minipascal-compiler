@@ -8,7 +8,7 @@ public class Tokens {
             this.kind = kind;
             this.spelling = spelling;
             if (kind==ID)
-                for (byte k = VAR; k<=OF; k++ )
+                for (byte k = VAR; k<=PROCEDURE; k++ )
                     if (spelling.equals(spellings[k])){
                         this.kind = k;
                         break;
@@ -45,7 +45,9 @@ public class Tokens {
         BEGIN           = 27, 
         END             = 28, 
         ARRAY           = 29,
-        OF              = 30;
+        OF              = 30,
+        FUNCTION        = 31,
+        PROCEDURE       = 32;
     
     public final static String[] spellings = {
         ":=",
@@ -77,6 +79,8 @@ public class Tokens {
         "begin",
         "end",
         "array", 
-        "of"
+        "of",
+        "function",
+        "procedure"
     };    
 }
