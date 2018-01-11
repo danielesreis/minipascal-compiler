@@ -47,7 +47,8 @@ public class Tokens {
         ARRAY           = 29,
         OF              = 30,
         FUNCTION        = 31,
-        PROCEDURE       = 32;
+        PROCEDURE       = 32,
+        ERROR           = 33;
     
     public final static String[] spellings = {
         ":=",
@@ -81,6 +82,7 @@ public class Tokens {
         "array", 
         "of",
         "function",
-        "procedure"
+        "procedure",
+        "error"
     };    
 }
