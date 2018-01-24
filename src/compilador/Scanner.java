@@ -4,10 +4,11 @@ public class Scanner {
 	private char currentChar;
 	private byte currentKind;
 	private StringBuffer currentSpelling;
+        
 	private void take(char expectedChar) {
 		if (currentChar == expectedChar) {
 			currentSpelling.append(currentChar);
-			//currentChar = entry[];
+			//currentChar = next entry;
 		}
 		else {
 			//throw exception
@@ -15,10 +16,10 @@ public class Scanner {
 	}
 	private void takeIt() {
 		currentSpelling.append(currentChar);
-		//currentChar = entry[];
+		//currentChar = next entry;
 	}
 	private boolean isDigit(char c) {
-		if (c == '0' || c == '1' || c = '2' || c = '3' || c = '4' || c = '5' || c = '6' || c = '7' || c = '8' || c = '9') return true;
+		if (c == '0' || c == '1' || c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8' || c == '9') return true;
                     
 		return false;
 	}
@@ -31,7 +32,7 @@ public class Scanner {
 	private boolean isSymbol(char c) {
 		if (c == '!' || c == '@' || c == '#' || c == '$' || c == '%' || c == '¨' || c == '&' || c == '*' || c == '(' || c == ')' || c == '-' || c == '_' || c == '+' || c == '=' || c == '§' || c == '¬' || c == '¢' || c == '£' || c == '³' || 
 			c == '²' || c == '¹' || c == '{' || c == '}' || c == '[' || c == ']' || c == 'ª' || c == 'º' || c == '?' || c == '/' || c == '°' || c == ';' || c == ':' || c == ',' || c == '.' || c == '\\' || c == '|' || c == 'ç' || c == '~' || 
-			c == '^' || c == "'' || c == '"' || c == 'ã' || c == 'õ' || c == 'â' || c == 'ê' || c == 'ô' || c == 'á' || c == 'é' || c == 'í' || c == 'ó' || c == 'à' || c == '´' || c == '`') return true;
+			c == '^' || c == '"') return true;
 		return false;	
 	}
 	private boolean isGraphic(char c) {
@@ -54,11 +55,33 @@ public class Scanner {
 		switch(currentChar) {
 			//case letra: tipo-simples, or, and, palavra reservada, bool-lit
 			//case digito: float-lit
+                        case ':': 
+                                takeIt();
+                                if (currentChar == '=') {
+                                    takeIt();
+                                    return Token.BECOMES;
+                                }
+                                return Token.COLON;
+                        case '.': 
+                                takeIt();
+                                if (currentChar == '.') {
+                                    takeIt();
+                                    return Token.DOTDOT;
+                                }
+                                return Token.DOT;
+                        case ';': takeIt(); return Token.SEMICOLON;
+                        case ',': takeIt(); return Token.COMMA;
+                        case '(': takeIt(); return Token.LPAREN;
+                        case ')': takeIt(); return Token.RPAREN;
+                        case '[': takeIt(); return Token.LBRACE;
+                        case ']': takeIt(); return Token.RBRACE;
 			case '>': case '<': case '=':  takeIt(); return Token.OP_REL;
 			case '+': case '-': takeIt(); return Token.OP_AD; 
-			case '*': case '/': takeIt(); return Token.OP_MUL; 
+			case '*': case '/': takeIt(); return Token.OP_MUL;
+                        case '\000': takeIt(); return Token.EOT;
+                        default: takeIt(); return Token.ERROR;
 		}
 	}
 }
-4<
+
 
