@@ -4,6 +4,7 @@ public class Scanner {
 	private char currentChar;
 	private byte currentKind;
 	private StringBuffer currentSpelling;
+        public String palavra[];
         
 	private void take(char expectedChar) {
 		if (currentChar == expectedChar) {
@@ -25,8 +26,7 @@ public class Scanner {
 	}
 	private boolean isLetter(char c) {
 		if (c == 'a' || c == 'b' || c == 'c' || c == 'd' || c == 'e' || c == 'f' || c == 'g' || c == 'h' || c == 'i' || c == 'j' || c == 'k' || c == 'l' || c == 'm' || c == 'n' || c == 'o' || c == 'p' || c == 'q' || c == 'r' || c == 's' || c == 't' || c == 'u' || c == 'v' || 
-			c == 'w' || c == 'x' || c == 'y' || c == 'z' || c == 'A' || c == 'B' || c == 'C' || c == 'D' || c == 'E' || c == 'F' || c == 'G' || c == 'H' || c == 'I' || c == 'J' || c == 'K' || c == 'L' || c == 'M' || c == 'N' || c == 'O' || c == 'P' || c == 'Q' || c == 'R' || 
-			c == 'S' || c == 'T' || c == 'U' || c == 'V' || c == 'W' || c == 'X' || c == 'Y' || c == 'Z') return true;
+			c == 'w' || c == 'x' || c == 'y' || c == 'z' ) return true;
 		return false;
 	}
 	private boolean isSymbol(char c) {
@@ -53,7 +53,8 @@ public class Scanner {
 	}
 	private byte scanToken() {
 		switch(currentChar) {
-			//case letra: tipo-simples, or, and, palavra reservada, bool-lit
+			//case letra: tipo-simples, or, and,  bool-lit
+                        // integer, real, boolean, or, and, true, false
 			//case digito: float-lit
                         case ':': 
                                 takeIt();
@@ -79,9 +80,26 @@ public class Scanner {
 			case '+': case '-': takeIt(); return Token.OP_AD; 
 			case '*': case '/': takeIt(); return Token.OP_MUL;
                         case '\000': takeIt(); return Token.EOT;
+                        case 'a': case 'b': case 'c': case 'd': case 'e': case 'f': case 'g': case 'h': case 'i': 
+                        case 'j': case 'k': case 'l': case 'm': case 'n': case 'o': case 'p': case 'q': case 'r': 
+                        case 's': case 't': case 'u': case 'v': case 'w': case 'x': case 'y': case 'z': 
+                            int i=0;
+                            while (isLetter(currentChar) || isDigit(currentChar)){
+                                    palavra[i] = Character.toString(currentChar);
+                                    i++;
+                                takeIt();
+                            }
+                            if (palavra.equals("true") || palavra.equals("false")) return Token.BOOL_LIT;
+                            if (palavra.equals("integer") || palavra.equals("real") || palavra.equals("boolean")) return Token.TIPO_SIMPLES;
+                            if (palavra.equals("and")) return Token.OP_MUL;
+                            if (palavra.equals("or")) return Token.OP_AD;
+                                return Token.ID;
+                        case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8':
+                        case '9': while (isLetter(currentChar)) takeIt(); return Token.INT_LIT;
                         default: takeIt(); return Token.ERROR;
 		}
 	}
 }
+
 
 
