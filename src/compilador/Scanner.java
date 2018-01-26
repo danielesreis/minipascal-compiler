@@ -44,7 +44,7 @@ public class Scanner {
 		return false;
 	}
         
-        private Token scan() {
+        public Token scan() {
             byte kind;
             StringBuffer spelling;
             
