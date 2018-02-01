@@ -288,4 +288,29 @@ public class Parser {
                 //return error
         }
     }
+    
+    private void parseExpressao(){
+       parseExpressaoSimples();
+       if (currentToken.kind == Token.OP_REL){
+           acceptIt();
+           parseExpressaoSimples();
+       }
+   }
+   
+   private void parseExpressaoSimples(){
+       parseFator();
+       while(currentToken.kind == Token.OP_MUL){
+           acceptIt();
+           parseFator();
+       }
+       while(currentToken.kind == Token.OP_AD){
+           acceptIt();
+           parseFator();
+           while(currentToken.kind == Token.OP_MUL){
+             acceptIt();
+             parseFator();
+           }
+       }
+   }
+
 }
