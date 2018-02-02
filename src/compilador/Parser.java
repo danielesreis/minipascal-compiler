@@ -7,18 +7,13 @@ public class Parser {
         if (expectedTokenKind == currentToken.kind) {
             //currentToken = next Token
         }
-        else
-        {
+        else{
             //return error
         }
     }
     
     private void acceptIt() {
         //currentToken = next Token
-    }
-    
-    public void parse() {
-        
     }
     
     private void parsePrograma() {
@@ -313,4 +308,11 @@ public class Parser {
        }
    }
 
+    public void parse() {
+        //currentToken = scanner.scan();
+        parsePrograma();
+        if(currentToken.kind != Token.EOT){
+            //Erro sintático
+        }        
+    }
 }
