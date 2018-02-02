@@ -3,20 +3,29 @@ package compilador;
 public class Parser {
     private Token currentToken;
     
-    private void accept (byte expectedTokenKind) {
+    private void accept (byte expectedTokenKind){
+        
         if (expectedTokenKind == currentToken.kind) {
-            //currentToken = next Token
+            currentToken = Compilador.scanner.scan();
         }
         else{
             //return error
         }
     }
     
-    private void acceptIt() {
-        //currentToken = next Token
+    private void acceptIt(){
+        currentToken = Compilador.scanner.scan();
     }
     
-    private void parsePrograma() {
+    public void parse()  {
+        currentToken = Compilador.scanner.scan();
+        parsePrograma();
+        if(currentToken.kind != Token.EOT){
+            //Erro sintático
+        }        
+    }
+    
+    private void parsePrograma(){
         accept(Token.PROGRAM);
         accept(Token.ID);
         accept(Token.SEMICOLON);
@@ -307,12 +316,4 @@ public class Parser {
            }
        }
    }
-
-    public void parse() {
-        //currentToken = scanner.scan();
-        parsePrograma();
-        if(currentToken.kind != Token.EOT){
-            //Erro sintático
-        }        
-    }
 }

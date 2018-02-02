@@ -1,5 +1,7 @@
 package compilador;
 
+import java.io.IOException;
+
 public class Token {
     public byte kind;
     public String spelling;

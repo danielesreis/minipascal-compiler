@@ -1,14 +1,23 @@
 package compilador;
 
+import java.io.IOException;
+
 public class Scanner {
 	private char currentChar;
 	private byte currentKind;
 	private StringBuffer currentSpelling;
         
-	private void take(char expectedChar) {
+        public Scanner(char currentChar) {
+            this.currentChar = currentChar;
+            currentKind = 0;
+            currentSpelling = new StringBuffer("");
+        }
+        
+	private void take(char expectedChar)  {
 	if (currentChar == expectedChar) {
             currentSpelling.append(currentChar);
-	//currentChar = next entry;
+            Compilador.currentIndex = Compilador.currentIndex + 1;
+            currentChar = Compilador.code.charAt(Compilador.currentIndex);
 	}
         else {
             //throw exception
@@ -16,45 +25,45 @@ public class Scanner {
 	}
         
 	private void takeIt() {
-		currentSpelling.append(currentChar);
-		//currentChar = next entry;
+            currentSpelling.append(currentChar);
+            Compilador.currentIndex = Compilador.currentIndex + 1;
+            currentChar = Compilador.code.charAt(Compilador.currentIndex);
 	}
         
-	private boolean isDigit(char c) {
+	private boolean isDigit(char c)  {
 		if (c == '0' || c == '1' || c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8' || c == '9') return true;
                     
 		return false;
 	}
         
-	private boolean isLetter(char c) {
+	private boolean isLetter(char c)  {
 		if (c == 'a' || c == 'b' || c == 'c' || c == 'd' || c == 'e' || c == 'f' || c == 'g' || c == 'h' || c == 'i' || c == 'j' || c == 'k' || c == 'l' || c == 'm' || c == 'n' || c == 'o' || c == 'p' || c == 'q' || c == 'r' || c == 's' || c == 't' || c == 'u' || c == 'v' || 
 			c == 'w' || c == 'x' || c == 'y' || c == 'z' ) return true;
 		return false;
 	}
         
-	private boolean isSymbol(char c) {
+	private boolean isSymbol(char c)  {
 		if (c == '!' || c == '@' || c == '#' || c == '$' || c == '%' || c == '¨' || c == '&' || c == '*' || c == '(' || c == ')' || c == '-' || c == '_' || c == '+' || c == '=' || c == '§' || c == '¬' || c == '¢' || c == '£' || c == '³' || 
 			c == '²' || c == '¹' || c == '{' || c == '}' || c == '[' || c == ']' || c == 'ª' || c == 'º' || c == '?' || c == '/' || c == '°' || c == ';' || c == ':' || c == ',' || c == '.' || c == '\\' || c == '|' || c == 'ç' || c == '~' || 
 			c == '^' || c == '"') return true;
 		return false;	
 	}
         
-	private boolean isGraphic(char c) {
+	private boolean isGraphic(char c)  {
 		if (isDigit(c) || isLetter(c) || isSymbol(c) || c == ' ') return true;
 		return false;
 	}
         
         public Token scan() {
             byte kind;
-            StringBuffer spelling;
             
             while(currentChar == '#' || currentChar == ' ' || currentChar == '\n')
                 scanSeparator();
             
-            spelling = new StringBuffer("");
+            currentSpelling = new StringBuffer("");
             kind = scanToken();
-            
-            return new Token(kind, spelling.toString());
+            //System.out.print(currentSpelling);
+            return new Token(kind, currentSpelling.toString());
         }
         
 	private void scanSeparator() {
