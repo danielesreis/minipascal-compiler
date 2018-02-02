@@ -1,12 +1,16 @@
-
 package compilador;
 
+/*
+javac Compilador.java
+java -jar "C:\Users\danie\Desktop\compilador\dist\Compilador.jar" C:\Users\danie\Desktop\teste.pas
+*/
 public class Compilador {
-    public static void main(String[] args) {
-       int i;
+
+    /**
+     *
+     * @param args
+     */
+    public static void main(String[] args){
        
-       for (i=0; i<args.length; i++)
-           System.out.println(args[i] + " ");
     }
-    
 }

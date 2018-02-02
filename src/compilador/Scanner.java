@@ -6,13 +6,13 @@ public class Scanner {
 	private StringBuffer currentSpelling;
         
 	private void take(char expectedChar) {
-		if (currentChar == expectedChar) {
-			currentSpelling.append(currentChar);
-			//currentChar = next entry;
-		}
-		else {
-			//throw exception
-		}
+	if (currentChar == expectedChar) {
+            currentSpelling.append(currentChar);
+	//currentChar = next entry;
+	}
+        else {
+            //throw exception
+	}
 	}
         
 	private void takeIt() {
