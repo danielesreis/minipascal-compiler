@@ -5,7 +5,7 @@ public class Parser {
     
     private void accept (byte expectedTokenKind){
         
-        if (expectedTokenKind == currentToken.kind) {
+        if ((expectedTokenKind == currentToken.kind) && (currentToken.kind != Token.EOT)) {
             currentToken = Compilador.scanner.scan();
         }
         else{
@@ -30,7 +30,8 @@ public class Parser {
         accept(Token.ID);
         accept(Token.SEMICOLON);
         parseCorpo();
-        accept(Token.DOT);
+        currentToken.kind = Token.EOT;
+        accept(Token.EOT);
     }
     
     private void parseCorpo() {
@@ -40,12 +41,13 @@ public class Parser {
             accept(Token.SEMICOLON);
         }
         
-        accept(Token.BEGIN);
+        accept(Token.BEGIN);       
         
         while (currentToken.kind == Token.IF || currentToken.kind == Token.WHILE || currentToken.kind == Token.BEGIN || currentToken.kind == Token.ID) {
             parseComando();
             accept(Token.SEMICOLON);
         }
+        
         accept(Token.END);
     }
     
@@ -123,7 +125,8 @@ public class Parser {
     }
     
     private void parseComando() {
-          switch(currentToken.kind){
+        
+        switch(currentToken.kind){
         case Token.IF: 
            acceptIt();
            parseExpressao();
@@ -153,8 +156,14 @@ public class Parser {
            accept(Token.END);
         break;
         
-       case Token.ID: 
+       case Token.ID:
+           acceptIt();
            switch(currentToken.kind){
+               case Token.BECOMES:
+                   acceptIt();
+                   parseExpressao();
+                   break;
+               
                case Token.LBRACE:
                    while( currentToken.kind == Token.LBRACE){
                        acceptIt();
@@ -165,21 +174,30 @@ public class Parser {
                    parseExpressao();
                 break;
 
-               case Token.LPAREN:
+                case Token.LPAREN:
                    acceptIt();
-                   parseExpressao();
-                   while( currentToken.kind == Token.COMMA){
+                   
+                   if( currentToken.kind == Token.RPAREN )
                        acceptIt();
+                   else if ( currentToken.kind == Token.ID ) {
                        parseExpressao();
+                       
+                       while( currentToken.kind == Token.COMMA){
+                            acceptIt();
+                            parseExpressao();
+                        }
+                       accept(Token.RPAREN);
                    }
-                   accept(Token.RPAREN);
+                   else {
+                        //report error
+                   }
                 break;
                default: //Erro Sintático
            }
         break;
         
         default: //Erro Sintático
-    }
+        }
     }
     
     private void parseFator() {
@@ -228,13 +246,7 @@ public class Parser {
             case Token.ARRAY:
                 parseTipoAgregado();
                 break;
-            case Token.BOOL_LIT:
-                acceptIt();
-                break;
-            case Token.INT_LIT:
-                acceptIt();
-                break;
-            case Token.FLOAT_LIT:
+            case Token.TIPO_SIMPLES:
                 acceptIt();
                 break;
             default:

@@ -12,7 +12,8 @@ public class Token {
             
             if (kind == ID) {
                 for (byte k = PROGRAM; k<=PROCEDURE; k++ ) {
-                    if (spelling.equals(spellings[k])){
+                    if (spelling.equals(spellings[k-1])){
+                        //System.out.println(spellings[k-1]);
                         this.kind = k;
                         break;
                     }
@@ -88,6 +89,6 @@ public class Token {
         "of",
         "function",
         "procedure",
-        "<eot>"
+        "."
     };    
 }

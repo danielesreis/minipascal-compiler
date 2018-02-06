@@ -24,23 +24,19 @@ public class Compilador {
        //FileReader fileReader = new FileReader(args[0]);
        //BufferedReader br = new BufferedReader(fileReader);
        //code = br;
-       //firstChar = (char)br.read();
+       //char firstChar = (char)br.read();
+       
        code = "program teste;\n" +
-        "var a : real\n" +
+        "var a : real;\n" +
         "begin\n" +
         "a := 4;\n" +
         "end\n" +
-        ".\000";
+        ".";
        
        currentIndex = 0;
-       Scanner scanner = new Scanner(code.charAt(currentIndex));
-       Token token = scanner.scan();
-       System.out.println(token.spelling);
-       
-       while(token.kind != Token.EOT) {
-           token = scanner.scan();
-           System.out.print(token.spelling);
-           System.out.println("");
-       }  
+       Parser parser = new Parser();
+       Scanner s = new Scanner(code.charAt(currentIndex));
+       scanner = s;
+       parser.parse();
     }
 }
