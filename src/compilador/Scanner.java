@@ -24,7 +24,7 @@ public class Scanner {
                 else this.eotFlag = true;     
             }
             else {
-                //throw exception
+                Compilador.compilerFrame.setOutputText("Caractere inválido!");
             }
 	}
         
@@ -46,6 +46,7 @@ public class Scanner {
             
             currentSpelling = new StringBuffer("");
             kind = scanToken();
+            
             return new Token(kind, currentSpelling.toString());
         }
         
@@ -58,7 +59,7 @@ public class Scanner {
 				break;
 			case ' ': takeIt(); break;
 			case '\n': takeIt(); break;
-			default: //throw error
+			default: Compilador.compilerFrame.setOutputText("Separador inválido!");
 		}
 	}
         

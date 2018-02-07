@@ -4,11 +4,14 @@ public class Parser {
     private Token currentToken;
     
     private void accept (byte expectedTokenKind){
-        if ((expectedTokenKind == currentToken.kind) && (currentToken.kind != Token.EOT)) {
+        
+        if ((expectedTokenKind == currentToken.kind)) {
             currentToken = Compilador.scanner.scan();
+            if (currentToken.kind == Token.ERROR) Compilador.compilerFrame.setOutputText("Símbolo inválido!");
         }
+        
         else{
-            //return error
+            Compilador.compilerFrame.setOutputText("Símbolo inválido!else");
         }
     }
     
@@ -21,7 +24,7 @@ public class Parser {
         parsePrograma();
         
         if(currentToken.kind != Token.EOT){
-            //Erro sintático
+            Compilador.compilerFrame.setOutputText("Final de código inválido!");
         }
     }
     
@@ -30,7 +33,6 @@ public class Parser {
         accept(Token.ID);
         accept(Token.SEMICOLON);
         parseCorpo();
-        //currentToken.kind = Token.EOT;
         accept(Token.EOT);
     }
     
@@ -85,7 +87,7 @@ public class Parser {
                         acceptIt();
                         break;
                     default:
-                        //report error
+                        Compilador.compilerFrame.setOutputText("Função mal formulada!");
                 }
                 
                 accept(Token.COLON);
@@ -112,7 +114,7 @@ public class Parser {
                         acceptIt();
                         break;
                     default:
-                        //report error
+                        Compilador.compilerFrame.setOutputText("Procedure mal formulada!");
                 }
                 
                 accept(Token.SEMICOLON);
@@ -120,83 +122,81 @@ public class Parser {
                 break;
                 
             default:
-                //report error
+                Compilador.compilerFrame.setOutputText("Declaração mal formulada!");
         }
     }
     
     private void parseComando() {
         
         switch(currentToken.kind){
-        case Token.IF: 
-           acceptIt();
-           parseExpressao();
-           accept(Token.THEN);
-           parseComando();
-           if (currentToken.kind == Token.ELSE){
-            accept (Token.ELSE);
-            parseComando();
-           }
-           else{
-           }
-        break;
+            case Token.IF: 
+                acceptIt();
+                parseExpressao();
+                accept(Token.THEN);
+                parseComando();
+                if (currentToken.kind == Token.ELSE){
+                    accept (Token.ELSE);
+                    parseComando();
+                }
+            break;
        
-        case Token.WHILE: 
-           acceptIt();
-           parseExpressao();
-           accept(Token.DO);
-           parseComando();
-        break;
+            case Token.WHILE: 
+                acceptIt();
+                parseExpressao();
+                accept(Token.DO);
+                parseComando();
+                break;
        
-        case Token.BEGIN: 
-           acceptIt();
-           while (currentToken.kind == Token.IF || currentToken.kind == Token.WHILE ||currentToken.kind == Token.BEGIN ||currentToken.kind == Token.ID) {
-           parseComando();
-           accept(Token.SEMICOLON);
-           }
-           accept(Token.END);
-        break;
+            case Token.BEGIN: 
+                acceptIt();
+                while (currentToken.kind == Token.IF || currentToken.kind == Token.WHILE ||currentToken.kind == Token.BEGIN ||currentToken.kind == Token.ID) {
+                    parseComando();
+                    accept(Token.SEMICOLON);
+                }
+                accept(Token.END);
+                break;
         
-       case Token.ID:
-           acceptIt();
-           switch(currentToken.kind){
-               case Token.BECOMES:
-                   acceptIt();
-                   parseExpressao();
-                   break;
-               
-               case Token.LBRACE:
-                   while( currentToken.kind == Token.LBRACE){
+            case Token.ID:
+                acceptIt();
+                switch(currentToken.kind){
+                    case Token.BECOMES:
                        acceptIt();
                        parseExpressao();
-                       accept(Token.RBRACE);
-                   }
-                   accept(Token.BECOMES);
-                   parseExpressao();
-                break;
+                       break;
 
-                case Token.LPAREN:
-                   acceptIt();
-                   
-                   if( currentToken.kind == Token.RPAREN )
-                       acceptIt();
-                   else if ( currentToken.kind == Token.ID ) {
+                   case Token.LBRACE:
+                       while( currentToken.kind == Token.LBRACE){
+                           acceptIt();
+                           parseExpressao();
+                           accept(Token.RBRACE);
+                       }
+                       accept(Token.BECOMES);
                        parseExpressao();
-                       
-                       while( currentToken.kind == Token.COMMA){
+                    break;
+
+                    case Token.LPAREN:
+                        acceptIt();
+
+                        if( currentToken.kind == Token.RPAREN )
                             acceptIt();
+                        else if ( currentToken.kind == Token.ID ) {
                             parseExpressao();
+
+                            while( currentToken.kind == Token.COMMA){
+                                acceptIt();
+                                parseExpressao();
+                            }
+                            accept(Token.RPAREN);
                         }
-                       accept(Token.RPAREN);
-                   }
-                   else {
-                        //report error
-                   }
+                        else {
+                            Compilador.compilerFrame.setOutputText("Chamada de procedimento mal formulada!");
+                        }
+                        break;
+                   default: Compilador.compilerFrame.setOutputText("Comando mal formulado!");
+                }
                 break;
-               default: //Erro Sintático
-           }
-        break;
         
-        default: //Erro Sintático
+        default: Compilador.compilerFrame.setOutputText("Comando mal formulado!");
         }
     }
     
@@ -237,7 +237,7 @@ public class Parser {
                 accept(Token.RPAREN);
                 break;
                 
-            default: // Erro sintático
+            default: Compilador.compilerFrame.setOutputText("Fator mal formulado!");
         }        
     }
     
@@ -250,7 +250,7 @@ public class Parser {
                 acceptIt();
                 break;
             default:
-                //report error
+                Compilador.compilerFrame.setOutputText("Tipo mal formulado!");
         }
     }
     
@@ -264,7 +264,7 @@ public class Parser {
                 acceptIt();
                 break;
             default: 
-                //report error
+                Compilador.compilerFrame.setOutputText("Parâmetros mal formulados!");
         }
         
         while(currentToken.kind == Token.COMMA) {
@@ -285,7 +285,7 @@ public class Parser {
                 if (currentToken.kind == Token.BOOL_LIT || currentToken.kind == Token.INT_LIT || currentToken.kind == Token.FLOAT_LIT)
                     acceptIt();
                 else {
-                    //return error
+                    Compilador.compilerFrame.setOutputText("Array mal formulada!");
                 }
                 
                 accept(Token.DOTDOT);
@@ -293,7 +293,7 @@ public class Parser {
                 if (currentToken.kind == Token.BOOL_LIT || currentToken.kind == Token.INT_LIT || currentToken.kind == Token.FLOAT_LIT)
                     acceptIt();
                 else {
-                    //return error
+                    Compilador.compilerFrame.setOutputText("Array mal formulada!");
                 }
                 
                 accept(Token.RBRACE);
@@ -301,7 +301,7 @@ public class Parser {
                 parseTipo();
                 break;
             default:
-                //return error
+                Compilador.compilerFrame.setOutputText("Tipo agregado mal formulado!");
         }
     }
     
@@ -314,18 +314,19 @@ public class Parser {
    }
    
    private void parseExpressaoSimples(){
-       parseFator();
-       while(currentToken.kind == Token.OP_MUL){
-           acceptIt();
-           parseFator();
-       }
-       while(currentToken.kind == Token.OP_AD){
-           acceptIt();
-           parseFator();
-           while(currentToken.kind == Token.OP_MUL){
-             acceptIt();
-             parseFator();
-           }
-       }
-   }
+        parseFator();
+        
+        while(currentToken.kind == Token.OP_MUL){
+            acceptIt();
+            parseFator();
+        }
+        while(currentToken.kind == Token.OP_AD){
+            acceptIt();
+            parseFator();
+            while(currentToken.kind == Token.OP_MUL){
+                acceptIt();
+                parseFator();
+            }
+        }
+    }
 }
