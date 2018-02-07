@@ -101,7 +101,10 @@ public class Scanner {
 			case '*': case '/': takeIt(); return Token.OP_MUL;
                         case 'a': case 'b': case 'c': case 'd': case 'e': case 'f': case 'g': case 'h': case 'i': 
                         case 'j': case 'k': case 'l': case 'm': case 'n': case 'o': case 'p': case 'q': case 'r': 
-                        case 's': case 't': case 'u': case 'v': case 'w': case 'x': case 'y': case 'z':
+                        case 's': case 't': case 'u': case 'v': case 'w': case 'x': case 'y': case 'z': case 'A': 
+                        case 'B': case 'C': case 'D': case 'E': case 'F': case 'G': case 'H': case 'I': case 'J': 
+                        case 'K': case 'L': case 'M': case 'N': case 'O': case 'P': case 'Q': case 'R': case 'S': 
+                        case 'T': case 'U': case 'V': case 'W': case 'X': case 'Y': case 'Z':
                             
                             while (isLetter(currentChar) || isDigit(currentChar)){
                                 palavra.append(currentChar);
@@ -131,13 +134,14 @@ public class Scanner {
         
         private boolean isDigit(char c)  {
 		if (c == '0' || c == '1' || c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8' || c == '9') return true;
-                    
 		return false;
 	}
         
 	private boolean isLetter(char c)  {
-		if (c == 'a' || c == 'b' || c == 'c' || c == 'd' || c == 'e' || c == 'f' || c == 'g' || c == 'h' || c == 'i' || c == 'j' || c == 'k' || c == 'l' || c == 'm' || c == 'n' || c == 'o' || c == 'p' || c == 'q' || c == 'r' || c == 's' || c == 't' || c == 'u' || c == 'v' || 
-			c == 'w' || c == 'x' || c == 'y' || c == 'z') return true;
+		if (c == 'a' || c == 'b' || c == 'c' || c == 'd' || c == 'e' || c == 'f' || c == 'g' || c == 'h' || c == 'i' || c == 'j' || c == 'k' || c == 'l' || c == 'm' || c == 'n' 
+                   || c == 'o' || c == 'p' || c == 'q' || c == 'r' || c == 's' || c == 't' || c == 'u' || c == 'v' || c == 'w' || c == 'x' || c == 'y' || c == 'z' || c == 'A' || c == 'B' 
+                   || c == 'C' || c == 'D' || c == 'E' || c == 'F' || c == 'G' || c == 'H' || c == 'I' || c == 'J' || c == 'K' || c == 'L' || c == 'M' || c == 'N' || c == 'O' || c == 'P' 
+                   || c == 'Q' || c == 'R' || c == 'S' || c == 'T' || c == 'U' || c == 'V' || c == 'W' || c == 'X' || c == 'Y' || c == 'Z' ) return true;
 		return false;
 	}
         
