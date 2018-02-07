@@ -2,16 +2,14 @@ package compilador;
 
 public class Parser {
     private Token currentToken;
+    private boolean error = false;
     
     private void accept (byte expectedTokenKind){
         
-        if ((expectedTokenKind == currentToken.kind)) {
-            currentToken = Compilador.scanner.scan();
-            if (currentToken.kind == Token.ERROR) Compilador.compilerFrame.setOutputText("Símbolo inválido!");
-        }
-        
-        else{
-            Compilador.compilerFrame.setOutputText("Símbolo inválido!else");
+        if(expectedTokenKind != Token.EOT) {
+            if(expectedTokenKind != currentToken.kind) 
+                Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: '" + Token.spellings[expectedTokenKind-1] + "' esperado mas '" + Token.spellings[currentToken.kind-1] + "' encontrado");
+            else currentToken = Compilador.scanner.scan();
         }
     }
     
@@ -24,7 +22,7 @@ public class Parser {
         parsePrograma();
         
         if(currentToken.kind != Token.EOT){
-            Compilador.compilerFrame.setOutputText("Final de código inválido!");
+            Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: End of text esperado, mas '" + Token.spellings[currentToken.kind-1] + "' encontrado");
         }
     }
     
@@ -87,7 +85,7 @@ public class Parser {
                         acceptIt();
                         break;
                     default:
-                        Compilador.compilerFrame.setOutputText("Função mal formulada!");
+                        Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Função mal formulada! Símbolo encontrado: '" + Token.spellings[currentToken.kind-1] + "'");
                 }
                 
                 accept(Token.COLON);
@@ -114,7 +112,7 @@ public class Parser {
                         acceptIt();
                         break;
                     default:
-                        Compilador.compilerFrame.setOutputText("Procedure mal formulada!");
+                        Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Procedure mal formulada! Símbolo encontrado: '" + Token.spellings[currentToken.kind-1] + "'");
                 }
                 
                 accept(Token.SEMICOLON);
@@ -122,7 +120,7 @@ public class Parser {
                 break;
                 
             default:
-                Compilador.compilerFrame.setOutputText("Declaração mal formulada!");
+                Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Declaração mal formulada! Símbolo encontrado: '" + Token.spellings[currentToken.kind-1] + "'");
         }
     }
     
@@ -158,20 +156,21 @@ public class Parser {
         
             case Token.ID:
                 acceptIt();
+                
                 switch(currentToken.kind){
                     case Token.BECOMES:
-                       acceptIt();
-                       parseExpressao();
-                       break;
+                        acceptIt();
+                        parseExpressao();
+                        break;
 
-                   case Token.LBRACE:
-                       while( currentToken.kind == Token.LBRACE){
-                           acceptIt();
-                           parseExpressao();
-                           accept(Token.RBRACE);
-                       }
-                       accept(Token.BECOMES);
-                       parseExpressao();
+                    case Token.LBRACE:
+                        while( currentToken.kind == Token.LBRACE){
+                            acceptIt();
+                            parseExpressao();
+                            accept(Token.RBRACE);
+                        }
+                        accept(Token.BECOMES);
+                        parseExpressao();
                     break;
 
                     case Token.LPAREN:
@@ -189,18 +188,19 @@ public class Parser {
                             accept(Token.RPAREN);
                         }
                         else {
-                            Compilador.compilerFrame.setOutputText("Chamada de procedimento mal formulada!");
+                            Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Chamada de procedimento mal formulada! Símbolo encontrado: '" + Token.spellings[currentToken.kind-1] + "'");
                         }
                         break;
-                   default: Compilador.compilerFrame.setOutputText("Comando mal formulado!");
+                default: Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Símbolo encontrado: '" + Token.spellings[currentToken.kind-1] + "'");
                 }
                 break;
         
-        default: Compilador.compilerFrame.setOutputText("Comando mal formulado!");
+        default: Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Comando mal formulado! Símbolo encontrado: '" + Token.spellings[currentToken.kind-1]);
         }
     }
     
     private void parseFator() {
+        
         switch(currentToken.kind){
             case Token.ID:
                 while(currentToken.kind == Token.LBRACE){
@@ -237,7 +237,7 @@ public class Parser {
                 accept(Token.RPAREN);
                 break;
                 
-            default: Compilador.compilerFrame.setOutputText("Fator mal formulado!");
+            default: Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Fator mal formulado! Símbolo encontrado: '" + Token.spellings[currentToken.kind-1] + "'");
         }        
     }
     
@@ -250,7 +250,7 @@ public class Parser {
                 acceptIt();
                 break;
             default:
-                Compilador.compilerFrame.setOutputText("Tipo mal formulado!");
+                Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Tipo mal formulado! Símbolo encontrado: '" + Token.spellings[currentToken.kind-1] + "'");
         }
     }
     
@@ -264,7 +264,7 @@ public class Parser {
                 acceptIt();
                 break;
             default: 
-                Compilador.compilerFrame.setOutputText("Parâmetros mal formulados!");
+                Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Parâmetros mal formulados! Símbolo encontrado: '" + Token.spellings[currentToken.kind-1] + "'");
         }
         
         while(currentToken.kind == Token.COMMA) {
@@ -285,7 +285,7 @@ public class Parser {
                 if (currentToken.kind == Token.BOOL_LIT || currentToken.kind == Token.INT_LIT || currentToken.kind == Token.FLOAT_LIT)
                     acceptIt();
                 else {
-                    Compilador.compilerFrame.setOutputText("Array mal formulada!");
+                    Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Array mal formulada! Símbolo encontrado: '" + Token.spellings[currentToken.kind-1] + "'");
                 }
                 
                 accept(Token.DOTDOT);
@@ -293,7 +293,7 @@ public class Parser {
                 if (currentToken.kind == Token.BOOL_LIT || currentToken.kind == Token.INT_LIT || currentToken.kind == Token.FLOAT_LIT)
                     acceptIt();
                 else {
-                    Compilador.compilerFrame.setOutputText("Array mal formulada!");
+                    Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Array mal formulada! Símbolo encontrado: '" + Token.spellings[currentToken.kind-1] + "'");
                 }
                 
                 accept(Token.RBRACE);
@@ -301,7 +301,7 @@ public class Parser {
                 parseTipo();
                 break;
             default:
-                Compilador.compilerFrame.setOutputText("Tipo agregado mal formulado!");
+                Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Tipo agregado mal formulado! Símbolo encontrado: '" + Token.spellings[currentToken.kind-1] + "'");
         }
     }
     

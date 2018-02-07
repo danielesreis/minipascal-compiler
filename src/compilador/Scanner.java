@@ -41,12 +41,11 @@ public class Scanner {
         public Token scan() {
             byte kind;
             
-            while(currentChar == '#' || currentChar == ' ' || currentChar == '\n')
+            while(currentChar == '#' || currentChar == ' ' || currentChar == '\n' || currentChar == '\t')
                 scanSeparator();
             
-            currentSpelling = new StringBuffer("");
+            currentSpelling = new StringBuffer("");            
             kind = scanToken();
-            
             return new Token(kind, currentSpelling.toString());
         }
         
@@ -57,8 +56,7 @@ public class Scanner {
 				while(isGraphic(currentChar)) takeIt();
 				take('\n');
 				break;
-			case ' ': takeIt(); break;
-			case '\n': takeIt(); break;
+			case ' ': case '\t': case '\n': takeIt(); break;
 			default: Compilador.compilerFrame.setOutputText("Separador inválido!");
 		}
 	}

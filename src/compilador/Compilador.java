@@ -1,10 +1,5 @@
 package compilador;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-
 public class Compilador {
     public static Scanner scanner;
     //public static BufferedReader code;
@@ -21,8 +16,7 @@ public class Compilador {
     public static void startCompilation() {
        currentIndex = 0;
        Parser parser = new Parser();
-       Scanner s = new Scanner(code.charAt(currentIndex));
-       scanner = s;
+       scanner = new Scanner(code.charAt(currentIndex));
        parser.parse();
     }
 }
