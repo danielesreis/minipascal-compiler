@@ -12,7 +12,7 @@ public class Token {
             
             if (kind == ID) {
                 for (byte k = PROGRAM; k<=PROCEDURE; k++ ) {
-                    if (spelling.equals(spellings[k-1])){
+                    if (spelling.toUpperCase().equals(spellings[k-1].toUpperCase())){
                         //System.out.println(spellings[k-1]);
                         this.kind = k;
                         break;
