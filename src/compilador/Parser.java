@@ -4,7 +4,6 @@ public class Parser {
     private Token currentToken;
     
     private void accept (byte expectedTokenKind){
-        
         if ((expectedTokenKind == currentToken.kind) && (currentToken.kind != Token.EOT)) {
             currentToken = Compilador.scanner.scan();
         }
@@ -20,9 +19,10 @@ public class Parser {
     public void parse()  {
         currentToken = Compilador.scanner.scan();
         parsePrograma();
+        
         if(currentToken.kind != Token.EOT){
             //Erro sintático
-        }        
+        }
     }
     
     private void parsePrograma(){
@@ -30,7 +30,7 @@ public class Parser {
         accept(Token.ID);
         accept(Token.SEMICOLON);
         parseCorpo();
-        currentToken.kind = Token.EOT;
+        //currentToken.kind = Token.EOT;
         accept(Token.EOT);
     }
     
