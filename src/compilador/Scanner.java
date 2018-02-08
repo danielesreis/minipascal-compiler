@@ -44,6 +44,7 @@ public class Scanner {
             
             currentSpelling = new StringBuffer("");            
             kind = scanToken();
+            //System.out.println(kind);
             return new Token(kind, currentSpelling.toString());
         }
         
@@ -81,6 +82,8 @@ public class Scanner {
                                     return Token.EOT;
                                 
                                 else {
+                                    //System.out.println("Entrei no else");
+                                    //remover
                                     if (currentChar == '.') {
                                         takeIt();
                                         return Token.DOTDOT;
@@ -131,11 +134,12 @@ public class Scanner {
                             while (isDigit(currentChar)) takeIt(); 
                             
                             if (currentChar == '.') {
-                                takeIt();
-                                
-                                while (isDigit(currentChar)) {
-                                    takeIt();
+                                if(Compilador.code.charAt(Compilador.currentIndex + 1) == '.') {
+                                    return Token.INT_LIT;
                                 }
+                                
+                                takeIt();
+                                while (isDigit(currentChar)) takeIt();
                                 return Token.FLOAT_LIT;
                             }
                             

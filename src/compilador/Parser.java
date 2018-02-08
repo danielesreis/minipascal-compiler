@@ -5,7 +5,7 @@ public class Parser {
     private boolean error = false;
     
     private void accept (byte expectedTokenKind) {
-        System.out.println(currentToken.kind);
+        //System.out.println(currentToken.spelling);
         if(expectedTokenKind != Token.EOT) {
             if(expectedTokenKind != currentToken.kind) 
                 Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: '" + Token.spellings[expectedTokenKind-1] + "' esperado mas '" + Token.spellings[currentToken.kind-1] + "' encontrado");
@@ -14,7 +14,7 @@ public class Parser {
     }
     
     private void acceptIt() {
-        System.out.println(currentToken.kind);
+        //System.out.println(currentToken.spelling);
         currentToken = Compilador.scanner.scan();
     }
     
@@ -299,23 +299,32 @@ public class Parser {
     private void parseTipoAgregado() {
         switch(currentToken.kind) {
             
-            case Token.ARRAY: 
+            case Token.ARRAY:
+                double op1=0, op2=0;
                 acceptIt();
                 accept(Token.LBRACE);
                 
-                if (currentToken.kind == Token.BOOL_LIT || currentToken.kind == Token.INT_LIT || currentToken.kind == Token.FLOAT_LIT)
+                if (currentToken.kind == Token.BOOL_LIT || currentToken.kind == Token.INT_LIT || currentToken.kind == Token.FLOAT_LIT) {
+                    if(currentToken.kind != Token.BOOL_LIT) op1 = Double.parseDouble(currentToken.spelling);
                     acceptIt();
+                }
+                
                 else {
                     Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Array mal formulada! Símbolo encontrado: '" + Token.spellings[currentToken.kind-1] + "'");
                 }
                 
                 accept(Token.DOTDOT);
                 
-                if (currentToken.kind == Token.BOOL_LIT || currentToken.kind == Token.INT_LIT || currentToken.kind == Token.FLOAT_LIT)
+                if (currentToken.kind == Token.BOOL_LIT || currentToken.kind == Token.INT_LIT || currentToken.kind == Token.FLOAT_LIT) {
+                    if(currentToken.kind != Token.BOOL_LIT) op2 = Double.parseDouble(currentToken.spelling);
                     acceptIt();
+                }
+                    
                 else {
                     Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Array mal formulada! Símbolo encontrado: '" + Token.spellings[currentToken.kind-1] + "'");
                 }
+                
+                if (op1 > op2) Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Índices inválidos!");
                 
                 accept(Token.RBRACE);
                 accept(Token.OF);
