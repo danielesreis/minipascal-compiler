@@ -1,18 +1,16 @@
 package compilador;
 
-import java.io.IOException;
-
 public class Token {
     public byte kind;
     public String spelling;
     
-    public Token (byte kind, String spelling){
+    public Token (byte kind, String spelling) {
             this.kind = kind;
             this.spelling = spelling;
             
             if (kind == ID) {
                 for (byte k = PROGRAM; k<=PROCEDURE; k++ ) {
-                    if (spelling.toUpperCase().equals(spellings[k-1].toUpperCase())){
+                    if (spelling.toUpperCase().equals(spellings[k-1].toUpperCase())) {
                         //System.out.println(spellings[k-1]);
                         this.kind = k;
                         break;

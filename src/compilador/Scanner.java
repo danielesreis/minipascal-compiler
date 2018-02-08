@@ -1,7 +1,5 @@
 package compilador;
 
-import java.io.IOException;
-
 public class Scanner {
 	private char currentChar;
 	private StringBuffer currentSpelling;
@@ -13,7 +11,7 @@ public class Scanner {
             currentSpelling = new StringBuffer("");
         }
         
-	private void take(char expectedChar)  {
+	private void take(char expectedChar) {
             if (currentChar == expectedChar) {
                 currentSpelling.append(currentChar);
                 Compilador.currentIndex = Compilador.currentIndex + 1;
@@ -50,14 +48,18 @@ public class Scanner {
         }
         
 	private void scanSeparator() {
-		switch(currentChar) {
-			case '#': 
-				takeIt();
-				while(isGraphic(currentChar)) takeIt();
-				take('\n');
-				break;
-			case ' ': case '\t': case '\n': takeIt(); break;
-			default: Compilador.compilerFrame.setOutputText("Separador inválido!");
+            switch(currentChar) {
+		case '#': 
+			takeIt();
+			while(isGraphic(currentChar)) 
+                            takeIt();
+			
+                        take('\n');
+			break;
+		
+                case ' ': case '\t': case '\n': takeIt(); break;
+		
+                default: Compilador.compilerFrame.setOutputText("Separador inválido!");
 		}
 	}
         
@@ -72,9 +74,9 @@ public class Scanner {
                                     return Token.BECOMES;
                                 }
                                 return Token.COLON;
+                        
                         case '.': 
-                                takeIt();
-                                
+                                takeIt();        
                                 if (eotFlag) 
                                     return Token.EOT;
                                 
@@ -96,7 +98,15 @@ public class Scanner {
                         case ')': takeIt(); return Token.RPAREN;
                         case '[': takeIt(); return Token.LBRACE;
                         case ']': takeIt(); return Token.RBRACE;
-			case '>': case '<': case '=':  takeIt(); return Token.OP_REL;
+			case '=':  takeIt(); return Token.OP_REL;
+                        case '>': 
+                            takeIt();
+                            if (currentChar == '=') takeIt();
+                            return Token.OP_REL;
+                        case '<': 
+                            takeIt();
+                            if(currentChar == '=' || currentChar == '>') takeIt();
+                            return Token.OP_REL;
 			case '+': case '-': takeIt(); return Token.OP_AD; 
 			case '*': case '/': takeIt(); return Token.OP_MUL;
                         case 'a': case 'b': case 'c': case 'd': case 'e': case 'f': case 'g': case 'h': case 'i': 
@@ -104,9 +114,8 @@ public class Scanner {
                         case 's': case 't': case 'u': case 'v': case 'w': case 'x': case 'y': case 'z': case 'A': 
                         case 'B': case 'C': case 'D': case 'E': case 'F': case 'G': case 'H': case 'I': case 'J': 
                         case 'K': case 'L': case 'M': case 'N': case 'O': case 'P': case 'Q': case 'R': case 'S': 
-                        case 'T': case 'U': case 'V': case 'W': case 'X': case 'Y': case 'Z':
-                            
-                            while (isLetter(currentChar) || isDigit(currentChar)){
+                        case 'T': case 'U': case 'V': case 'W': case 'X': case 'Y': case 'Z':                       
+                            while (isLetter(currentChar) || isDigit(currentChar)) {
                                 palavra.append(currentChar);
                                 takeIt();
                             }
@@ -117,12 +126,16 @@ public class Scanner {
                             if (palavra.toString().equals("or")) return Token.OP_AD;
                             return Token.ID;
                             
-                        case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8':
-                        case '9': 
+                        case '0': case '1': case '2': case '3': case '4': 
+                        case '5': case '6': case '7': case '8': case '9': 
                             while (isDigit(currentChar)) takeIt(); 
                             
                             if (currentChar == '.') {
                                 takeIt();
+                                
+                                while (isDigit(currentChar)) {
+                                    takeIt();
+                                }
                                 return Token.FLOAT_LIT;
                             }
                             
@@ -132,31 +145,32 @@ public class Scanner {
 		}
 	}
         
-        private boolean isDigit(char c)  {
+        private boolean isDigit(char c) {
 		if (c == '0' || c == '1' || c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8' || c == '9') return true;
 		return false;
 	}
         
-	private boolean isLetter(char c)  {
-		if (c == 'a' || c == 'b' || c == 'c' || c == 'd' || c == 'e' || c == 'f' || c == 'g' || c == 'h' || c == 'i' || c == 'j' || c == 'k' || c == 'l' || c == 'm' || c == 'n' 
-                   || c == 'o' || c == 'p' || c == 'q' || c == 'r' || c == 's' || c == 't' || c == 'u' || c == 'v' || c == 'w' || c == 'x' || c == 'y' || c == 'z' || c == 'A' || c == 'B' 
-                   || c == 'C' || c == 'D' || c == 'E' || c == 'F' || c == 'G' || c == 'H' || c == 'I' || c == 'J' || c == 'K' || c == 'L' || c == 'M' || c == 'N' || c == 'O' || c == 'P' 
-                   || c == 'Q' || c == 'R' || c == 'S' || c == 'T' || c == 'U' || c == 'V' || c == 'W' || c == 'X' || c == 'Y' || c == 'Z' ) return true;
-		return false;
+	private boolean isLetter(char c) {
+		if (c == 'a' || c == 'b' || c == 'c' || c == 'd' || c == 'e' || c == 'f' || c == 'g' || c == 'h' || c == 'i' || c == 'j' || c == 'k' || c == 'l' || c == 'm' || c == 'n' ||
+                    c == 'o' || c == 'p' || c == 'q' || c == 'r' || c == 's' || c == 't' || c == 'u' || c == 'v' || c == 'w' || c == 'x' || c == 'y' || c == 'z' || c == 'A' || c == 'B' ||
+                    c == 'C' || c == 'D' || c == 'E' || c == 'F' || c == 'G' || c == 'H' || c == 'I' || c == 'J' || c == 'K' || c == 'L' || c == 'M' || c == 'N' || c == 'O' || c == 'P' ||
+                    c == 'Q' || c == 'R' || c == 'S' || c == 'T' || c == 'U' || c == 'V' || c == 'W' || c == 'X' || c == 'Y' || c == 'Z' ) return true;
+		
+                return false;
 	}
         
-	private boolean isSymbol(char c)  {
-		if (c == '!' || c == '@' || c == '#' || c == '$' || c == '%' || c == '¨' || c == '&' || c == '*' || c == '(' || c == ')' || c == '-' || c == '_' || c == '+' || c == '=' || c == '§' || c == '¬' || c == '¢' || c == '£' || c == '³' || 
-			c == '²' || c == '¹' || c == '{' || c == '}' || c == '[' || c == ']' || c == 'ª' || c == 'º' || c == '?' || c == '/' || c == '°' || c == ';' || c == ':' || c == ',' || c == '.' || c == '\\' || c == '|' || c == 'ç' || c == '~' || 
-			c == '^' || c == '"') return true;
-		return false;	
+	private boolean isSymbol(char c) {
+		if (c == '!' || c == '@' || c == '#' || c == '$' || c == '%' || c == '¨' || c == '&' || c == '*' || c == '(' || c == ')' || c == '-' || c == '_' || c == '+' || c == '=' || c == '§' || 
+                    c == '¬' || c == '¢' || c == '£' || c == '³' || c == '²' || c == '¹' || c == '{' || c == '}' || c == '[' || c == ']' || c == 'ª' || c == 'º' || c == '?' || c == '/' || c == '°' || 
+                    c == ';' || c == ':' || c == ',' || c == '.' || c == '"' || c == '|' || c == 'ç' || c == '~' || c == '^' || c == '\\') return true;
+		
+                return false;	
 	}
         
-	private boolean isGraphic(char c)  {
-		if (isDigit(c) || isLetter(c) || isSymbol(c) || c == ' ') return true;
-		return false;
+	private boolean isGraphic(char c) {
+		if (isDigit(c) || isLetter(c) || isSymbol(c) || c == ' ') 
+                    return true;
+		
+                return false;
 	}
 }
-
-
-

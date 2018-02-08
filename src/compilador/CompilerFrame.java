@@ -7,15 +7,8 @@ package compilador;
 
 import static compilador.Compilador.code;
 
-/**
- *
- * @author danielesreis
- */
 public class CompilerFrame extends javax.swing.JFrame {
 
-    /**
-     * Creates new form CompilerFrame
-     */
     public CompilerFrame() {
         
         initComponents();
@@ -116,9 +109,9 @@ public class CompilerFrame extends javax.swing.JFrame {
 
     public void setOutputText(String text) {
         if(outputText.getText().isEmpty())
-            outputText.setText(text);
-        else outputText.setText(outputText.getText() + "\n" + text);
+           outputText.setText(text);
         
+        else outputText.setText(outputText.getText() + "\n" + text);
     }
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -126,7 +119,8 @@ public class CompilerFrame extends javax.swing.JFrame {
         outputText.setText("");
         Compilador.code = inputText.getText();
         Compilador.startCompilation();
-        if (outputText.getText().isEmpty()) outputText.setText("Compilado com sucesso!");
+        if (outputText.getText().isEmpty()) 
+            outputText.setText("Compilado com sucesso!");
         //System.out.println(Compilador.code);
     }//GEN-LAST:event_jButton1ActionPerformed
 
