@@ -1,10 +1,10 @@
 package compilador;
 public class DeclaracaoVariavel extends Declaracao{
-    IdentifierSequencial IS;
+    Identifier I;
     Tipo T;
     
-    public DeclaracaoVariavel(IdentifierSequencial IS, Tipo T) {
-        this.IS = IS;
+    public DeclaracaoVariavel(Identifier I, Tipo T) {
+        this.I = IS;
         this.T = T;
     }
 }
