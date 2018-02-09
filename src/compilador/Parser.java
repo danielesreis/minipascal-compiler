@@ -1,4 +1,5 @@
 package compilador;
+import compilador.ast.*;
 
 public class Parser {
     private Token currentToken;
@@ -19,86 +20,114 @@ public class Parser {
     }
     
     public void parse() {
+        Programa pAST;
         currentToken = Compilador.scanner.scan();
-        parsePrograma();
+        pAST = parsePrograma();
         
         if(currentToken.kind != Token.EOT) {
             Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: End of text esperado, mas '" + Token.spellings[currentToken.kind-1] + "' encontrado");
         }
     }
     
-    private void parsePrograma(){
+    private Programa parsePrograma(){
+        Programa pAST;
         accept(Token.PROGRAM);
+        Identifier iAST = new Identifier(currentToken.spelling);
         accept(Token.ID);
         accept(Token.SEMICOLON);
-        parseCorpo();
+        Corpo cAST = parseCorpo();
+        pAST = new Programa(iAST, cAST);
         accept(Token.EOT);
+        return pAST;
     }
     
-    private void parseComando() {
-        
+    private Comando parseComando() {
+        Comando cAST = null, cAST2 = null, cAST3;
+        Expressao eAST1 = null, eAST2, eAST3;
         switch(currentToken.kind) {
             
-            case Token.IF: 
+            case Token.IF:
                 acceptIt();
-                parseExpressao();
+                eAST1 = parseExpressao();
                 accept(Token.THEN);
-                parseComando();
+                cAST2 = parseComando();
             
                 if (currentToken.kind == Token.ELSE){
                     accept (Token.ELSE);
-                    parseComando();
+                    cAST3 = parseComando();
+                    cAST2 = new ComandoSequencial(cAST2, cAST3);
                 }
+                cAST = new ComandoIf(eAST1, cAST2);
                 break;
        
-            case Token.WHILE:   
+            case Token.WHILE:
                 acceptIt();
-                parseExpressao();
+                eAST1 = parseExpressao();
                 accept(Token.DO);
-                parseComando();
+                cAST2 = parseComando();
+                cAST = new ComandoWhile(eAST1, cAST2);
                 break;
-       
+                
             case Token.BEGIN: 
                 acceptIt();
+                
+                if (currentToken.kind == Token.IF || currentToken.kind == Token.WHILE ||currentToken.kind == Token.BEGIN ||currentToken.kind == Token.ID) {
+                    cAST = parseComando();
+                    accept(Token.SEMICOLON);
+                }
+                
                 while (currentToken.kind == Token.IF || currentToken.kind == Token.WHILE ||currentToken.kind == Token.BEGIN ||currentToken.kind == Token.ID) {
-                    parseComando();
+                    cAST3 = parseComando();
+                    cAST = new ComandoSequencial(cAST, cAST3);
                     accept(Token.SEMICOLON);
                 }
                 accept(Token.END);
                 break;
         
             case Token.ID:
+                Identifier I = new Identifier(currentToken.spelling);
                 acceptIt();
                 
                 switch(currentToken.kind) {
                     case Token.BECOMES:
                         acceptIt();
-                        parseExpressao();
+                        eAST1 = parseExpressao();
+                        cAST = new ComandoAtribuicao(I, eAST1);
                         break;
 
                     case Token.LBRACE:
-                        while( currentToken.kind == Token.LBRACE) {
+                        acceptIt();
+                        eAST1 = parseExpressao();
+                        
+                        while(currentToken.kind == Token.LBRACE) {
                             acceptIt();
-                            parseExpressao();
+                            eAST2 = parseExpressao();
+                            eAST1 = new ExpressaoSequencial(eAST1, eAST2);
                             accept(Token.RBRACE);
                         }
                         accept(Token.BECOMES);
-                        parseExpressao();
+                        eAST3 = parseExpressao();
+                        cAST = new ComandoAtribuicaoIndexada(I, eAST1, eAST3);
                         break;
 
                     case Token.LPAREN:
                         acceptIt();
 
-                        if( currentToken.kind == Token.RPAREN )
+                        if(currentToken.kind == Token.RPAREN) {
                             acceptIt();
-                        else if ( currentToken.kind == Token.ID ) {
-                            parseExpressao();
+                            cAST = new ComandoChamadaProcedimentoSemArgs(I);
+                        }
+                        
+                        else if (currentToken.kind == Token.ID) {
+                            eAST1 = parseExpressao();
 
-                            while( currentToken.kind == Token.COMMA){
+                            while(currentToken.kind == Token.COMMA){
                                 acceptIt();
-                                parseExpressao();
+                                eAST2 = parseExpressao();
+                                eAST1 = new ExpressaoSequencial(eAST1, eAST2);
                             }
                             accept(Token.RPAREN);
+                            cAST = new ComandoChamadaProcedimento(I, eAST1);
                         }
                         else {
                             Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Chamada de procedimento mal formulada! Símbolo encontrado: '" + Token.spellings[currentToken.kind-1] + "'");
@@ -111,117 +140,180 @@ public class Parser {
         
             default: Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Comando mal formulado! Símbolo encontrado: '" + Token.spellings[currentToken.kind-1]);
         }
+        return cAST;
     }
     
-    private void parseCorpo() {
+    private Corpo parseCorpo() {
+        Corpo cAST;
+        Declaracao dAST1 = null, dAST2;
+        Comando comAST1 = null, comAST2;
         
-        while (currentToken.kind == Token.VAR || currentToken.kind == Token.FUNCTION || currentToken.kind == Token.PROCEDURE) {
-            parseDeclaracao();
+        if (currentToken.kind == Token.VAR || currentToken.kind == Token.FUNCTION || currentToken.kind == Token.PROCEDURE) {
+            dAST1 = parseDeclaracao();
             accept(Token.SEMICOLON);
+            
+            while (currentToken.kind == Token.VAR || currentToken.kind == Token.FUNCTION || currentToken.kind == Token.PROCEDURE) {
+                dAST2 = parseDeclaracao();
+                dAST1 = new DeclaracaoSequencial(dAST1, dAST2);
+                accept(Token.SEMICOLON);
+            }
         }
         
         accept(Token.BEGIN);       
         
-        while (currentToken.kind == Token.IF || currentToken.kind == Token.WHILE || currentToken.kind == Token.BEGIN || currentToken.kind == Token.ID) {
-            parseComando();
+        if (currentToken.kind == Token.IF || currentToken.kind == Token.WHILE || currentToken.kind == Token.BEGIN || currentToken.kind == Token.ID) {
+            comAST1 = parseComando();
             accept(Token.SEMICOLON);
+            
+            while (currentToken.kind == Token.IF || currentToken.kind == Token.WHILE || currentToken.kind == Token.BEGIN || currentToken.kind == Token.ID) {
+                comAST2 = parseComando();
+                comAST1 = new ComandoSequencial(comAST1, comAST2);
+                accept(Token.SEMICOLON);
+            }
+        }
+        
+        if (dAST1 == null) {
+            if (comAST1 == null) cAST = null;
+            else cAST = new CorpoSemDeclaracao(comAST1);
+        }
+        else {
+            if (comAST1 == null) cAST = new CorpoSemComando(dAST1);
+            else cAST = new CorpoComDeclaracaoComando(dAST1, comAST1);
         }
         
         accept(Token.END);
+        return cAST;
     }
     
-    private void parseDeclaracao(){
+    
+    private Declaracao parseDeclaracao(){
+        Declaracao decAST = null;
+        Corpo corpoAST;
+        Identifier id1AST, id2AST;
+        Parametro par1AST, par2AST = null;
+        Tipo tAST;
+        TipoSimples TsAST;
+        
         
         switch(currentToken.kind) {
         
             case Token.VAR: 
                 acceptIt();
+                id1AST = new Identifier(currentToken.spelling);
                 accept(Token.ID);
                             
                 while(currentToken.kind == Token.COMMA) {
                     acceptIt();
+                    id2AST = new Identifier(currentToken.spelling);
+                    id1AST = new IdentifierSequencial(id1AST, id2AST);
                     accept(Token.ID);
                 }
                             
                 accept(Token.COLON);
-                parseTipo();
+                tAST = parseTipo();
+                decAST = new DeclaracaoVariavel(id1AST, tAST);
                 break;
                 
-            case Token.FUNCTION: 
+            case Token.FUNCTION:
+           
                 acceptIt();
+                id1AST = new Identifier(currentToken.spelling);
                 accept(Token.ID);
                 accept(Token.LPAREN);
                             
                 switch(currentToken.kind) {
                     case Token.VAR: case Token.ID:
-                        parseParametros();
+                        par1AST = parseParametros();
                         
                         while(currentToken.kind == Token.SEMICOLON) {
                             acceptIt();
-                            parseParametros();
+                            par2AST = parseParametros();
+                            par1AST = new ParametroSequencial(par1AST, par2AST);
+                            
                         }
                         accept(Token.RPAREN);
+                        accept(Token.COLON);
+                        TsAST = new TipoSimples(currentToken.spelling);                       
+                        accept(Token.TIPO_SIMPLES);
+                        accept(Token.SEMICOLON);
+                        corpoAST = parseCorpo();
+                        decAST = new DeclaracaoFuncao(id1AST, par1AST, TsAST, corpoAST);                        
                         break;
                         
                     case Token.RPAREN: 
                         acceptIt();
+                        accept(Token.COLON);
+                        TsAST = new TipoSimples(currentToken.spelling);
+                        accept(Token.TIPO_SIMPLES);
+                        accept(Token.SEMICOLON);
+                        corpoAST = parseCorpo();
+                        decAST = new DeclaracaoFuncaoSemArgs(id1AST, TsAST, corpoAST);
                         break;
                         
                     default:
                         Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Função mal formulada! Símbolo encontrado: '" + Token.spellings[currentToken.kind-1] + "'");
                 }
-                
-                accept(Token.COLON);
-                accept(Token.TIPO_SIMPLES);
-                accept(Token.SEMICOLON);
-                parseCorpo();
                 break;
                 
             case Token.PROCEDURE: 
                 acceptIt();
+                id1AST = new Identifier(currentToken.spelling);
                 accept(Token.ID);
                 accept(Token.LPAREN);
                             
                 switch(currentToken.kind) {
                     case Token.VAR: case Token.ID:
-                        parseParametros();
+                        par1AST = parseParametros();
                         
                         while(currentToken.kind == Token.SEMICOLON) {
                             acceptIt();
-                            parseParametros();
+                            par2AST = parseParametros();
+                            par1AST = new ParametroSequencial(par1AST, par2AST);
                         }
                        
                         accept(Token.RPAREN);
+                        accept(Token.SEMICOLON);
+                        corpoAST = parseCorpo();
+                        decAST = new DeclaracaoProcedure(id1AST, par1AST, corpoAST);
                         break;
                     
                     case Token.RPAREN: 
                         acceptIt();
+                        accept(Token.SEMICOLON);
+                        corpoAST = parseCorpo();
+                        decAST = new DeclaracaoProcedureSemArgs(id1AST, corpoAST);
                         break;
                     
                     default:
                         Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Procedure mal formulada! Símbolo encontrado: '" + Token.spellings[currentToken.kind-1] + "'");
                 }
-                
-                accept(Token.SEMICOLON);
-                parseCorpo();
                 break;
                 
             default:
                 Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Declaração mal formulada! Símbolo encontrado: '" + Token.spellings[currentToken.kind-1] + "'");
         }
+        return decAST;
     }
-    
-    private void parseExpressao() {
+
+    private Expressao parseExpressao() {
+        Expressao eAST;
+        OpRel orAST;
+        ExpressaoSimples esAST1, esAST2;
         
-        parseExpressaoSimples();
+        esAST1 = parseExpressaoSimples();
+        eAST = esAST1;
         
         if (currentToken.kind == Token.OP_REL){
-           acceptIt();
-           parseExpressaoSimples();
+            orAST = new OpRel(currentToken.spelling);
+            acceptIt();
+            esAST2 = parseExpressaoSimples();
+            eAST = new ExpressaoBinaria(esAST1, esAST2, orAST);
         }
+        return eAST;
    }
-   
-    private void parseExpressaoSimples(){
+
+    /*falta essa classe*/
+    private ExpressaoSimples parseExpressaoSimples(){
         
        parseFator();
         
@@ -310,6 +402,7 @@ public class Parser {
     }
     
     private void parseTipo() {
+        Tipo tAST;
         switch (currentToken.kind) {
             
             case Token.ARRAY:
@@ -363,6 +456,5 @@ public class Parser {
             default:
                 Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Tipo agregado mal formulado! Símbolo encontrado: '" + Token.spellings[currentToken.kind-1] + "'");
         }
-    }
-    
+    }  
 }
