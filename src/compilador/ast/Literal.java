@@ -1,8 +1,8 @@
 package compilador.ast;
-public class TipoSimples extends Tipo{
+public class Literal extends Fator{
     String spelling;
     
-    public TipoSimples(String spelling) {
+    public Literal(String spelling) {
         this.spelling = spelling;
     }
 }

@@ -1,7 +1,7 @@
 package compilador;
 
 public class Compilador {
-    public static Scanner scanner;
+    //public static Scanner scanner;
     public static String code;
     public static int currentIndex;
     public static CompilerFrame compilerFrame;
@@ -15,8 +15,8 @@ public class Compilador {
     
     public static void startCompilation() {
        currentIndex = 0;
-       Parser parser = new Parser();
-       scanner = new Scanner(code.charAt(currentIndex));
+       Parser parser = new Parser(code.charAt(currentIndex));
+       //scanner = new Scanner(code.charAt(currentIndex));
        parser.parse();
     }
 }

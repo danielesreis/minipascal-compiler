@@ -4,26 +4,31 @@ import compilador.ast.*;
 public class Parser {
     private Token currentToken;
     private boolean error = false;
+    private static Scanner scanner;
+    
+    public Parser(char firstChar) {
+        scanner = new Scanner(firstChar);
+    }
     
     private void accept (byte expectedTokenKind) {
         //System.out.println(currentToken.spelling);
         if(expectedTokenKind != Token.EOT) {
             if(expectedTokenKind != currentToken.kind) 
                 Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: '" + Token.spellings[expectedTokenKind-1] + "' esperado mas '" + Token.spellings[currentToken.kind-1] + "' encontrado");
-            else currentToken = Compilador.scanner.scan();
+            else currentToken = scanner.scan();
         }
     }
     
     private void acceptIt() {
         //System.out.println(currentToken.spelling);
-        currentToken = Compilador.scanner.scan();
+        currentToken = scanner.scan();
     }
     
     public void parse() {
         Programa pAST;
-        currentToken = Compilador.scanner.scan();
-        pAST = parsePrograma();
+        currentToken = scanner.scan();
         
+        pAST = parsePrograma();
         if(currentToken.kind != Token.EOT) {
             Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: End of text esperado, mas '" + Token.spellings[currentToken.kind-1] + "' encontrado");
         }
@@ -118,7 +123,7 @@ public class Parser {
                             cAST = new ComandoChamadaProcedimentoSemArgs(I);
                         }
                         
-                        else if (currentToken.kind == Token.ID) {
+                        else if (currentToken.kind == Token.ID || currentToken.kind == Token.LITERAL || currentToken.kind == Token.LPAREN) {
                             eAST1 = parseExpressao();
 
                             while(currentToken.kind == Token.COMMA){
@@ -312,49 +317,89 @@ public class Parser {
         return eAST;
    }
 
-    /*falta essa classe*/
     private ExpressaoSimples parseExpressaoSimples(){
-        
-       parseFator();
+        ExpressaoSimples EsAST;
+        Fator Fator1AST, Fator2AST, Fator3AST, Fator4AST;
+        OpMul opMulAST;
+        OpAd opAdAST;
+        Fator1AST = parseFator();
         
         while(currentToken.kind == Token.OP_MUL){
+            opMulAST = new OpMul(currentToken.spelling);
             acceptIt();
-            parseFator();
+            Fator2AST = parseFator();
+            Fator1AST = new FatorMulSequencial(Fator1AST, opMulAST, Fator2AST);
         }
         
         while(currentToken.kind == Token.OP_AD){
+            opAdAST = new OpAd(currentToken.spelling);
             acceptIt();
-            parseFator();
+            Fator3AST = parseFator();
+            Fator1AST = new FatorAdSequencial(Fator1AST, opAdAST, Fator3AST);
+            
             while(currentToken.kind == Token.OP_MUL){
+                opMulAST = new OpMul(currentToken.spelling);
                 acceptIt();
-                parseFator();
+                Fator4AST = parseFator();
+                Fator1AST = new FatorMulSequencial(Fator1AST, opMulAST, Fator4AST);
             }
         }
+        EsAST = new ExpressaoSimples(Fator1AST);
+        return EsAST;
     }
-    
-    private void parseFator() {
-        
+
+    private Fator parseFator() {
+        Fator fAST = null;
         switch(currentToken.kind) {
            
             case Token.ID:
+                Expressao eAST1 = null, eAST2;
+                Identifier iAST = new Identifier(currentToken.spelling);
                 acceptIt();
-                while(currentToken.kind == Token.LBRACE){
-                   acceptIt();
-                   parseExpressao(); 
-                   accept(Token.RBRACE);
+                
+                if(currentToken.kind == Token.LBRACE) {
+                    Variavel vAST = new VariavelId(iAST);
+                    acceptIt();
+                    eAST1 = parseExpressao();
+                    accept(Token.RBRACE);
+                    
+                    while(currentToken.kind == Token.LBRACE){
+                        acceptIt();
+                        eAST2 = parseExpressao(); 
+                        eAST1 = new ExpressaoSequencial(eAST1, eAST2);
+                        vAST = new VariavelIndexada(iAST, eAST1);
+                        accept(Token.RBRACE);
+                    }
+                    fAST = vAST;
                 }
+                                
                 if(currentToken.kind == Token.LPAREN){
-                   acceptIt();
-                   parseExpressao(); 
-                   while( currentToken.kind == Token.COMMA){
-                       acceptIt();
-                       parseExpressao();
-                   }
-                   accept(Token.RPAREN);
+                  acceptIt();
+
+                    if(currentToken.kind == Token.RPAREN) {
+                        acceptIt();
+                        fAST = new FatorChamadaFuncaoSemArgs(iAST);
+                    }
+                        
+                    else if (currentToken.kind == Token.ID || currentToken.kind == Token.LITERAL || currentToken.kind == Token.LPAREN) {
+                        eAST1 = parseExpressao();
+
+                        while(currentToken.kind == Token.COMMA){
+                            acceptIt(); 
+                            eAST2 = parseExpressao();
+                            eAST1 = new ExpressaoSequencial(eAST1, eAST2);
+                        }
+                        
+                        accept(Token.RPAREN);
+                        fAST = new FatorChamadaFuncao(iAST, eAST1);
+                    }
+                    else {
+                        Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Chamada de procedimento mal formulada! Símbolo encontrado: '" + Token.spellings[currentToken.kind-1] + "'");
+                    }                    
                 }
                 break;
             
-            case Token.BOOL_LIT:
+            /*case Token.BOOL_LIT:
                 acceptIt();
                 break;
             
@@ -365,26 +410,38 @@ public class Parser {
             case Token.FLOAT_LIT:
                 acceptIt();
                 break;
-            
+            */
+            case Token.LITERAL:
+                fAST = new Literal(currentToken.spelling);
+                acceptIt();
+                break;
+                
             case Token.LPAREN:
                 acceptIt();
-                parseExpressao();
+                fAST = parseExpressao();
                 accept(Token.RPAREN);
                 break;
                 
             default: Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Fator mal formulado! Símbolo encontrado: '" + Token.spellings[currentToken.kind-1] + "'");
-        }        
+        }
+        return fAST;
     }
     
-    private void parseParametros() {
+    private Parametro parseParametros() {
+        Parametro ParAST;
+        Identifier id1AST = null, id2AST;
+        TipoSimples TsAST;
+        
         switch (currentToken.kind) {
             
             case Token.VAR:
                 acceptIt();
+                id1AST = new Identifier(currentToken.spelling);
                 accept(Token.ID);
                 break;
             
             case Token.ID:
+                id1AST = new Identifier(currentToken.spelling);
                 acceptIt();
                 break;
             
@@ -394,67 +451,74 @@ public class Parser {
         
         while(currentToken.kind == Token.COMMA) {
             acceptIt();
+            id2AST = new Identifier(currentToken.spelling);
+            id1AST = new IdentifierSequencial(id1AST, id2AST);
             accept(Token.ID);
         }
         
         accept(Token.COLON);
+        TsAST = new TipoSimples(currentToken.spelling);
         accept(Token.TIPO_SIMPLES);
+        ParAST = new ParametroSimples(id1AST, TsAST);
+        return ParAST;
     }
-    
-    private void parseTipo() {
-        Tipo tAST;
+
+    private Tipo parseTipo() {
+        Tipo tAST = null;
         switch (currentToken.kind) {
             
             case Token.ARRAY:
-                parseTipoAgregado();
+                tAST = parseTipoAgregado();
                 break;
             
             case Token.TIPO_SIMPLES:
+                tAST = new TipoSimples(currentToken.spelling);
                 acceptIt();
                 break;
             
             default:
                 Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Tipo mal formulado! Símbolo encontrado: '" + Token.spellings[currentToken.kind-1] + "'");
         }
+        return tAST;
     }
    
-    private void parseTipoAgregado() {
+    private TipoAgregado parseTipoAgregado() {
+        TipoAgregado taAST = null;
+        
         switch(currentToken.kind) {
             
             case Token.ARRAY:
+                Literal L1, L2;
+                Tipo T;
                 double op1=0, op2=0;
                 acceptIt();
                 accept(Token.LBRACE);
                 
-                if (currentToken.kind == Token.BOOL_LIT || currentToken.kind == Token.INT_LIT || currentToken.kind == Token.FLOAT_LIT) {
-                    if(currentToken.kind != Token.BOOL_LIT) op1 = Double.parseDouble(currentToken.spelling);
-                    acceptIt();
+                switch(currentToken.kind) {
+                    case Token.LITERAL:
+                        if (Scanner.isDigit(currentToken.spelling.charAt(0))) op1 = Double.parseDouble(currentToken.spelling);
+                        L1 = new Literal(currentToken.spelling);
+                        acceptIt();
+                        
+                        accept(Token.DOTDOT);
+                        
+                        if (Scanner.isDigit(currentToken.spelling.charAt(0))) op2 = Double.parseDouble(currentToken.spelling);
+                        L2 = new Literal(currentToken.spelling);
+                        accept(Token.LITERAL);
+                        
+                        accept(Token.RBRACE);
+                        accept(Token.OF);
+                        T = parseTipo();
+                        
+                        taAST = new TipoAgregado(L1, L2, T);
+                        if (op1 > op2) Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Índices inválidos!");
+                        break;
+                        
+                    default: Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Tipo agregado mal formulado! Símbolo encontrado: '" + Token.spellings[currentToken.kind-1] + "'");
                 }
-                
-                else {
-                    Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Array mal formulada! Símbolo encontrado: '" + Token.spellings[currentToken.kind-1] + "'");
-                }
-                
-                accept(Token.DOTDOT);
-                
-                if (currentToken.kind == Token.BOOL_LIT || currentToken.kind == Token.INT_LIT || currentToken.kind == Token.FLOAT_LIT) {
-                    if(currentToken.kind != Token.BOOL_LIT) op2 = Double.parseDouble(currentToken.spelling);
-                    acceptIt();
-                }
-                    
-                else {
-                    Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Array mal formulada! Símbolo encontrado: '" + Token.spellings[currentToken.kind-1] + "'");
-                }
-                
-                if (op1 > op2) Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Índices inválidos!");
-                
-                accept(Token.RBRACE);
-                accept(Token.OF);
-                parseTipo();
                 break;
-            
-            default:
-                Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Tipo agregado mal formulado! Símbolo encontrado: '" + Token.spellings[currentToken.kind-1] + "'");
+            default: Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Tipo agregado mal formulado! Símbolo encontrado: '" + Token.spellings[currentToken.kind-1] + "'");
         }
+        return taAST;
     }  
 }

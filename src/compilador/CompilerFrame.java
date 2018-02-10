@@ -117,11 +117,11 @@ public class CompilerFrame extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         outputText.setText("");
-        Compilador.code = inputText.getText();
+        Compilador.code = inputText.getText().trim();
+        
         Compilador.startCompilation();
         if (outputText.getText().isEmpty()) 
             outputText.setText("Compilado com sucesso!");
-        //System.out.println(Compilador.code);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

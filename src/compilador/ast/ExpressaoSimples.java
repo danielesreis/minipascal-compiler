@@ -1,4 +1,8 @@
 package compilador.ast;
-public abstract class ExpressaoSimples extends Expressao{
+public class ExpressaoSimples extends Expressao{
+    Fator F;
     
+    public ExpressaoSimples(Fator F) {
+        this.F = F;
+    }
 }

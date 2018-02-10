@@ -1,4 +1,4 @@
 package compilador.ast;
-public abstract class Expressao extends AST {
+public abstract class Expressao extends Fator {
     
 }

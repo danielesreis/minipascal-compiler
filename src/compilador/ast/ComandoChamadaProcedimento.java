@@ -1,10 +1,10 @@
 package compilador.ast;
 public class ComandoChamadaProcedimento extends Comando{
     Identifier I;
-    ExpressaoSequencial ES;
+    Expressao E;
     
-    public ComandoChamadaProcedimento(Identifier I, ExpressaoSequencial ES) {
+    public ComandoChamadaProcedimento(Identifier I, Expressao E) {
         this.I = I;
-        this.ES = ES;
+        this.E = E;
     }
 }

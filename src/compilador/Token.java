@@ -52,7 +52,8 @@ public class Token {
         OF              = 30,
         FUNCTION        = 31,
         PROCEDURE       = 32,
-        EOT             = 33;
+        EOT             = 33,
+        LITERAL         = 34;
     
     public final static String[] spellings = {
         ":=",
@@ -87,6 +88,7 @@ public class Token {
         "of",
         "function",
         "procedure",
-        "."
+        ".",
+        "literal",
     };    
 }

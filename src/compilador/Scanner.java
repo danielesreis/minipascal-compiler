@@ -19,7 +19,8 @@ public class Scanner {
                 if (Compilador.currentIndex != Compilador.code.length()) 
                     currentChar = Compilador.code.charAt(Compilador.currentIndex);
                 
-                else this.eotFlag = true;     
+                else this.eotFlag = true;
+                System.out.println(eotFlag);
             }
             else {
                 Compilador.compilerFrame.setOutputText("Caractere inválido!");
@@ -28,6 +29,7 @@ public class Scanner {
         
 	private void takeIt() {
             currentSpelling.append(currentChar);
+            
             Compilador.currentIndex = Compilador.currentIndex + 1;
             
             if (Compilador.currentIndex != Compilador.code.length()) 
@@ -90,7 +92,7 @@ public class Scanner {
                                     }
                                     else if (isDigit(currentChar)) {
                                         takeIt();
-                                        return Token.FLOAT_LIT;
+                                        return Token.LITERAL;
                                     }   
                                     return Token.DOT;
                                 }
@@ -123,7 +125,8 @@ public class Scanner {
                                 takeIt();
                             }
                             
-                            if (palavra.toString().equals("true") || palavra.toString().equals("false")) return Token.BOOL_LIT;
+                            //if (palavra.toString().equals("true") || palavra.toString().equals("false")) return Token.BOOL_LIT;
+                            if (palavra.toString().equals("true") || palavra.toString().equals("false")) return Token.LITERAL;
                             if (palavra.toString().equals("integer") || palavra.toString().equals("real") || palavra.toString().equals("boolean")) return Token.TIPO_SIMPLES;
                             if (palavra.toString().equals("and")) return Token.OP_MUL;
                             if (palavra.toString().equals("or")) return Token.OP_AD;
@@ -135,26 +138,29 @@ public class Scanner {
                             
                             if (currentChar == '.') {
                                 if(Compilador.code.charAt(Compilador.currentIndex + 1) == '.') {
-                                    return Token.INT_LIT;
+                                    //return Token.INT_LIT;
+                                    return Token.LITERAL;
                                 }
                                 
                                 takeIt();
                                 while (isDigit(currentChar)) takeIt();
-                                return Token.FLOAT_LIT;
+                                //return Token.FLOAT_LIT;
+                                return Token.LITERAL;
                             }
                             
-                            return Token.INT_LIT;
+                            //return Token.INT_LIT;
+                            return Token.LITERAL;
                             
                         default: takeIt(); return Token.ERROR;
 		}
 	}
         
-        private boolean isDigit(char c) {
+        public static boolean isDigit(char c) {
 		if (c == '0' || c == '1' || c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8' || c == '9') return true;
 		return false;
 	}
         
-	private boolean isLetter(char c) {
+	public static boolean isLetter(char c) {
 		if (c == 'a' || c == 'b' || c == 'c' || c == 'd' || c == 'e' || c == 'f' || c == 'g' || c == 'h' || c == 'i' || c == 'j' || c == 'k' || c == 'l' || c == 'm' || c == 'n' ||
                     c == 'o' || c == 'p' || c == 'q' || c == 'r' || c == 's' || c == 't' || c == 'u' || c == 'v' || c == 'w' || c == 'x' || c == 'y' || c == 'z' || c == 'A' || c == 'B' ||
                     c == 'C' || c == 'D' || c == 'E' || c == 'F' || c == 'G' || c == 'H' || c == 'I' || c == 'J' || c == 'K' || c == 'L' || c == 'M' || c == 'N' || c == 'O' || c == 'P' ||
