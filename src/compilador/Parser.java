@@ -24,7 +24,7 @@ public class Parser {
         currentToken = scanner.scan();
     }
     
-    public void parse() {
+    public Programa parse() {
         Programa pAST;
         currentToken = scanner.scan();
         
@@ -32,6 +32,7 @@ public class Parser {
         if(currentToken.kind != Token.EOT) {
             Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: End of text esperado, mas '" + Token.spellings[currentToken.kind-1] + "' encontrado");
         }
+        return pAST;
     }
     
     private Programa parsePrograma(){

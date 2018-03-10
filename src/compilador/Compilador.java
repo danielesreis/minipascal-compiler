@@ -1,5 +1,7 @@
 package compilador;
 
+import compilador.ast.*;
+
 public class Compilador {
     //public static Scanner scanner;
     public static String code;
@@ -15,8 +17,10 @@ public class Compilador {
     
     public static void startCompilation() {
        currentIndex = 0;
+       Programa p;
+       
        Parser parser = new Parser(code.charAt(currentIndex));
        //scanner = new Scanner(code.charAt(currentIndex));
-       parser.parse();
+       p = parser.parse();
     }
 }
