@@ -5,4 +5,8 @@ public class Literal extends Fator{
     public Literal(String spelling) {
         this.spelling = spelling;
     }
+    
+    public void visit (Visitor v){
+        v.visitLiteral(this);
+    }
 }

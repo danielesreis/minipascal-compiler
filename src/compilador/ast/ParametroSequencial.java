@@ -6,4 +6,8 @@ public class ParametroSequencial extends Parametro{
         this.P1 = P1;
         this.P2 = P2;
     }
+    
+    public void visit (Visitor v){
+        v.visitParametroSequencial(this);
+    }
 }

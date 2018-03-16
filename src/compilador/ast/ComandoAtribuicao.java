@@ -7,4 +7,8 @@ public class ComandoAtribuicao extends Comando{
         this.I = I;
         this.E = E;
     }
+    
+    public void visit (Visitor v){
+        v.visitComandoAtribuicao(this);
+    }
 }

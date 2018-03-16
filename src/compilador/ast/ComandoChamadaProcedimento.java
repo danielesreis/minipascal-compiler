@@ -7,4 +7,8 @@ public class ComandoChamadaProcedimento extends Comando{
         this.I = I;
         this.E = E;
     }
+    
+    public void visit (Visitor v){
+        v.visitComandoChamadaProcedimento(this);
+    }
 }

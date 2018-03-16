@@ -5,4 +5,8 @@ public class IdentifierSequencial extends Identifier{
     public IdentifierSequencial(Identifier I1, Identifier I2) {
         super(I1, I2);
     }
+    
+    public void visit (Visitor v){
+        v.visitIdentifierSequencial(this);
+    }
 }

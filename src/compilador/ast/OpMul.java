@@ -5,4 +5,7 @@ public class OpMul extends Identifier{
         super(spelling);
     }
     
+    public void visit (Visitor v){
+        v.visitOpMul(this);
+    }
 }

@@ -7,4 +7,8 @@ public class ComandoIf extends Comando{
         this.E = E;
         this.C1 = C1;
     }
+    
+    public void visit (Visitor v){
+        v.visitComandoIf(this);
+    }
 }

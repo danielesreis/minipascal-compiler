@@ -3,11 +3,42 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/danie/Desktop/compilador/src/compilador/Parser.java</file>
-            <file>file:/C:/Users/danie/Desktop/compilador/src/compilador/CompilerFrame.java</file>
-            <file>file:/C:/Users/danie/Desktop/compilador/src/compilador/Token.java</file>
-            <file>file:/C:/Users/danie/Desktop/compilador/src/compilador/Scanner.java</file>
-            <file>file:/C:/Users/danie/Desktop/compilador/src/compilador/Compilador.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/ComandoComposto.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/ComandoChamadaProcedimentoSemArgs.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/CorpoSemComando.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/Expressao.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/FatorMulSequencial.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/ExpressaoSimples.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/ComandoSequencial.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/FatorChamadaFuncaoSemArgs.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/CorpoComDeclaracaoComando.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/IdentifierSequencial.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/Terminal.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/ComandoIfElse.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/DeclaracaoFuncao.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/DeclaracaoSequencial.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/FatorChamadaFuncao.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/DeclaracaoFuncaoSemArgs.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/OpRel.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/Parser.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/FatorAdSequencial.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/ComandoIf.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/OpAd.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/Identifier.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/ComandoAtribuicaoIndexada.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/Parametro.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/DeclaracaoProcedure.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/DeclaracaoProcedureSemArgs.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/DeclaracaoVariavel.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/OpMul.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/Scanner.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/Literal.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/ComandoWhile.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/CorpoSemDeclaracao.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/ComandoChamadaProcedimento.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/ExpressaoBinaria.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/ComandoAtribuicao.java</file>
+            <file>file:/C:/Users/Joselia/Documents/NetBeansProjects/compilador/src/compilador/ast/ExpressaoSequencial.java</file>
         </group>
     </open-files>
 </project-private>

@@ -7,4 +7,8 @@ public class ComandoWhile extends Comando{
         this.E = E;
         this.C = C;
     }
+    
+    public void visit (Visitor v){
+        v.visitComandoWhile(this);
+    }
 }

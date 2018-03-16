@@ -5,4 +5,8 @@ public class CorpoSemComando extends Corpo{
     public CorpoSemComando(Declaracao D) {
         this.D = D;
     }
+    
+    public void visit (Visitor v){
+        v.visitCorpoSemComando(this);
+    }
 }

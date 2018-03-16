@@ -9,4 +9,8 @@ public class DeclaracaoFuncaoSemArgs extends Declaracao{
         this.TS = TS;
         this.C = C;
     }
+    
+    public void visit (Visitor v){
+        v.visitDeclaracaoFuncaoSemArgs(this);
+    }
 }

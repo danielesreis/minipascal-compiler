@@ -7,4 +7,9 @@ public class FatorChamadaFuncao extends Fator{
         this.I = I;
         this.E = E;
     }
+    
+     public void visit (Visitor v){
+        v.visitFatorChamadaFuncao(this);
+    }
+
 }

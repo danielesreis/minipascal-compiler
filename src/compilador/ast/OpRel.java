@@ -5,4 +5,7 @@ public class OpRel extends Identifier{
         super(spelling);
     }
     
+    public void visit (Visitor v){
+        v.visitOpRel(this);
+    }    
 }

@@ -9,4 +9,8 @@ public class DeclaracaoProcedure extends Declaracao{
         this.P = P;
         this.C = C;
     } 
+    
+    public void visit (Visitor v){
+        v.visitDeclaracaoProcedure(this);
+    }
 }

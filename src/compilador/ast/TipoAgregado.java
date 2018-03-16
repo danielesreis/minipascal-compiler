@@ -8,4 +8,8 @@ public class TipoAgregado extends Tipo{
         this.L2 = L2;
         this.T = T;
     }
+    
+    public void visit (Visitor v){
+        v.visitTipoAgregado(this);
+    }
 }

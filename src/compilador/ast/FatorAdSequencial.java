@@ -9,4 +9,7 @@ public class FatorAdSequencial extends Fator{
         this.F2 = F2;
     }
     
+    public void visit (Visitor v){
+        v.visitFatorAdSequencial(this);
+    }    
 }

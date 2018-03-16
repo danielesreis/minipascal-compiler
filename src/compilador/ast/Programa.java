@@ -7,4 +7,8 @@ public class Programa extends AST{
         this.I = I;
         this.C = C;
     }
+    
+    public void visit (Visitor v){
+        v.visitPrograma(this);
+    }
 }

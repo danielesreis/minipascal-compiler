@@ -5,4 +5,8 @@ public class ExpressaoSimples extends Expressao{
     public ExpressaoSimples(Fator F) {
         this.F = F;
     }
+    
+    public void visit (Visitor v){
+        v.visitExpressaoSimples(this);
+    }
 }

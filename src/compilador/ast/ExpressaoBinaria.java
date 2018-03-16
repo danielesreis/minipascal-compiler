@@ -8,4 +8,8 @@ public class ExpressaoBinaria extends Expressao{
         this.ES2 = ES2;
         this.OR = OR;
     }
+    
+    public void visit (Visitor v){
+        v.visitExpressaoBinaria(this);
+    }
 }

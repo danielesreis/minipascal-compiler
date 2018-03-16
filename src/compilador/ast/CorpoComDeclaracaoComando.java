@@ -7,4 +7,8 @@ public class CorpoComDeclaracaoComando extends Corpo{
         this.D = D;
         this.C = C;
     }
+    
+    public void visit (Visitor v){
+        v.visitCorpoComDeclaracaoComando(this);
+    }
 }

@@ -5,4 +5,8 @@ public class VariavelId extends Variavel{
     public VariavelId(Identifier I) {
         this.I = I;
     }
+    
+    public void visit (Visitor v){
+        v.visitVariavelId(this);
+    }
 }

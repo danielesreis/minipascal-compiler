@@ -7,4 +7,8 @@ public class DeclaracaoVariavel extends Declaracao{
         this.I = I;
         this.T = T;
     }
+    
+    public void visit (Visitor v){
+        v.visitDeclaracaoVariavel(this);
+    }
 }

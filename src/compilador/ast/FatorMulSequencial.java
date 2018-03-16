@@ -8,4 +8,8 @@ public class FatorMulSequencial extends Fator{
         this.OM = OM;
         this.F2 = F2;
     }
+    
+    public void visit (Visitor v){
+        v.visitFatorMulSequencial(this);
+    }
 }

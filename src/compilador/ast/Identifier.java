@@ -8,4 +8,8 @@ public class Identifier extends Terminal {
     public Identifier(String spelling) {
         super(spelling);
     }
+    
+    public void visit (Visitor v){
+        v.visitIdentifier(this);
+    }
 }

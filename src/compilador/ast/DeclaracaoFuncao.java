@@ -11,4 +11,8 @@ public class DeclaracaoFuncao extends Declaracao{
         this.TS = TS;
         this.C = C;
     }
+    
+    public void visit (Visitor v){
+        v.visitDeclaracaoFuncao(this);
+    }
 }

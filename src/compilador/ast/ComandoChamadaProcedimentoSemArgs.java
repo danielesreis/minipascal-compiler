@@ -5,4 +5,8 @@ public class ComandoChamadaProcedimentoSemArgs extends Comando{
     public ComandoChamadaProcedimentoSemArgs(Identifier I) {
         this.I = I;
     }
+    
+    public void visit (Visitor v){
+        v.visitComandoChamadaProcedimentoSemArgs(this);
+    }
 }

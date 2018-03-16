@@ -8,5 +8,9 @@ public class ComandoIfElse extends Comando{
         this.C1 = C1;
         this.C2 = C2;
     }
+    
+    public void visit (Visitor v){
+        v.visitComandoIfElse(this);
+    }
 }
 

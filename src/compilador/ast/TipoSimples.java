@@ -5,4 +5,8 @@ public class TipoSimples extends Tipo{
     public TipoSimples(String spelling) {
         this.spelling = spelling;
     }
+    
+    public void visit (Visitor v){
+        v.visitTipoSimples(this);
+    }
 }
