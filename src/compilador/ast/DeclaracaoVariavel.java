@@ -1,7 +1,7 @@
 package compilador.ast;
 public class DeclaracaoVariavel extends Declaracao{
-    Identifier I;
-    Tipo T;
+    public Identifier I;
+    public Tipo T;
     
     public DeclaracaoVariavel(Identifier I, Tipo T) {
         this.I = I;

@@ -1,7 +1,7 @@
 package compilador.ast;
 public class FatorMulSequencial extends Fator{
-    Fator F1, F2;
-    OpMul OM;
+    public Fator F1, F2;
+    public OpMul OM;
     
     public FatorMulSequencial(Fator F1, OpMul OM, Fator F2) {
         this.F1 = F1;

@@ -1,7 +1,7 @@
 package compilador.ast;
 public class ComandoAtribuicao extends Comando{
-    Identifier I;
-    Expressao E;
+    public Identifier I;
+    public Expressao E;
     
     public ComandoAtribuicao(Identifier I, Expressao E) {
         this.I = I;

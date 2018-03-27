@@ -1,7 +1,7 @@
 package compilador.ast;
 public class Programa extends AST{
-    Identifier I;
-    Corpo C;
+    public Identifier I;
+    public Corpo C;
     
     public Programa(Identifier I, Corpo C) {
         this.I = I;

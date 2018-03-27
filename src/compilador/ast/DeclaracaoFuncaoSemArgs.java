@@ -1,8 +1,8 @@
 package compilador.ast;
 public class DeclaracaoFuncaoSemArgs extends Declaracao{
-    Identifier I;
-    TipoSimples TS;
-    Corpo C;
+    public Identifier I;
+    public TipoSimples TS;
+    public Corpo C;
     
     public DeclaracaoFuncaoSemArgs(Identifier I, TipoSimples TS, Corpo C) {
         this.I = I;

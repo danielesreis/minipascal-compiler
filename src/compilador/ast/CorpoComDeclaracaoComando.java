@@ -1,7 +1,7 @@
 package compilador.ast;
 public class CorpoComDeclaracaoComando extends Corpo{
-    Declaracao D;
-    Comando C;
+    public Declaracao D;
+    public Comando C;
     
     public CorpoComDeclaracaoComando(Declaracao D, Comando C) {
         this.D = D;

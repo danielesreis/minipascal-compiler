@@ -20,7 +20,9 @@ public class Compilador {
        Programa p;
        
        Parser parser = new Parser(code.charAt(currentIndex));
+       Printer printer = new Printer();
        //scanner = new Scanner(code.charAt(currentIndex));
        p = parser.parse();
+       printer.print(p);
     }
 }

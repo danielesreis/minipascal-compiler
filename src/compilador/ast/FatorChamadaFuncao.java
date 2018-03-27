@@ -1,7 +1,7 @@
 package compilador.ast;
 public class FatorChamadaFuncao extends Fator{
-    Identifier I;
-    Expressao E;
+    public Identifier I;
+    public Expressao E;
     
     public FatorChamadaFuncao(Identifier I, Expressao E) {
         this.I = I;

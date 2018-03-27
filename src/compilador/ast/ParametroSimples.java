@@ -1,7 +1,7 @@
 package compilador.ast;
 public class ParametroSimples extends Parametro{
-    Identifier I;
-    TipoSimples TS;
+    public Identifier I;
+    public TipoSimples TS;
     
     public ParametroSimples(Identifier I, TipoSimples TS) {
         this.I = I;

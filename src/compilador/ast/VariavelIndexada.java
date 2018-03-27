@@ -1,7 +1,7 @@
 package compilador.ast;
 public class VariavelIndexada extends Variavel{
-    Identifier I;
-    Expressao E;
+    public Identifier I;
+    public Expressao E;
     
     public VariavelIndexada(Identifier I, Expressao E) {
         this.I = I;

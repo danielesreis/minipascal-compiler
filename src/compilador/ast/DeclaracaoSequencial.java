@@ -1,6 +1,6 @@
 package compilador.ast;
 public class DeclaracaoSequencial extends Declaracao{
-    Declaracao D1, D2;
+    public Declaracao D1, D2;
     
     public DeclaracaoSequencial(Declaracao D1, Declaracao D2) {
         this.D1 = D1;

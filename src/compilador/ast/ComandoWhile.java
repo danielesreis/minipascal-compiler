@@ -1,7 +1,7 @@
 package compilador.ast;
 public class ComandoWhile extends Comando{
-    Expressao E;
-    Comando C;
+    public Expressao E;
+    public Comando C;
     
     public ComandoWhile(Expressao E, Comando C) {
         this.E = E;

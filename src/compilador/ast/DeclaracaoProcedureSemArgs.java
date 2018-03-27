@@ -1,7 +1,7 @@
 package compilador.ast;
 public class DeclaracaoProcedureSemArgs extends Declaracao{
-    Identifier I;
-    Corpo C;
+    public Identifier I;
+    public Corpo C;
     
     public DeclaracaoProcedureSemArgs(Identifier I, Corpo C){
         this.I = I;

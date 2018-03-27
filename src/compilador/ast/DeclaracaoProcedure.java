@@ -1,8 +1,8 @@
 package compilador.ast;
 public class DeclaracaoProcedure extends Declaracao{
-    Identifier I;
-    Parametro P;
-    Corpo C;
+    public Identifier I;
+    public Parametro P;
+    public Corpo C;
     
     public DeclaracaoProcedure(Identifier I, Parametro P, Corpo C){
         this.I = I;

@@ -1,7 +1,7 @@
 package compilador.ast;
 public class TipoAgregado extends Tipo{
-    Literal L1, L2;
-    Tipo T;
+    public Literal L1, L2;
+    public Tipo T;
     
     public TipoAgregado(Literal L1, Literal L2, Tipo T) {
         this.L1 = L1;
