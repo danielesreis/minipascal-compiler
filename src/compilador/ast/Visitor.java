@@ -25,6 +25,7 @@ public interface Visitor {
     public void visitFatorAdSequencial(FatorAdSequencial f);
     public void visitFatorChamadaFuncao(FatorChamadaFuncao f);
     public void visitFatorChamadaFuncaoSemArgs(FatorChamadaFuncaoSemArgs f);
+    public void visitFatorId(FatorId f);
     public void visitFatorMulSequencial(FatorMulSequencial f);
     public void visitIdentifier(Identifier i);
     public void visitIdentifierSequencial(IdentifierSequencial i);

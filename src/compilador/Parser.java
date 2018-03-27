@@ -315,6 +315,7 @@ public class Parser {
             esAST2 = parseExpressaoSimples();
             eAST = new ExpressaoBinaria(esAST1, esAST2, orAST);
         }
+        
         return eAST;
    }
 
@@ -374,7 +375,7 @@ public class Parser {
                     fAST = vAST;
                 }
                                 
-                if(currentToken.kind == Token.LPAREN){
+                else if(currentToken.kind == Token.LPAREN){
                   acceptIt();
 
                     if(currentToken.kind == Token.RPAREN) {
@@ -398,6 +399,8 @@ public class Parser {
                         Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Chamada de procedimento mal formulada! Símbolo encontrado: '" + Token.spellings[currentToken.kind-1] + "'");
                     }                    
                 }
+                
+                else fAST = new FatorId(iAST);
                 break;
             
             /*case Token.BOOL_LIT:

@@ -414,6 +414,7 @@ public class Printer implements Visitor{
         {
             if (e.F != null)
             {
+                if (e.F instanceof FatorId) ((FatorId)e.F).visit(this);
                 if (e.F instanceof FatorAdSequencial) ((FatorAdSequencial)e.F).visit(this);
                 if (e.F instanceof FatorChamadaFuncao) ((FatorChamadaFuncao)e.F).visit(this);
                 if (e.F instanceof FatorChamadaFuncaoSemArgs) ((FatorChamadaFuncaoSemArgs)e.F).visit(this);
@@ -430,6 +431,7 @@ public class Printer implements Visitor{
             if (f.OA != null) System.out.println(f.OA.spelling1);
             if (f.F1 != null)
             {
+                if (f.F1 instanceof FatorId) ((FatorId)f.F1).visit(this);
                 if (f.F1 instanceof FatorAdSequencial) ((FatorAdSequencial)f.F1).visit(this);
                 if (f.F1 instanceof FatorChamadaFuncao) ((FatorChamadaFuncao)f.F1).visit(this);
                 if (f.F1 instanceof FatorChamadaFuncaoSemArgs) ((FatorChamadaFuncaoSemArgs)f.F1).visit(this);
@@ -438,6 +440,7 @@ public class Printer implements Visitor{
             }
             if (f.F2 != null)
             {
+                if (f.F2 instanceof FatorId) ((FatorId)f.F2).visit(this);
                 if (f.F2 instanceof FatorAdSequencial) ((FatorAdSequencial)f.F2).visit(this);
                 if (f.F2 instanceof FatorChamadaFuncao) ((FatorChamadaFuncao)f.F2).visit(this);
                 if (f.F2 instanceof FatorChamadaFuncaoSemArgs) ((FatorChamadaFuncaoSemArgs)f.F2).visit(this);
@@ -469,6 +472,14 @@ public class Printer implements Visitor{
         }
     }
     
+    public void visitFatorId(FatorId f)
+    {
+        if (f != null)
+        {
+            if (f.I != null) System.out.println(f.I.spelling1);
+        }
+    }
+    
     public void visitFatorMulSequencial(FatorMulSequencial f)
     {
         if (f != null)
@@ -476,6 +487,7 @@ public class Printer implements Visitor{
             if (f.OM != null) System.out.println(f.OM.spelling1);
             if (f.F1 != null)
             {
+                if (f.F1 instanceof FatorId) ((FatorId)f.F1).visit(this);
                 if (f.F1 instanceof FatorAdSequencial) ((FatorAdSequencial)f.F1).visit(this);
                 if (f.F1 instanceof FatorChamadaFuncao) ((FatorChamadaFuncao)f.F1).visit(this);
                 if (f.F1 instanceof FatorChamadaFuncaoSemArgs) ((FatorChamadaFuncaoSemArgs)f.F1).visit(this);
@@ -484,6 +496,7 @@ public class Printer implements Visitor{
             }
             if (f.F2 != null)
             {
+                if (f.F2 instanceof FatorId) ((FatorId)f.F2).visit(this);
                 if (f.F2 instanceof FatorAdSequencial) ((FatorAdSequencial)f.F2).visit(this);
                 if (f.F2 instanceof FatorChamadaFuncao) ((FatorChamadaFuncao)f.F2).visit(this);
                 if (f.F2 instanceof FatorChamadaFuncaoSemArgs) ((FatorChamadaFuncaoSemArgs)f.F2).visit(this);
