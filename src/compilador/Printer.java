@@ -2,10 +2,18 @@ package compilador;
 import compilador.ast.*;
 
 public class Printer implements Visitor{
+    int pipe = 0;
+    
+    public void indent()
+    {
+        int i;
+        for (i = 0; i < pipe; i++)
+            Compilador.compilerFrame.setAstText(" | ", false);  
+    }
     
     public void print (Programa p)
     {
-        System.out.println("Iniciando impressao da arvore");
+        Compilador.compilerFrame.setAstText("Iniciando impressao da arvore", true);
         p.visit(this);
     }
     
@@ -13,7 +21,7 @@ public class Printer implements Visitor{
     {
         if (p != null)
         {
-            if (p.I != null) System.out.println(p.I.spelling1);
+            if (p.I != null) Compilador.compilerFrame.setAstText(p.I.spelling1, true);
             if (p.C != null) 
             {
                 if (p.C instanceof CorpoComDeclaracaoComando) ((CorpoComDeclaracaoComando)p.C).visit(this);
@@ -25,9 +33,13 @@ public class Printer implements Visitor{
     
     public void visitComandoAtribuicao(ComandoAtribuicao c)
     {
+        indent();
         if (c != null)
         {
-            if (c.I != null) System.out.println(c.I.spelling1);
+            if (c.I != null)
+            {
+                Compilador.compilerFrame.setAstText(c.I.spelling1, true);
+            }
             if (c.E != null) 
             {
                 if (c.E instanceof ExpressaoBinaria) ((ExpressaoBinaria)c.E).visit(this);
@@ -39,9 +51,13 @@ public class Printer implements Visitor{
     
     public void visitComandoAtribuicaoIndexada(ComandoAtribuicaoIndexada c)
     {
+        indent();
         if (c != null)
         {
-            if (c.I != null) System.out.println(c.I.spelling1);
+            if (c.I != null)
+            {
+                Compilador.compilerFrame.setAstText(c.I.spelling1, true);
+            }
             if (c.E1 != null) 
             {
                 if (c.E1 instanceof ExpressaoBinaria) ((ExpressaoBinaria)c.E1).visit(this);
@@ -59,9 +75,13 @@ public class Printer implements Visitor{
     
     public void visitComandoChamadaProcedimento(ComandoChamadaProcedimento c)
     {
+        indent();
         if (c != null)
         {
-            if (c.I != null) System.out.println(c.I.spelling1);
+            if (c.I != null)
+            {
+                Compilador.compilerFrame.setAstText(c.I.spelling1, true);
+            }
             if (c.E != null)
             {
                 if (c.E instanceof ExpressaoBinaria) ((ExpressaoBinaria)c.E).visit(this);
@@ -73,14 +93,16 @@ public class Printer implements Visitor{
     
     public void visitComandoChamadaProcedimentoSemArgs(ComandoChamadaProcedimentoSemArgs c)
     {
+        indent();
         if (c != null)
         {
-            if (c.I != null) System.out.println(c.I.spelling1);
+            if (c.I != null) Compilador.compilerFrame.setAstText(c.I.spelling1, true);
         }
     }
     
     public void visitComandoComposto(ComandoComposto c)
     {
+        indent();
         if (c != null)
         {
             if (c.CS != null) c.CS.visit(this);
@@ -89,6 +111,7 @@ public class Printer implements Visitor{
     
     public void visitComandoIf(ComandoIf c)
     {
+        indent();
         if (c != null)
         {
             if (c.E != null)
@@ -114,6 +137,7 @@ public class Printer implements Visitor{
     
     public void visitComandoIfElse(ComandoIfElse c)
     {
+        indent();
         if (c != null)
         {
             if (c.E != null)
@@ -151,6 +175,7 @@ public class Printer implements Visitor{
     
     public void visitComandoSequencial(ComandoSequencial c)
     {
+        indent();
         if (c != null)
         {
             if (c.C1 != null) 
@@ -182,6 +207,7 @@ public class Printer implements Visitor{
     
     public void visitComandoWhile(ComandoWhile c)
     {
+        indent();
         if (c != null)
         {
             if (c.E != null)
@@ -211,6 +237,7 @@ public class Printer implements Visitor{
         {
             if (c.D != null)
             {
+                pipe++;
                 if (c.D instanceof DeclaracaoFuncao) ((DeclaracaoFuncao)c.D).visit(this);
                 if (c.D instanceof DeclaracaoFuncaoSemArgs) ((DeclaracaoFuncaoSemArgs)c.D).visit(this);
                 if (c.D instanceof DeclaracaoProcedure) ((DeclaracaoProcedure)c.D).visit(this);
@@ -239,6 +266,7 @@ public class Printer implements Visitor{
         {
             if (c.D != null)
             {
+                pipe++;
                 if (c.D instanceof DeclaracaoFuncao) ((DeclaracaoFuncao)c.D).visit(this);
                 if (c.D instanceof DeclaracaoFuncaoSemArgs) ((DeclaracaoFuncaoSemArgs)c.D).visit(this);
                 if (c.D instanceof DeclaracaoProcedure) ((DeclaracaoProcedure)c.D).visit(this);
@@ -255,6 +283,7 @@ public class Printer implements Visitor{
         {
             if (c.C != null)
             {
+                pipe++;
                 if (c.C instanceof ComandoAtribuicao) ((ComandoAtribuicao)c.C).visit(this);
                 if (c.C instanceof ComandoAtribuicaoIndexada) ((ComandoAtribuicaoIndexada)c.C).visit(this);
                 if (c.C instanceof ComandoChamadaProcedimento) ((ComandoChamadaProcedimento)c.C).visit(this);
@@ -270,10 +299,17 @@ public class Printer implements Visitor{
     
     public void visitDeclaracaoFuncao(DeclaracaoFuncao d)
     {
+        indent();
         if (d != null)
         {
-            if (d.TS != null) d.TS.visit(this);
-            if (d.I != null) System.out.println(d.I.spelling1);
+            if (d.TS != null)
+            {
+                d.TS.visit(this);
+            }
+            if (d.I != null)
+            {
+                Compilador.compilerFrame.setAstText(d.I.spelling1, true);
+            }
             if (d.P != null)
             {
                 if (d.P instanceof ParametroSequencial) ((ParametroSequencial) d.P).visit(this);
@@ -290,10 +326,17 @@ public class Printer implements Visitor{
     
     public void visitDeclaracaoFuncaoSemArgs(DeclaracaoFuncaoSemArgs d)
     {
+        indent();
         if (d != null)
         {
-            if (d.TS != null) d.TS.visit(this);
-            if (d.I != null) System.out.println(d.I.spelling1);
+            if (d.TS != null)
+            {
+                d.TS.visit(this);
+            }
+            if (d.I != null)
+            {
+                Compilador.compilerFrame.setAstText(d.I.spelling1, true);
+            }
             if (d.C != null) 
             {
                 if (d.C instanceof CorpoComDeclaracaoComando) ((CorpoComDeclaracaoComando)d.C).visit(this);
@@ -305,9 +348,13 @@ public class Printer implements Visitor{
     
     public void visitDeclaracaoProcedure(DeclaracaoProcedure d)
     {
+        indent();
         if (d != null)
         {
-            if (d.I != null) System.out.println(d.I.spelling1);
+            if (d.I != null)
+            {
+                Compilador.compilerFrame.setAstText(d.I.spelling1, true);
+            }
             if (d.P != null)
             {
                 if (d.P instanceof ParametroSequencial) ((ParametroSequencial) d.P).visit(this);
@@ -324,9 +371,13 @@ public class Printer implements Visitor{
     
     public void visitDeclaracaoProcedureSemArgs(DeclaracaoProcedureSemArgs d)
     {
+        indent();
         if (d != null)
         {
-            if (d.I != null) System.out.println(d.I.spelling1);
+            if (d.I != null)
+            {
+                Compilador.compilerFrame.setAstText(d.I.spelling1, true);
+            }
             if (d.C != null) 
             {
                 if (d.C instanceof CorpoComDeclaracaoComando) ((CorpoComDeclaracaoComando)d.C).visit(this);
@@ -341,7 +392,7 @@ public class Printer implements Visitor{
         if (d != null)
         {
             if (d.D1 != null)
-            {
+            {                
                 if (d.D1 instanceof DeclaracaoFuncao) ((DeclaracaoFuncao)d.D1).visit(this);
                 if (d.D1 instanceof DeclaracaoFuncaoSemArgs) ((DeclaracaoFuncaoSemArgs)d.D1).visit(this);
                 if (d.D1 instanceof DeclaracaoProcedure) ((DeclaracaoProcedure)d.D1).visit(this);
@@ -363,12 +414,14 @@ public class Printer implements Visitor{
     
     public void visitDeclaracaoVariavel(DeclaracaoVariavel d)
     {
+        indent();
         if (d != null)
         {
             if (d.I != null)
             {
-                System.out.println(d.I.spelling1);
-                if (d.I instanceof IdentifierSequencial) System.out.println(d.I.spelling2);
+                System.out.println(pipe);
+                Compilador.compilerFrame.setAstText(d.I.spelling1, false);
+                if (d.I instanceof IdentifierSequencial) Compilador.compilerFrame.setAstText(d.I.spelling2, true);
             }
             if (d.T != null) 
             {
@@ -382,9 +435,18 @@ public class Printer implements Visitor{
     {
         if (e != null)
         {
-            if (e.OR != null) System.out.println(e.OR.spelling1);
-            if (e.ES1 != null) e.ES1.visit(this);
-            if (e.ES2 != null) e.ES2.visit(this); 
+            if (e.OR != null)
+            {
+                Compilador.compilerFrame.setAstText(e.OR.spelling1, true);
+            }
+            if (e.ES1 != null)
+            {
+                e.ES1.visit(this);
+            }
+            if (e.ES2 != null)
+            {
+                e.ES2.visit(this); 
+            }
         }
     }
     
@@ -420,6 +482,7 @@ public class Printer implements Visitor{
                 if (e.F instanceof FatorChamadaFuncaoSemArgs) ((FatorChamadaFuncaoSemArgs)e.F).visit(this);
                 if (e.F instanceof FatorMulSequencial) ((FatorMulSequencial)e.F).visit(this);
                 if (e.F instanceof Literal) ((Literal)e.F).visit(this);
+                if (e.F instanceof FatorExpressao) ((FatorExpressao)e.F).visit(this);
             }
         }
     }
@@ -428,7 +491,10 @@ public class Printer implements Visitor{
     {
         if (f != null)
         {
-            if (f.OA != null) System.out.println(f.OA.spelling1);
+            if (f.OA != null)
+            {
+                Compilador.compilerFrame.setAstText(f.OA.spelling1, true);
+            }
             if (f.F1 != null)
             {
                 if (f.F1 instanceof FatorId) ((FatorId)f.F1).visit(this);
@@ -437,6 +503,7 @@ public class Printer implements Visitor{
                 if (f.F1 instanceof FatorChamadaFuncaoSemArgs) ((FatorChamadaFuncaoSemArgs)f.F1).visit(this);
                 if (f.F1 instanceof FatorMulSequencial) ((FatorMulSequencial)f.F1).visit(this);
                 if (f.F1 instanceof Literal) ((Literal)f.F1).visit(this);
+                if (f.F1 instanceof FatorExpressao) ((FatorExpressao)f.F1).visit(this);
             }
             if (f.F2 != null)
             {
@@ -446,6 +513,7 @@ public class Printer implements Visitor{
                 if (f.F2 instanceof FatorChamadaFuncaoSemArgs) ((FatorChamadaFuncaoSemArgs)f.F2).visit(this);
                 if (f.F2 instanceof FatorMulSequencial) ((FatorMulSequencial)f.F2).visit(this);
                 if (f.F2 instanceof Literal) ((Literal)f.F2).visit(this);
+                if (f.F2 instanceof FatorExpressao) ((FatorExpressao)f.F2).visit(this);
             }
         }
     }
@@ -454,7 +522,10 @@ public class Printer implements Visitor{
     {
         if (f != null)
         {
-            if (f.I != null) System.out.println(f.I.spelling1);
+            if (f.I != null) 
+            {
+                Compilador.compilerFrame.setAstText(f.I.spelling1, true);
+            }
             if (f.E != null)
             {
                 if (f.E instanceof ExpressaoBinaria) ((ExpressaoBinaria)f.E).visit(this);
@@ -468,7 +539,7 @@ public class Printer implements Visitor{
     {
         if (f != null)
         {
-            if (f.I != null) System.out.println(f.I.spelling1);
+            if (f.I != null) Compilador.compilerFrame.setAstText(f.I.spelling1, true);
         }
     }
     
@@ -476,7 +547,7 @@ public class Printer implements Visitor{
     {
         if (f != null)
         {
-            if (f.I != null) System.out.println(f.I.spelling1);
+            if (f.I != null) Compilador.compilerFrame.setAstText(f.I.spelling1, true);
         }
     }
     
@@ -484,7 +555,10 @@ public class Printer implements Visitor{
     {
         if (f != null)
         {
-            if (f.OM != null) System.out.println(f.OM.spelling1);
+            if (f.OM != null)
+            {
+                Compilador.compilerFrame.setAstText(f.OM.spelling1, true);  
+            }
             if (f.F1 != null)
             {
                 if (f.F1 instanceof FatorId) ((FatorId)f.F1).visit(this);
@@ -493,6 +567,8 @@ public class Printer implements Visitor{
                 if (f.F1 instanceof FatorChamadaFuncaoSemArgs) ((FatorChamadaFuncaoSemArgs)f.F1).visit(this);
                 if (f.F1 instanceof FatorMulSequencial) ((FatorMulSequencial)f.F1).visit(this);
                 if (f.F1 instanceof Literal) ((Literal)f.F1).visit(this);
+                if (f.F1 instanceof FatorExpressao) ((FatorExpressao)f.F1).visit(this);
+            
             }
             if (f.F2 != null)
             {
@@ -502,42 +578,56 @@ public class Printer implements Visitor{
                 if (f.F2 instanceof FatorChamadaFuncaoSemArgs) ((FatorChamadaFuncaoSemArgs)f.F2).visit(this);
                 if (f.F2 instanceof FatorMulSequencial) ((FatorMulSequencial)f.F2).visit(this);
                 if (f.F2 instanceof Literal) ((Literal)f.F2).visit(this);
+                if (f.F2 instanceof FatorExpressao) ((FatorExpressao)f.F2).visit(this);
+            }
+        }
+    }
+    
+    public void visitFatorExpressao(FatorExpressao f)
+    {
+        if (f != null)
+        {
+            if (f.E != null)
+            {
+                if (f.E instanceof ExpressaoBinaria) ((ExpressaoBinaria)f.E).visit(this);
+                if (f.E instanceof ExpressaoSequencial) ((ExpressaoSequencial)f.E).visit(this);
+                if (f.E instanceof ExpressaoSimples) ((ExpressaoSimples)f.E).visit(this);
             }
         }
     }
     
     public void visitIdentifier(Identifier i)
     {
-        System.out.println("teste visit identifier");
+        Compilador.compilerFrame.setAstText("teste visit identifier", true);
     }
     
     public void visitIdentifierSequencial(IdentifierSequencial i)
     {
         if (i != null)
         {
-            System.out.println(i.spelling1);
-            System.out.println(i.spelling2);
+            Compilador.compilerFrame.setAstText(i.spelling1, true);
+            Compilador.compilerFrame.setAstText(i.spelling2, true);
         }
     }
     
     public void visitLiteral(Literal l)
     {
-        System.out.println(l.spelling);
+        Compilador.compilerFrame.setAstText(l.spelling, true);
     }
     
     public void visitOpAd(OpAd o)
     {
-        System.out.println("teste visit opad");
+        Compilador.compilerFrame.setAstText("teste visit opad", true);
     }
     
     public void visitOpMul(OpMul o)
     {
-        System.out.println("teste visit opmul");
+        Compilador.compilerFrame.setAstText("teste visit opmul", true);
     }
     
     public void visitOpRel(OpRel o)
     {
-        System.out.println("teste visit oprel");
+        Compilador.compilerFrame.setAstText("teste visit oprel", true);
     }
     
     public void visitParametroSequencial(ParametroSequencial p)
@@ -558,10 +648,13 @@ public class Printer implements Visitor{
         {
             if (p.I != null)
             {
-                System.out.println(p.I.spelling1);
-                if (p.I instanceof IdentifierSequencial) System.out.println(p.I.spelling2);
+                Compilador.compilerFrame.setAstText(p.I.spelling1, true);
+                if (p.I instanceof IdentifierSequencial) Compilador.compilerFrame.setAstText(p.I.spelling2, true);
             }
-            if (p.TS != null) p.TS.visit(this);
+            if (p.TS != null)
+            {
+                p.TS.visit(this);
+            }
         }
     }
     
@@ -579,7 +672,7 @@ public class Printer implements Visitor{
     {
         if (t != null)
         {
-            System.out.println(t.spelling);
+            Compilador.compilerFrame.setAstText(": " + t.spelling, true);
         }
     }
     
@@ -587,7 +680,7 @@ public class Printer implements Visitor{
     {
         if (v != null)
         {
-            if (v.I != null) System.out.println(v.I.spelling1);
+            if (v.I != null) Compilador.compilerFrame.setAstText(": " + v.I.spelling1, true);
         }
     }
     
@@ -595,7 +688,10 @@ public class Printer implements Visitor{
     {
         if (v != null)
         {
-            if (v.I != null) System.out.println(v.I.spelling1);
+            if (v.I != null) 
+            {
+                Compilador.compilerFrame.setAstText(v.I.spelling1, true);
+            }
             if (v.E != null)
             {
                 if (v.E instanceof ExpressaoBinaria) ((ExpressaoBinaria)v.E).visit(this);

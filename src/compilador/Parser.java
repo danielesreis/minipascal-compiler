@@ -104,6 +104,7 @@ public class Parser {
                     case Token.LBRACE:
                         acceptIt();
                         eAST1 = parseExpressao();
+                        accept(Token.RBRACE);
                         
                         while(currentToken.kind == Token.LBRACE) {
                             acceptIt();
@@ -111,6 +112,7 @@ public class Parser {
                             eAST1 = new ExpressaoSequencial(eAST1, eAST2);
                             accept(Token.RBRACE);
                         }
+                        
                         accept(Token.BECOMES);
                         eAST3 = parseExpressao();
                         cAST = new ComandoAtribuicaoIndexada(I, eAST1, eAST3);
@@ -352,6 +354,7 @@ public class Parser {
 
     private Fator parseFator() {
         Fator fAST = null;
+        Expressao eAST = null;
         switch(currentToken.kind) {
            
             case Token.ID:
@@ -422,7 +425,8 @@ public class Parser {
                 
             case Token.LPAREN:
                 acceptIt();
-                fAST = parseExpressao();
+                eAST = parseExpressao();
+                fAST = new FatorExpressao(eAST);
                 accept(Token.RPAREN);
                 break;
                 

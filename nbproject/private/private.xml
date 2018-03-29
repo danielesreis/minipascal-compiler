@@ -5,11 +5,7 @@
         <group>
             <file>file:/C:/Users/danie/Desktop/projetos/compilador/src/compilador/Printer.java</file>
             <file>file:/C:/Users/danie/Desktop/projetos/compilador/src/compilador/Parser.java</file>
-            <file>file:/C:/Users/danie/Desktop/projetos/compilador/src/compilador/ast/Expressao.java</file>
-            <file>file:/C:/Users/danie/Desktop/projetos/compilador/src/compilador/ast/ExpressaoBinaria.java</file>
-            <file>file:/C:/Users/danie/Desktop/projetos/compilador/src/compilador/ast/Visitor.java</file>
             <file>file:/C:/Users/danie/Desktop/projetos/compilador/src/compilador/Compilador.java</file>
-            <file>file:/C:/Users/danie/Desktop/projetos/compilador/src/compilador/ast/OpRel.java</file>
             <file>file:/C:/Users/danie/Desktop/projetos/compilador/src/compilador/ast/Programa.java</file>
         </group>
     </open-files>

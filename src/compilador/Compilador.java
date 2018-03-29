@@ -3,11 +3,10 @@ package compilador;
 import compilador.ast.*;
 
 public class Compilador {
-    //public static Scanner scanner;
     public static String code;
+    public static String ast;
     public static int currentIndex;
     public static CompilerFrame compilerFrame;
-    //public static BufferedReader code;
 
     public static void main(String[] args) {
        CompilerFrame cf = new CompilerFrame();
@@ -18,10 +17,8 @@ public class Compilador {
     public static void startCompilation() {
        currentIndex = 0;
        Programa p;
-       
        Parser parser = new Parser(code.charAt(currentIndex));
        Printer printer = new Printer();
-       //scanner = new Scanner(code.charAt(currentIndex));
        p = parser.parse();
        printer.print(p);
     }
