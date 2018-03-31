@@ -1,7 +1,9 @@
 package compilador;
 
 public class Scanner {
-	public char currentChar;
+	private char currentChar;
+        public int currentColumn;
+        public int currentLine = 1;
 	private StringBuffer currentSpelling;
         private boolean eotFlag;
         
@@ -9,9 +11,19 @@ public class Scanner {
             this.currentChar = currentChar;
             this.eotFlag = false;
             currentSpelling = new StringBuffer("");
+            currentColumn = 1;
         }
         
 	private void take(char expectedChar) {
+            
+            if (expectedChar == '\n')
+            {
+                currentLine++;
+                currentColumn = 1;
+            }
+                
+            else currentColumn++;
+            
             if (currentChar == expectedChar) {
                 currentSpelling.append(currentChar);
                 Compilador.currentIndex = Compilador.currentIndex + 1;
@@ -28,8 +40,16 @@ public class Scanner {
 	}
         
 	private void takeIt() {
-            currentSpelling.append(currentChar);
             
+            if (currentChar == '\n')
+            {
+                currentLine++;
+                currentColumn = 1;
+            }
+                
+            else currentColumn++;
+            
+            currentSpelling.append(currentChar);
             Compilador.currentIndex = Compilador.currentIndex + 1;
             
             if (Compilador.currentIndex != Compilador.code.length()) 
