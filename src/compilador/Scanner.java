@@ -1,7 +1,7 @@
 package compilador;
 
 public class Scanner {
-	private char currentChar;
+	public char currentChar;
 	private StringBuffer currentSpelling;
         private boolean eotFlag;
         
@@ -46,7 +46,6 @@ public class Scanner {
             
             currentSpelling = new StringBuffer("");            
             kind = scanToken();
-            //System.out.println(kind);
             return new Token(kind, currentSpelling.toString());
         }
         
@@ -68,7 +67,6 @@ public class Scanner {
         
 	private byte scanToken() {
             StringBuffer palavra = new StringBuffer("");
-            
 		switch(currentChar) {
                         case ':': 
                                 takeIt();

@@ -14,7 +14,9 @@ public class Parser {
         //System.out.println(currentToken.spelling);
         if(expectedTokenKind != Token.EOT) {
             if(expectedTokenKind != currentToken.kind) 
+            {
                 Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: '" + Token.spellings[expectedTokenKind-1] + "' esperado mas '" + Token.spellings[currentToken.kind-1] + "' encontrado");
+            }
             else currentToken = scanner.scan();
         }
     }

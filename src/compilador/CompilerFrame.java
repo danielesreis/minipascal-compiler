@@ -4,8 +4,18 @@
  * and open the template in the editor.
  */
 package compilador;
-
+import javax.swing.JFileChooser;
+import java.io.File;
 import static compilador.Compilador.code;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class CompilerFrame extends javax.swing.JFrame {
 
@@ -28,13 +38,14 @@ public class CompilerFrame extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         outputText = new javax.swing.JTextArea();
-        jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
+        compileButton = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         inputText1 = new javax.swing.JTextArea();
         jScrollPane4 = new javax.swing.JScrollPane();
         astText = new javax.swing.JTextArea();
+        saveFileButton = new javax.swing.JButton();
+        openFileButton = new javax.swing.JButton();
+        filePath = new javax.swing.JTextField();
 
         inputText.setColumns(20);
         inputText.setRows(5);
@@ -49,18 +60,12 @@ public class CompilerFrame extends javax.swing.JFrame {
         outputText.setRows(5);
         jScrollPane1.setViewportView(outputText);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1.setText("SAÍDA");
-
-        jButton1.setText("COMPILAR");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        compileButton.setText("Compilar");
+        compileButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                compileButtonActionPerformed(evt);
             }
         });
-
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel3.setText("CÓDIGO FONTE");
 
         inputText1.setColumns(20);
         inputText1.setRows(5);
@@ -71,31 +76,47 @@ public class CompilerFrame extends javax.swing.JFrame {
         astText.setRows(5);
         jScrollPane4.setViewportView(astText);
 
+        saveFileButton.setText("Salvar");
+        saveFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveFileButtonActionPerformed(evt);
+            }
+        });
+
+        openFileButton.setText("Abrir arquivo");
+        openFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openFileButtonActionPerformed(evt);
+            }
+        });
+
+        filePath.setEditable(false);
+        filePath.setBackground(new java.awt.Color(255, 255, 255));
+        filePath.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                filePathActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(20, 20, 20)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(compileButton)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 701, Short.MAX_VALUE)
+                    .addComponent(filePath))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jButton1))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(600, 874, Short.MAX_VALUE)))
-                        .addContainerGap())
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 701, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel1))
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane4)
-                        .addGap(21, 21, 21))))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(openFileButton)
+                        .addGap(34, 34, 34)
+                        .addComponent(saveFileButton)))
+                .addGap(21, 21, 21))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(20, 20, 20)
@@ -105,17 +126,20 @@ public class CompilerFrame extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addGap(20, 20, 20)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addGap(21, 83, Short.MAX_VALUE)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 488, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(compileButton)
+                            .addComponent(openFileButton)
+                            .addComponent(saveFileButton))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 488, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(filePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(25, 25, 25))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
@@ -137,7 +161,7 @@ public class CompilerFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     public void setOutputText(String text) {
         if(outputText.getText().isEmpty())
            outputText.setText(text);
@@ -150,12 +174,12 @@ public class CompilerFrame extends javax.swing.JFrame {
             astText.setText(text + "\n");
         
         else {
-            text = jmp ? text + "\n": text;
+            text = jmp ? text + "\n" : text;
             astText.setText(astText.getText() + text);
         }
     }
     
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void compileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compileButtonActionPerformed
         // TODO add your handling code here:
         outputText.setText("");
         astText.setText("");
@@ -164,8 +188,78 @@ public class CompilerFrame extends javax.swing.JFrame {
         Compilador.startCompilation();
         if (outputText.getText().isEmpty()) 
             outputText.setText("Compilado com sucesso!");
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_compileButtonActionPerformed
 
+    private void saveFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveFileButtonActionPerformed
+        int i;
+        FileWriter output = null;
+        try{
+            output = new FileWriter(filePath.getText());
+            BufferedWriter writer = new BufferedWriter(output);
+            
+            String aux[] = inputText1.getText().split("\n");
+            
+            for (i = 0; i < aux.length; i++)
+            {
+                writer.append(aux[i].trim());
+                writer.newLine();
+            }
+            
+            writer.close();
+        } catch (Exception e) {
+             throw new RuntimeException(e);
+        } finally {
+            if (output != null) {
+                try {
+                    output.flush();
+                    output.close();
+                } catch (IOException e) {
+
+                }
+            }
+        }
+    }//GEN-LAST:event_saveFileButtonActionPerformed
+
+    private void openFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openFileButtonActionPerformed
+        // TODO add your handling code here:
+        JFileChooser jFileChooser = new JFileChooser();
+        jFileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        String code="";
+        int result = jFileChooser.showOpenDialog(this);
+        
+        if (result == JFileChooser.APPROVE_OPTION)
+        {
+            File selectedFile = jFileChooser.getSelectedFile();
+            try {
+                filePath.setText(selectedFile.getPath());
+                code = readFile(selectedFile.getPath());
+            } catch (IOException ex) {
+                Logger.getLogger(CompilerFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        inputText1.setText(code.trim());
+    }//GEN-LAST:event_openFileButtonActionPerformed
+
+    private void filePathActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filePathActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_filePathActionPerformed
+    
+    private String readFile(String file) throws IOException {
+    BufferedReader reader = new BufferedReader(new FileReader (file));
+    String         line = null;
+    StringBuilder  stringBuilder = new StringBuilder();
+
+    try {
+        while((line = reader.readLine()) != null) {
+            stringBuilder.append(line.trim());
+            stringBuilder.append("\n");
+        }
+
+        return stringBuilder.toString();
+    } finally {
+        reader.close();
+    }
+}
     /**
      * @param args the command line arguments
      */
@@ -203,16 +297,17 @@ public class CompilerFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea astText;
+    private javax.swing.JButton compileButton;
+    private javax.swing.JTextField filePath;
     private javax.swing.JTextArea inputText;
     private javax.swing.JTextArea inputText1;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JButton openFileButton;
     private javax.swing.JTextArea outputText;
+    private javax.swing.JButton saveFileButton;
     // End of variables declaration//GEN-END:variables
 }

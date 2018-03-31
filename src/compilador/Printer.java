@@ -419,7 +419,7 @@ public class Printer implements Visitor{
         {
             if (d.I != null)
             {
-                System.out.println(pipe);
+                //System.out.println(pipe);
                 Compilador.compilerFrame.setAstText(d.I.spelling1, false);
                 if (d.I instanceof IdentifierSequencial) Compilador.compilerFrame.setAstText(d.I.spelling2, true);
             }
