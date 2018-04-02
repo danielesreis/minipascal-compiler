@@ -11,7 +11,6 @@ public class Parser {
     }
     
     private void accept (byte expectedTokenKind) {
-        //System.out.println(currentToken.spelling);
         if(expectedTokenKind != Token.EOT) {
             if(expectedTokenKind != currentToken.kind) 
             {

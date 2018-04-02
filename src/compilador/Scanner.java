@@ -19,7 +19,7 @@ public class Scanner {
             if (expectedChar == '\n')
             {
                 currentLine++;
-                currentColumn = 1;
+                currentColumn = 0;
             }
                 
             else currentColumn++;
@@ -28,11 +28,9 @@ public class Scanner {
                 currentSpelling.append(currentChar);
                 Compilador.currentIndex = Compilador.currentIndex + 1;
                 
-                if (Compilador.currentIndex != Compilador.code.length()) 
+                if (Compilador.currentIndex < Compilador.code.length()) 
                     currentChar = Compilador.code.charAt(Compilador.currentIndex);
-                
                 else this.eotFlag = true;
-                System.out.println(eotFlag);
             }
             else {
                 Compilador.compilerFrame.setOutputText("Caractere inválido!");
@@ -44,7 +42,7 @@ public class Scanner {
             if (currentChar == '\n')
             {
                 currentLine++;
-                currentColumn = 1;
+                currentColumn = 0;
             }
                 
             else currentColumn++;
@@ -52,9 +50,10 @@ public class Scanner {
             currentSpelling.append(currentChar);
             Compilador.currentIndex = Compilador.currentIndex + 1;
             
-            if (Compilador.currentIndex != Compilador.code.length()) 
-                    currentChar = Compilador.code.charAt(Compilador.currentIndex);
-            
+            if (Compilador.currentIndex < Compilador.code.length()) 
+            {
+                currentChar = Compilador.code.charAt(Compilador.currentIndex);
+            }
             else this.eotFlag = true;
 	}
         
@@ -138,7 +137,7 @@ public class Scanner {
                         case 'B': case 'C': case 'D': case 'E': case 'F': case 'G': case 'H': case 'I': case 'J': 
                         case 'K': case 'L': case 'M': case 'N': case 'O': case 'P': case 'Q': case 'R': case 'S': 
                         case 'T': case 'U': case 'V': case 'W': case 'X': case 'Y': case 'Z':                       
-                            while (isLetter(currentChar) || isDigit(currentChar)) {
+                            while ((isLetter(currentChar) || isDigit(currentChar)) && !eotFlag) {
                                 palavra.append(currentChar);
                                 takeIt();
                             }
@@ -152,7 +151,7 @@ public class Scanner {
                             
                         case '0': case '1': case '2': case '3': case '4': 
                         case '5': case '6': case '7': case '8': case '9': 
-                            while (isDigit(currentChar)) takeIt(); 
+                            while (isDigit(currentChar) && !eotFlag) takeIt(); 
                             
                             if (currentChar == '.') {
                                 if(Compilador.code.charAt(Compilador.currentIndex + 1) == '.') {
@@ -161,7 +160,7 @@ public class Scanner {
                                 }
                                 
                                 takeIt();
-                                while (isDigit(currentChar)) takeIt();
+                                while (isDigit(currentChar) && !eotFlag) takeIt();
                                 //return Token.FLOAT_LIT;
                                 return Token.LITERAL;
                             }
