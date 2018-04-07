@@ -7,8 +7,8 @@ public class IdentifierSimples extends Identifier{
         this.spelling = spelling;
     }
     
-    public void visit(Visitor v) {
-        v.visitIdentifierSimples(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitIdentifierSimples(this, o);
     }
     
 }

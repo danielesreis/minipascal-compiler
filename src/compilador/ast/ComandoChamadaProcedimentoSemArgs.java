@@ -6,7 +6,7 @@ public class ComandoChamadaProcedimentoSemArgs extends Comando{
         this.I = I;
     }
     
-    public void visit (Visitor v){
-        v.visitComandoChamadaProcedimentoSemArgs(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitComandoChamadaProcedimentoSemArgs(this, o);
     }
 }

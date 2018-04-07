@@ -8,7 +8,8 @@ public class Programa extends AST{
         this.C = C;
     }
     
-    public void visit (Visitor v){
-        v.visitPrograma(this);
+    public Object visit (Visitor v, Object o){
+        v.visitPrograma(this, o);
+        return null;
     }
 }

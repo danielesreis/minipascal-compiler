@@ -12,7 +12,7 @@ public class DeclaracaoFuncao extends Declaracao{
         this.C = C;
     }
     
-    public void visit (Visitor v){
-        v.visitDeclaracaoFuncao(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitDeclaracaoFuncao(this, o);
     }
 }

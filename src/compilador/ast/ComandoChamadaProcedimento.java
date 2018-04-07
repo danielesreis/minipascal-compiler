@@ -8,7 +8,7 @@ public class ComandoChamadaProcedimento extends Comando{
         this.E = E;
     }
     
-    public void visit (Visitor v){
-        v.visitComandoChamadaProcedimento(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitComandoChamadaProcedimento(this, o);
     }
 }

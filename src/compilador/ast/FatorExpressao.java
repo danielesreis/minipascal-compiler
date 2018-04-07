@@ -7,7 +7,7 @@ public class FatorExpressao extends Fator{
         this.E = E;
     }
 
-    public void visit(Visitor v) {
-        v.visitFatorExpressao(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitFatorExpressao(this, o);
     }
 }

@@ -11,13 +11,13 @@ public class Printer implements Visitor{
             Compilador.compilerFrame.setAstText(" | ", false);  
     }
     
-    public void print (Programa p)
+    public Object print (Programa p, Object o)
     {
         Compilador.compilerFrame.setAstText("Iniciando impressao da arvore", true);
-        p.visit(this);
+        p.visit(this, o);
     }
     
-    public void visitPrograma(Programa p)
+    public Object visitPrograma(Programa p, Object o)
     {
         if (p != null)
         {
@@ -31,7 +31,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitComandoAtribuicao(ComandoAtribuicao c)
+    public Object visitComandoAtribuicao(ComandoAtribuicao c, Object o)
     {
         indent();
         if (c != null)
@@ -56,7 +56,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitComandoAtribuicaoIndexada(ComandoAtribuicaoIndexada c)
+    public Object visitComandoAtribuicaoIndexada(ComandoAtribuicaoIndexada c, Object o)
     {
         indent();
         if (c != null)
@@ -92,7 +92,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitComandoBegin(ComandoBegin c)
+    public Object visitComandoBegin(ComandoBegin c, Object o)
     {
         indent();
         Compilador.compilerFrame.setAstText("begin", true);
@@ -112,7 +112,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitComandoChamadaProcedimento(ComandoChamadaProcedimento c)
+    public Object visitComandoChamadaProcedimento(ComandoChamadaProcedimento c, Object o)
     {
         indent();
         if (c != null)
@@ -130,7 +130,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitComandoChamadaProcedimentoSemArgs(ComandoChamadaProcedimentoSemArgs c)
+    public Object visitComandoChamadaProcedimentoSemArgs(ComandoChamadaProcedimentoSemArgs c, Object o)
     {
         indent();
         if (c != null)
@@ -139,7 +139,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitComandoIf(ComandoIf c)
+    public Object visitComandoIf(ComandoIf c, Object o)
     {
         indent();
         Compilador.compilerFrame.setAstText("if", true);
@@ -171,7 +171,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitComandoIfElse(ComandoIfElse c)
+    public Object visitComandoIfElse(ComandoIfElse c, Object o)
     {
         indent();
         Compilador.compilerFrame.setAstText("if", true);
@@ -221,7 +221,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitComandoSequencial(ComandoSequencial c)
+    public Object visitComandoSequencial(ComandoSequencial c, Object o)
     {
         if (c != null)
         {
@@ -252,7 +252,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitComandoWhile(ComandoWhile c)
+    public Object visitComandoWhile(ComandoWhile c, Object o)
     {
         indent();
         Compilador.compilerFrame.setAstText("while", true);
@@ -284,7 +284,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitCorpoComDeclaracaoComando(CorpoComDeclaracaoComando c)
+    public Object visitCorpoComDeclaracaoComando(CorpoComDeclaracaoComando c, Object o)
     {
         if (c != null)
         {
@@ -313,7 +313,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitCorpoSemComando(CorpoSemComando c)
+    public Object visitCorpoSemComando(CorpoSemComando c, Object o)
     {
         if (c != null)
         {
@@ -330,7 +330,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitCorpoSemDeclaracao(CorpoSemDeclaracao c)
+    public Object visitCorpoSemDeclaracao(CorpoSemDeclaracao c, Object o)
     {
         if (c != null)
         {
@@ -350,7 +350,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitDeclaracaoFuncao(DeclaracaoFuncao d)
+    public Object visitDeclaracaoFuncao(DeclaracaoFuncao d, Object o)
     {
         indent();
         if (d != null)
@@ -377,7 +377,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitDeclaracaoFuncaoSemArgs(DeclaracaoFuncaoSemArgs d)
+    public Object visitDeclaracaoFuncaoSemArgs(DeclaracaoFuncaoSemArgs d, Object o)
     {
         indent();
         if (d != null)
@@ -399,7 +399,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitDeclaracaoProcedure(DeclaracaoProcedure d)
+    public Object visitDeclaracaoProcedure(DeclaracaoProcedure d, Object o)
     {
         indent();
         if (d != null)
@@ -422,7 +422,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitDeclaracaoProcedureSemArgs(DeclaracaoProcedureSemArgs d)
+    public Object visitDeclaracaoProcedureSemArgs(DeclaracaoProcedureSemArgs d, Object o)
     {
         indent();
         if (d != null)
@@ -440,7 +440,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitDeclaracaoSequencial(DeclaracaoSequencial d)
+    public Object visitDeclaracaoSequencial(DeclaracaoSequencial d, Object o)
     {
         if (d != null)
         {
@@ -465,7 +465,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitDeclaracaoVariavel(DeclaracaoVariavel d)
+    public Object visitDeclaracaoVariavel(DeclaracaoVariavel d, Object o)
     {
         indent();
         if (d != null)
@@ -479,7 +479,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitExpressaoBinaria(ExpressaoBinaria e)
+    public Object visitExpressaoBinaria(ExpressaoBinaria e, Object o)
     {
         if (e != null)
         {
@@ -504,7 +504,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitExpressaoSequencial(ExpressaoSequencial e)
+    public Object visitExpressaoSequencial(ExpressaoSequencial e, Object o)
     {
         if (e != null)
         {
@@ -524,7 +524,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitExpressaoSimples(ExpressaoSimples e)
+    public Object visitExpressaoSimples(ExpressaoSimples e, Object o)
     {
         if (e != null)
         {
@@ -542,7 +542,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitFatorAdSequencial(FatorAdSequencial f)
+    public Object visitFatorAdSequencial(FatorAdSequencial f, Object o)
     {
         if (f != null)
         {
@@ -583,7 +583,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitFatorChamadaFuncao(FatorChamadaFuncao f)
+    public Object visitFatorChamadaFuncao(FatorChamadaFuncao f, Object o)
     {
         if (f != null)
         {
@@ -600,7 +600,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitFatorChamadaFuncaoSemArgs(FatorChamadaFuncaoSemArgs f)
+    public Object visitFatorChamadaFuncaoSemArgs(FatorChamadaFuncaoSemArgs f, Object o)
     {
         if (f != null)
         {
@@ -608,7 +608,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitFatorId(FatorId f)
+    public Object visitFatorId(FatorId f, Object o)
     {
         if (f != null)
         {
@@ -616,7 +616,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitFatorMulSequencial(FatorMulSequencial f)
+    public Object visitFatorMulSequencial(FatorMulSequencial f, Object o)
     {
         if (f != null)
         {
@@ -656,7 +656,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitFatorExpressao(FatorExpressao f)
+    public Object visitFatorExpressao(FatorExpressao f, Object o)
     {
         if (f != null)
         {
@@ -669,38 +669,38 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitIdentifierSimples(IdentifierSimples i)
+    public Object visitIdentifierSimples(IdentifierSimples i, Object o)
     {
         if (i != null)
             Compilador.compilerFrame.setAstText(i.spelling, true);
     }
     
-    public void visitIdentifierSequencial(IdentifierSequencial i)
+    public Object visitIdentifierSequencial(IdentifierSequencial i, Object o)
     {
         if (i != null) recursivePrint(i);
     }
     
-    public void visitLiteral(Literal l)
+    public Object visitLiteral(Literal l, Object o)
     {
         Compilador.compilerFrame.setAstText(l.spelling, true);
     }
     
-    public void visitOpAd(OpAd o)
+    public Object visitOpAd(OpAd op, Object o)
     {
         Compilador.compilerFrame.setAstText(o.spelling, true);
     }
     
-    public void visitOpMul(OpMul o)
+    public Object visitOpMul(OpMul op, Object o)
     {
         Compilador.compilerFrame.setAstText(o.spelling, true);
     }
     
-    public void visitOpRel(OpRel o)
+    public Object visitOpRel(OpRel op, Object o)
     {
         Compilador.compilerFrame.setAstText(o.spelling, true);
     }
     
-    public void visitParametroSequencial(ParametroSequencial p)
+    public Object visitParametroSequencial(ParametroSequencial p, Object o)
     {
         if (p != null)
         {
@@ -712,7 +712,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitParametroSimples(ParametroSimples p)
+    public Object visitParametroSimples(ParametroSimples p, Object o)
     {
         if (p != null)
         {
@@ -724,7 +724,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitTipoAgregado(TipoAgregado t)
+    public Object visitTipoAgregado(TipoAgregado t, Object o)
     {
         if (t != null)
         {
@@ -734,7 +734,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitTipoSimples(TipoSimples t)
+    public Object visitTipoSimples(TipoSimples t, Object o)
     {
         if (t != null)
         {
@@ -742,7 +742,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitVariavelId(VariavelId v)
+    public Object visitVariavelId(VariavelId v, Object o)
     {
         if (v != null)
         {
@@ -750,7 +750,7 @@ public class Printer implements Visitor{
         }
     }
     
-    public void visitVariavelIndexada(VariavelIndexada v)
+    public Object visitVariavelIndexada(VariavelIndexada v, Object o)
     {
         if (v != null)
         {

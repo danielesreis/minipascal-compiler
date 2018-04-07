@@ -6,7 +6,7 @@ public class FatorId extends Fator{
         this.I = I;
     }
     
-     public void visit (Visitor v){
-        v.visitFatorId(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitFatorId(this, o);
     }
 }

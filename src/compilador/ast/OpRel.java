@@ -5,7 +5,7 @@ public class OpRel extends Operador{
         super(spelling);
     }
     
-    public void visit (Visitor v){
-        v.visitOpRel(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitOpRel(this, o);
     }    
 }

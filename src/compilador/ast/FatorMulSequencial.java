@@ -9,7 +9,7 @@ public class FatorMulSequencial extends Fator{
         this.F2 = F2;
     }
     
-    public void visit (Visitor v){
-        v.visitFatorMulSequencial(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitFatorMulSequencial(this, o);
     }
 }

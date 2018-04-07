@@ -8,7 +8,7 @@ public class ComandoIf extends Comando{
         this.C1 = C1;
     }
     
-    public void visit (Visitor v){
-        v.visitComandoIf(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitComandoIf(this, o);
     }
 }

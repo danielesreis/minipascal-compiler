@@ -8,8 +8,8 @@ public class FatorChamadaFuncao extends Fator{
         this.E = E;
     }
     
-     public void visit (Visitor v){
-        v.visitFatorChamadaFuncao(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitFatorChamadaFuncao(this, o);
     }
 
 }

@@ -16,10 +16,11 @@ public class Compilador {
     
     public static void startCompilation() {
        currentIndex = 0;
+       Object o = null;
        Programa p;
        Parser parser = new Parser(code.charAt(currentIndex));
        Printer printer = new Printer();
        p = parser.parse();
-       printer.print(p);
+       o = printer.print(p, o);
     }
 }

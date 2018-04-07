@@ -6,7 +6,7 @@ public class TipoSimples extends Tipo{
         this.spelling = spelling;
     }
     
-    public void visit (Visitor v){
-        v.visitTipoSimples(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitTipoSimples(this, o);
     }
 }

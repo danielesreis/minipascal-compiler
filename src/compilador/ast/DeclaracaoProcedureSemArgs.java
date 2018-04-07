@@ -8,7 +8,7 @@ public class DeclaracaoProcedureSemArgs extends Declaracao{
         this.C = C;
     } 
     
-    public void visit (Visitor v){
-        v.visitDeclaracaoProcedureSemArgs(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitDeclaracaoProcedureSemArgs(this, o);
     }
 }

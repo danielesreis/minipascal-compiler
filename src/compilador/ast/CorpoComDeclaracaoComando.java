@@ -8,7 +8,8 @@ public class CorpoComDeclaracaoComando extends Corpo{
         this.C = C;
     }
     
-    public void visit (Visitor v){
-        v.visitCorpoComDeclaracaoComando(this);
+    public Object visit (Visitor v, Object o){
+        v.visitCorpoComDeclaracaoComando(this, o);
+        return null;
     }
 }

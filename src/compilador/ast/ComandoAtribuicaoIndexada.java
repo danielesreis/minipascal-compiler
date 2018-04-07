@@ -9,7 +9,7 @@ public class ComandoAtribuicaoIndexada extends Comando{
         this.E2 = E2;
     }
     
-    public void visit (Visitor v){
-        v.visitComandoAtribuicaoIndexada(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitComandoAtribuicaoIndexada(this, o);
     }
 }

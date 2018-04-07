@@ -7,7 +7,7 @@ public class ComandoSequencial extends Comando{
         this.C2 = C2;
     }
     
-    public void visit (Visitor v){
-        v.visitComandoSequencial(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitComandoSequencial(this, o);
     }
 }

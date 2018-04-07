@@ -10,7 +10,7 @@ public class DeclaracaoFuncaoSemArgs extends Declaracao{
         this.C = C;
     }
     
-    public void visit (Visitor v){
-        v.visitDeclaracaoFuncaoSemArgs(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitDeclaracaoFuncaoSemArgs(this, o);
     }
 }

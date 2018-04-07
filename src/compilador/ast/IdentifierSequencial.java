@@ -7,7 +7,7 @@ public class IdentifierSequencial extends Identifier{
         this.I2 = I2;
     }
     
-    public void visit (Visitor v){
-        v.visitIdentifierSequencial(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitIdentifierSequencial(this, o);
     }
 }

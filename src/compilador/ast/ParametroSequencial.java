@@ -7,7 +7,7 @@ public class ParametroSequencial extends Parametro{
         this.P2 = P2;
     }
     
-    public void visit (Visitor v){
-        v.visitParametroSequencial(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitParametroSequencial(this, o);
     }
 }

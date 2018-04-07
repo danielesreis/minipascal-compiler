@@ -6,7 +6,7 @@ public class FatorChamadaFuncaoSemArgs extends Fator{
         this.I = I;
     }
     
-    public void visit (Visitor v){
-        v.visitFatorChamadaFuncaoSemArgs(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitFatorChamadaFuncaoSemArgs(this, o);
     }
 }

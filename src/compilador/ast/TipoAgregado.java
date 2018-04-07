@@ -9,7 +9,7 @@ public class TipoAgregado extends Tipo{
         this.T = T;
     }
     
-    public void visit (Visitor v){
-        v.visitTipoAgregado(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitTipoAgregado(this, o);
     }
 }

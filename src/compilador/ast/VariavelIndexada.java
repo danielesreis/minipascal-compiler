@@ -8,7 +8,7 @@ public class VariavelIndexada extends Variavel{
         this.E = E;
     }
     
-    public void visit (Visitor v){
-        v.visitVariavelIndexada(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitVariavelIndexada(this, o);
     }
 }

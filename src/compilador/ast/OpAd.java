@@ -5,7 +5,7 @@ public class OpAd extends Operador{
         super(spelling);
     }
     
-    public void visit (Visitor v){
-        v.visitOpAd(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitOpAd(this, o);
     }
 }

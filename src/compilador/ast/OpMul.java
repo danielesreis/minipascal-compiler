@@ -5,7 +5,7 @@ public class OpMul extends Operador{
         super(spelling);
     }
     
-    public void visit (Visitor v){
-        v.visitOpMul(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitOpMul(this, o);
     }
 }

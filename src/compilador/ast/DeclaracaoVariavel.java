@@ -8,7 +8,7 @@ public class DeclaracaoVariavel extends Declaracao{
         this.T = T;
     }
     
-    public void visit (Visitor v){
-        v.visitDeclaracaoVariavel(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitDeclaracaoVariavel(this, o);
     }
 }

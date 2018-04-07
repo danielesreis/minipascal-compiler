@@ -6,7 +6,7 @@ public class VariavelId extends Variavel{
         this.I = I;
     }
     
-    public void visit (Visitor v){
-        v.visitVariavelId(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitVariavelId(this, o);
     }
 }

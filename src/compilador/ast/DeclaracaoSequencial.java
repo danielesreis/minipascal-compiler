@@ -7,7 +7,7 @@ public class DeclaracaoSequencial extends Declaracao{
         this.D2 = D2;
     }
     
-    public void visit (Visitor v){
-        v.visitDeclaracaoSequencial(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitDeclaracaoSequencial(this, o);
     }
 }

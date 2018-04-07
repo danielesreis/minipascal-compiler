@@ -6,7 +6,7 @@ public class Literal extends Fator{
         this.spelling = spelling;
     }
     
-    public void visit (Visitor v){
-        v.visitLiteral(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitLiteral(this, o);
     }
 }

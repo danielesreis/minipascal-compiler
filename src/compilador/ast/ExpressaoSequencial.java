@@ -7,7 +7,7 @@ public class ExpressaoSequencial extends Expressao{
         this.E2 = E2;
     }
     
-    public void visit (Visitor v){
-        v.visitExpressaoSequencial(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitExpressaoSequencial(this, o);
     }
 }

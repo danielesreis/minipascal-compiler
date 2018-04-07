@@ -9,7 +9,7 @@ public class ExpressaoBinaria extends Expressao{
         this.OR = OR;
     }
     
-    public void visit (Visitor v){
-        v.visitExpressaoBinaria(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitExpressaoBinaria(this, o);
     }
 }

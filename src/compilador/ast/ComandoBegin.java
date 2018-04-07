@@ -7,7 +7,7 @@ public class ComandoBegin extends Comando{
         this.C = C;
     }
 
-    public void visit(Visitor v) {
-        v.visitComandoBegin(this);
+    public Object visit(Visitor v, Object o) {
+        return v.visitComandoBegin(this, o);
     }
 }

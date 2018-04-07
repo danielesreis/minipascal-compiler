@@ -6,7 +6,7 @@ public class ExpressaoSimples extends Expressao{
         this.F = F;
     }
     
-    public void visit (Visitor v){
-        v.visitExpressaoSimples(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitExpressaoSimples(this, o);
     }
 }

@@ -8,7 +8,7 @@ public class ParametroSimples extends Parametro{
         this.TS = TS;
     }
     
-    public void visit (Visitor v){
-        v.visitParametroSimples(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitParametroSimples(this, o);
     }
 }

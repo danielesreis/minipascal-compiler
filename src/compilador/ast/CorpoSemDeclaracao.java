@@ -6,7 +6,8 @@ public class CorpoSemDeclaracao extends Corpo{
         this.C = C;
     }
     
-    public void visit (Visitor v){
-        v.visitCorpoSemDeclaracao(this);
+    public Object visit (Visitor v, Object o){
+        v.visitCorpoSemDeclaracao(this, o);
+        return null;
     }
 }

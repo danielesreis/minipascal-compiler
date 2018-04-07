@@ -10,7 +10,7 @@ public class DeclaracaoProcedure extends Declaracao{
         this.C = C;
     } 
     
-    public void visit (Visitor v){
-        v.visitDeclaracaoProcedure(this);
+    public Object visit (Visitor v, Object o){
+        return v.visitDeclaracaoProcedure(this, o);
     }
 }

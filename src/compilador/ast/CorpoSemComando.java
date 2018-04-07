@@ -6,7 +6,8 @@ public class CorpoSemComando extends Corpo{
         this.D = D;
     }
     
-    public void visit (Visitor v){
-        v.visitCorpoSemComando(this);
+    public Object visit (Visitor v, Object o){
+        v.visitCorpoSemComando(this, o);
+        return null;
     }
 }
