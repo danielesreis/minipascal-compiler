@@ -3,9 +3,9 @@ public interface Visitor {
     public void visitPrograma(Programa p);
     public void visitComandoAtribuicao(ComandoAtribuicao c);
     public void visitComandoAtribuicaoIndexada(ComandoAtribuicaoIndexada c);
+    public void visitComandoBegin(ComandoBegin c);
     public void visitComandoChamadaProcedimento(ComandoChamadaProcedimento c);
     public void visitComandoChamadaProcedimentoSemArgs(ComandoChamadaProcedimentoSemArgs c);
-    public void visitComandoComposto(ComandoComposto c);
     public void visitComandoIf(ComandoIf c);
     public void visitComandoIfElse(ComandoIfElse c);
     public void visitComandoSequencial(ComandoSequencial c);
@@ -28,7 +28,7 @@ public interface Visitor {
     public void visitFatorId(FatorId f);
     public void visitFatorMulSequencial(FatorMulSequencial f);
     public void visitFatorExpressao(FatorExpressao f);
-    public void visitIdentifier(Identifier i);
+    public void visitIdentifierSimples(IdentifierSimples i);
     public void visitIdentifierSequencial(IdentifierSequencial i);
     public void visitLiteral(Literal l);
     public void visitOpAd(OpAd o);

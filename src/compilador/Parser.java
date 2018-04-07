@@ -41,7 +41,7 @@ public class Parser {
     private Programa parsePrograma(){
         Programa pAST;
         accept(Token.PROGRAM);
-        Identifier iAST = new Identifier(currentToken.spelling);
+        Identifier iAST = new IdentifierSimples(currentToken.spelling);
         accept(Token.ID);
         accept(Token.SEMICOLON);
         Corpo cAST = parseCorpo();
@@ -91,10 +91,11 @@ public class Parser {
                     accept(Token.SEMICOLON);
                 }
                 accept(Token.END);
+                cAST = new ComandoBegin(cAST);
                 break;
         
             case Token.ID:
-                Identifier I = new Identifier(currentToken.spelling);
+                Identifier I = new IdentifierSimples(currentToken.spelling);
                 acceptIt();
                 
                 switch(currentToken.kind) {
@@ -208,17 +209,16 @@ public class Parser {
         Tipo tAST;
         TipoSimples TsAST;
         
-        
         switch(currentToken.kind) {
         
             case Token.VAR: 
                 acceptIt();
-                id1AST = new Identifier(currentToken.spelling);
+                id1AST = new IdentifierSimples(currentToken.spelling);
                 accept(Token.ID);
                             
                 while(currentToken.kind == Token.COMMA) {
                     acceptIt();
-                    id2AST = new Identifier(currentToken.spelling);
+                    id2AST = new IdentifierSimples(currentToken.spelling);
                     id1AST = new IdentifierSequencial(id1AST, id2AST);
                     accept(Token.ID);
                 }
@@ -231,7 +231,7 @@ public class Parser {
             case Token.FUNCTION:
            
                 acceptIt();
-                id1AST = new Identifier(currentToken.spelling);
+                id1AST = new IdentifierSimples(currentToken.spelling);
                 accept(Token.ID);
                 accept(Token.LPAREN);
                             
@@ -243,7 +243,6 @@ public class Parser {
                             acceptIt();
                             par2AST = parseParametros();
                             par1AST = new ParametroSequencial(par1AST, par2AST);
-                            
                         }
                         accept(Token.RPAREN);
                         accept(Token.COLON);
@@ -272,7 +271,7 @@ public class Parser {
                 
             case Token.PROCEDURE: 
                 acceptIt();
-                id1AST = new Identifier(currentToken.spelling);
+                id1AST = new IdentifierSimples(currentToken.spelling);
                 accept(Token.ID);
                 accept(Token.LPAREN);
                             
@@ -368,11 +367,11 @@ public class Parser {
            
             case Token.ID:
                 Expressao eAST1 = null, eAST2;
-                Identifier iAST = new Identifier(currentToken.spelling);
+                Identifier iAST = new IdentifierSimples(currentToken.spelling);
+                Variavel vAST = new VariavelId(iAST);
                 acceptIt();
                 
                 if(currentToken.kind == Token.LBRACE) {
-                    Variavel vAST = new VariavelId(iAST);
                     acceptIt();
                     eAST1 = parseExpressao();
                     accept(Token.RBRACE);
@@ -381,9 +380,9 @@ public class Parser {
                         acceptIt();
                         eAST2 = parseExpressao(); 
                         eAST1 = new ExpressaoSequencial(eAST1, eAST2);
-                        vAST = new VariavelIndexada(iAST, eAST1);
                         accept(Token.RBRACE);
                     }
+                    vAST = new VariavelIndexada(iAST, eAST1);
                     fAST = vAST;
                 }
                                 
@@ -455,12 +454,12 @@ public class Parser {
             
             case Token.VAR:
                 acceptIt();
-                id1AST = new Identifier(currentToken.spelling);
+                id1AST = new IdentifierSimples(currentToken.spelling);
                 accept(Token.ID);
                 break;
             
             case Token.ID:
-                id1AST = new Identifier(currentToken.spelling);
+                id1AST = new IdentifierSimples(currentToken.spelling);
                 acceptIt();
                 break;
             
@@ -471,7 +470,7 @@ public class Parser {
         
         while(currentToken.kind == Token.COMMA) {
             acceptIt();
-            id2AST = new Identifier(currentToken.spelling);
+            id2AST = new IdentifierSimples(currentToken.spelling);
             id1AST = new IdentifierSequencial(id1AST, id2AST);
             accept(Token.ID);
         }

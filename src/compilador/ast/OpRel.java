@@ -1,5 +1,5 @@
 package compilador.ast;
-public class OpRel extends Identifier{
+public class OpRel extends Operador{
     
     public OpRel(String spelling) {
         super(spelling);

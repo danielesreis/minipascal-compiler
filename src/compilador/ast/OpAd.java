@@ -1,5 +1,5 @@
 package compilador.ast;
-public class OpAd extends Identifier{
+public class OpAd extends Operador{
     
     public OpAd(String spelling) {
         super(spelling);

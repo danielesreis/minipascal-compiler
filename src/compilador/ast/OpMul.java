@@ -1,5 +1,5 @@
 package compilador.ast;
-public class OpMul extends Identifier{
+public class OpMul extends Operador{
     
     public OpMul(String spelling) {
         super(spelling);
