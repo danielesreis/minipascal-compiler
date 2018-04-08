@@ -1,11 +1,12 @@
 package compilador;
-
 import compilador.ast.*;
 
 public class Compilador {
     public static String code;
     public static String ast;
     public static int currentIndex;
+    public static int currentColumn;
+    public static int currentLine = 1;
     public static CompilerFrame compilerFrame;
 
     public static void main(String[] args) {
@@ -16,11 +17,13 @@ public class Compilador {
     
     public static void startCompilation() {
        currentIndex = 0;
-       Object o = null;
        Programa p;
+       IdentificationTable idTable = new IdentificationTable();
        Parser parser = new Parser(code.charAt(currentIndex));
        Printer printer = new Printer();
+       Checker checker = new Checker(idTable);
        p = parser.parse();
-       o = printer.print(p, o);
+       checker.visitPrograma(p, null);
+       printer.print(p, null);
     }
 }

@@ -1,4 +1,5 @@
 package compilador.ast;
+import compilador.Type;
 public abstract class Expressao extends Fator {
-    public Tipo tipo;
+    public Type type;
 }
