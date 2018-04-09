@@ -14,8 +14,9 @@ public class Checker implements Visitor{
     }
 
     public Object visitComandoAtribuicao(ComandoAtribuicao c, Object o) {
+        Declaracao d = idTable.retrieve(c.I.spelling);
         Type eType = (Type)c.E.visit(this, null);
-        Type iType = (Type)c.I.declaracao.visit(this, null);
+        Tipo iType = (Tipo)d.visit(this, null);
         
         if(!eType.equalTo(iType)) Compilador.compilerFrame.setOutputText("ERRO CONTEXTUAL! Os dois lados da igualdade não são equivalentes! " + 
                 "(Linha " + Compilador.currentLine + "| Coluna: " + Compilador.currentColumn + ")");
@@ -24,9 +25,10 @@ public class Checker implements Visitor{
     }
 
     public Object visitComandoAtribuicaoIndexada(ComandoAtribuicaoIndexada c, Object o) {
+        Declaracao d = idTable.retrieve(c.I.spelling);
         Type e1Type = (Type)c.E1.visit(this, null);
         Type e2Type = (Type)c.E2.visit(this, null);
-        Type iType = (Type)c.I.declaracao.visit(this, null);
+        Type iType = (Type)d.visit(this, null);
         
         if(!e2Type.equalTo(iType)) Compilador.compilerFrame.setOutputText("ERRO CONTEXTUAL! Os dois lados da igualdade não são equivalentes! " + 
                 "(Linha " + Compilador.currentLine + "| Coluna: " + Compilador.currentColumn + ")");
@@ -43,7 +45,7 @@ public class Checker implements Visitor{
     }
 
     public Object visitComandoChamadaProcedimento(ComandoChamadaProcedimento c, Object o) {
-        Declaracao d = idTable.retrieve(((IdentifierSimples)c.I).spelling);
+        Declaracao d = idTable.retrieve((c.I).spelling);
         if (d == null)
         {
             Compilador.compilerFrame.setOutputText("ERRO CONTEXTUAL! Procedure não declarada! " + 
@@ -60,7 +62,7 @@ public class Checker implements Visitor{
     }
 
     public Object visitComandoChamadaProcedimentoSemArgs(ComandoChamadaProcedimentoSemArgs c, Object o) {        
-        Declaracao d = idTable.retrieve(((IdentifierSimples)c.I).spelling);
+        Declaracao d = idTable.retrieve((c.I).spelling);
         if (d == null)
         {
             Compilador.compilerFrame.setOutputText("ERRO CONTEXTUAL! Procedure não declarada! " + 
@@ -122,47 +124,53 @@ public class Checker implements Visitor{
 
     public Object visitDeclaracaoFuncao(DeclaracaoFuncao d, Object o) {
         idTable.enter(((IdentifierSimples)d.I).spelling, d);
+        d.I.declaracao = d;
         d.C.visit(this, null);
         d.I.visit(this, null);
         d.P.visit(this, null);
         d.TS.visit(this, null);
-        return d;
+        return d.TS;
     }
 
     public Object visitDeclaracaoFuncaoSemArgs(DeclaracaoFuncaoSemArgs d, Object o) {
         idTable.enter(((IdentifierSimples)d.I).spelling, d);
+        d.I.declaracao = d;
         d.C.visit(this, null);
         d.I.visit(this, null);
         d.TS.visit(this, null);
-        return d;
+        return d.TS;
     }
 
     public Object visitDeclaracaoProcedure(DeclaracaoProcedure d, Object o) {
         idTable.enter(((IdentifierSimples)d.I).spelling, d);
+        d.I.declaracao = d; 
         d.C.visit(this, null);
         d.I.visit(this, null);
         d.P.visit(this, null);
-        return d;
+        return null;
     }
 
     public Object visitDeclaracaoProcedureSemArgs(DeclaracaoProcedureSemArgs d, Object o) {
         idTable.enter(((IdentifierSimples)d.I).spelling, d);
+        d.I.declaracao = d;
         d.C.visit(this, null);
         d.I.visit(this, null);
-        return d;
+        return null;
     }
 
     public Object visitDeclaracaoSequencial(DeclaracaoSequencial d, Object o) {
         d.D1.visit(this, null);
         d.D2.visit(this, null);
-        return d;
+        return null;
     }
 
     public Object visitDeclaracaoVariavel(DeclaracaoVariavel d, Object o) {
         idTable.enter(((IdentifierSimples)d.I).spelling, d);
+        Identifier i = d.I;
+        i.declaracao = d;
         d.I.visit(this, null);
         d.T.visit(this, null);
-        return d;
+        return d.T;
     }
 
     public Object visitExpressaoBinaria(ExpressaoBinaria e, Object o) {
@@ -234,8 +242,7 @@ public class Checker implements Visitor{
     }
 
     public Object visitLiteral(Literal l, Object o) {
-        l.visit(this, null);
-        
+        //l.visit(this, null);
         return null;
     }
 

@@ -99,8 +99,6 @@ public class Scanner {
                                     return Token.EOT;
                                 
                                 else {
-                                    //System.out.println("Entrei no else");
-                                    //remover
                                     if (currentChar == '.') {
                                         takeIt();
                                         return Token.DOTDOT;
