@@ -9,7 +9,6 @@ public class Scanner {
             this.currentChar = currentChar;
             this.eotFlag = false;
             currentSpelling = new StringBuffer("");
-            Compilador.currentColumn = 1;
         }
         
 	private void take(char expectedChar) {
@@ -151,13 +150,11 @@ public class Scanner {
                             
                             if (currentChar == '.') {
                                 if(Compilador.code.charAt(Compilador.currentIndex + 1) == '.') {
-                                    //return Token.INT_LIT;
                                     return Token.LITERAL;
                                 }
                                 
                                 takeIt();
                                 while (isDigit(currentChar) && !eotFlag) takeIt();
-                                //return Token.FLOAT_LIT;
                                 return Token.LITERAL;
                             }
                             

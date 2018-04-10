@@ -1,5 +1,11 @@
 package compilador;
 import compilador.ast.Declaracao;
+import compilador.ast.DeclaracaoFuncao;
+import compilador.ast.DeclaracaoFuncaoSemArgs;
+import compilador.ast.DeclaracaoProcedure;
+import compilador.ast.DeclaracaoProcedureSemArgs;
+import compilador.ast.DeclaracaoVariavel;
+import compilador.ast.Tipo;
 
 public final class IdentificationTable {
     IdEntry latest;
@@ -46,6 +52,7 @@ public final class IdentificationTable {
     }
     
     public void enter(String id, Declaracao declaracao) {
+        Tipo tipo = null;
         IdEntry entry = this.latest;
         boolean present = false, searching = true;
 
@@ -61,7 +68,13 @@ public final class IdentificationTable {
 
         declaracao.duplicated = present;
         
-        entry = new IdEntry(id, declaracao, this.level, this.latest);
+        if (declaracao instanceof DeclaracaoFuncao) tipo = ((DeclaracaoFuncao)declaracao).TS;
+        else if (declaracao instanceof DeclaracaoFuncaoSemArgs) tipo = ((DeclaracaoFuncaoSemArgs)declaracao).TS;
+        else if (declaracao instanceof DeclaracaoProcedure) tipo.kind = Tipo.UND;
+        else if (declaracao instanceof DeclaracaoProcedureSemArgs) tipo.kind = Tipo.UND;
+        else if (declaracao instanceof DeclaracaoVariavel) tipo = ((DeclaracaoVariavel)declaracao).T;
+        
+        entry = new IdEntry(id, declaracao, this.level, this.latest, tipo);
         this.latest = entry;
     }
 }

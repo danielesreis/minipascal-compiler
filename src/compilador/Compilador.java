@@ -6,7 +6,7 @@ public class Compilador {
     public static String ast;
     public static int currentIndex;
     public static int currentColumn;
-    public static int currentLine = 1;
+    public static int currentLine;
     public static CompilerFrame compilerFrame;
 
     public static void main(String[] args) {
@@ -17,6 +17,8 @@ public class Compilador {
     
     public static void startCompilation() {
        currentIndex = 0;
+       currentLine = 1;
+       currentColumn = 1;
        Programa p;
        IdentificationTable idTable = new IdentificationTable();
        Parser parser = new Parser(code.charAt(currentIndex));

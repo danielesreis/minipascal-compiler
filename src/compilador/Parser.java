@@ -246,7 +246,7 @@ public class Parser {
                         }
                         accept(Token.RPAREN);
                         accept(Token.COLON);
-                        TsAST = new TipoSimples(currentToken.spelling);                       
+                        TsAST = new TipoSimples(currentToken.spelling, currentToken.kind);                       
                         accept(Token.TIPO_SIMPLES);
                         accept(Token.SEMICOLON);
                         corpoAST = parseCorpo();
@@ -256,7 +256,7 @@ public class Parser {
                     case Token.RPAREN: 
                         acceptIt();
                         accept(Token.COLON);
-                        TsAST = new TipoSimples(currentToken.spelling);
+                        TsAST = new TipoSimples(currentToken.spelling, currentToken.kind);
                         accept(Token.TIPO_SIMPLES);
                         accept(Token.SEMICOLON);
                         corpoAST = parseCorpo();
@@ -415,18 +415,6 @@ public class Parser {
                 else fAST = new FatorId(iAST);
                 break;
             
-            /*case Token.BOOL_LIT:
-                acceptIt();
-                break;
-            
-            case Token.INT_LIT:
-                acceptIt();
-                break;
-            
-            case Token.FLOAT_LIT:
-                acceptIt();
-                break;
-            */
             case Token.LITERAL:
                 fAST = new Literal(currentToken.spelling);
                 acceptIt();
@@ -476,7 +464,7 @@ public class Parser {
         }
         
         accept(Token.COLON);
-        TsAST = new TipoSimples(currentToken.spelling);
+        TsAST = new TipoSimples(currentToken.spelling, currentToken.kind);
         accept(Token.TIPO_SIMPLES);
         ParAST = new ParametroSimples(id1AST, TsAST);
         return ParAST;
@@ -491,7 +479,7 @@ public class Parser {
                 break;
             
             case Token.TIPO_SIMPLES:
-                tAST = new TipoSimples(currentToken.spelling);
+                tAST = new TipoSimples(currentToken.spelling, currentToken.kind);
                 acceptIt();
                 break;
             

@@ -15,26 +15,29 @@ public class Checker implements Visitor{
 
     public Object visitComandoAtribuicao(ComandoAtribuicao c, Object o) {
         Declaracao d = idTable.retrieve(c.I.spelling);
-        Type eType = (Type)c.E.visit(this, null);
-        Tipo iType = (Tipo)d.visit(this, null);
+        Tipo eTipo = (Tipo)c.E.visit(this, null);
+        Tipo iTipo = (Tipo)d.visit(this, null);
         
-        if(!eType.equalTo(iType)) Compilador.compilerFrame.setOutputText("ERRO CONTEXTUAL! Os dois lados da igualdade não são equivalentes! " + 
-                "(Linha " + Compilador.currentLine + "| Coluna: " + Compilador.currentColumn + ")");
+        if(!(d instanceof DeclaracaoVariavel) || d == null) Compilador.compilerFrame.setOutputText("ERRO CONTEXTUAL! Variável não declarada! " + 
+                "(Linha " + Compilador.currentLine + " | Coluna: " + Compilador.currentColumn + ")");
+        
+        if(!eTipo.equalTo(iTipo)) Compilador.compilerFrame.setOutputText("ERRO CONTEXTUAL! Os dois lados da igualdade não são equivalentes! " + 
+                "(Linha " + Compilador.currentLine + " | Coluna: " + Compilador.currentColumn + ")");
         
         return null;
     }
 
     public Object visitComandoAtribuicaoIndexada(ComandoAtribuicaoIndexada c, Object o) {
         Declaracao d = idTable.retrieve(c.I.spelling);
-        Type e1Type = (Type)c.E1.visit(this, null);
-        Type e2Type = (Type)c.E2.visit(this, null);
-        Type iType = (Type)d.visit(this, null);
+        Tipo e1Tipo = (Tipo)c.E1.visit(this, null);
+        Tipo e2Tipo = (Tipo)c.E2.visit(this, null);
+        Tipo iTipo = (Tipo)d.visit(this, null);
         
-        if(!e2Type.equalTo(iType)) Compilador.compilerFrame.setOutputText("ERRO CONTEXTUAL! Os dois lados da igualdade não são equivalentes! " + 
-                "(Linha " + Compilador.currentLine + "| Coluna: " + Compilador.currentColumn + ")");
+        if(!e2Tipo.equalTo(iTipo)) Compilador.compilerFrame.setOutputText("ERRO CONTEXTUAL! Os dois lados da igualdade não são equivalentes! " + 
+                "(Linha " + Compilador.currentLine + " | Coluna: " + Compilador.currentColumn + ")");
         
-        if(e1Type.kind != Type.INTG) Compilador.compilerFrame.setOutputText("ERRO CONTEXTUAL! Índice não é inteiro! " + 
-                "(Linha " + Compilador.currentLine + "| Coluna: " + Compilador.currentColumn + ")");
+        if(e1Tipo.kind != Tipo.INT_LIT) Compilador.compilerFrame.setOutputText("ERRO CONTEXTUAL! Índice não é inteiro! " + 
+                "(Linha " + Compilador.currentLine + " | Coluna: " + Compilador.currentColumn + ")");
         
         return null;
     }
@@ -46,10 +49,10 @@ public class Checker implements Visitor{
 
     public Object visitComandoChamadaProcedimento(ComandoChamadaProcedimento c, Object o) {
         Declaracao d = idTable.retrieve((c.I).spelling);
-        if (d == null)
+        if (!(d instanceof DeclaracaoProcedure) || d == null)
         {
             Compilador.compilerFrame.setOutputText("ERRO CONTEXTUAL! Procedure não declarada! " + 
-                "(Linha " + Compilador.currentLine + "| Coluna: " + Compilador.currentColumn + ")");
+                "(Linha " + Compilador.currentLine + " | Coluna: " + Compilador.currentColumn + ")");
         }
         
         if (c.E != null)
@@ -63,29 +66,29 @@ public class Checker implements Visitor{
 
     public Object visitComandoChamadaProcedimentoSemArgs(ComandoChamadaProcedimentoSemArgs c, Object o) {        
         Declaracao d = idTable.retrieve((c.I).spelling);
-        if (d == null)
+        if (!(d instanceof DeclaracaoProcedureSemArgs) || d == null)
         {
             Compilador.compilerFrame.setOutputText("ERRO CONTEXTUAL! Procedure não declarada! " + 
-                "(Linha " + Compilador.currentLine + "| Coluna: " + Compilador.currentColumn + ")");
+                "(Linha " + Compilador.currentLine + " | Coluna: " + Compilador.currentColumn + ")");
         }
         return null;
     }
 
     public Object visitComandoIf(ComandoIf c, Object o) {
-        Type eType = (Type)c.E.visit(this, null);
+        Tipo eTipo = (Tipo)c.E.visit(this, null);
         
-        if(!eType.equalTo(Type.BOOL)) Compilador.compilerFrame.setOutputText("ERRO CONTEXTUAL! Condição inválida! " + 
-                "(Linha " + Compilador.currentLine + "| Coluna: " + Compilador.currentColumn + ")");
+        if(!eTipo.equalTo(Tipo.BOOL_LIT)) Compilador.compilerFrame.setOutputText("ERRO CONTEXTUAL! Condição inválida! " + 
+                "(Linha " + Compilador.currentLine + " | Coluna: " + Compilador.currentColumn + ")");
         
         c.C1.visit(this, null);
         return null;
     }
 
     public Object visitComandoIfElse(ComandoIfElse c, Object o) {
-        Type eType = (Type)c.E.visit(this, null);
+        Tipo eTipo = (Tipo)c.E.visit(this, null);
         
-        if(!eType.equalTo(Type.BOOL)) Compilador.compilerFrame.setOutputText("ERRO CONTEXTUAL! Condição inválida! " + 
-                "(Linha " + Compilador.currentLine + "| Coluna: " + Compilador.currentColumn + ")");
+        if(!eTipo.equalTo(Tipo.BOOL_LIT)) Compilador.compilerFrame.setOutputText("ERRO CONTEXTUAL! Condição inválida! " + 
+                "(Linha " + Compilador.currentLine + " | Coluna: " + Compilador.currentColumn + ")");
         
         c.C1.visit(this, null);
         c.C2.visit(this, null);
@@ -99,9 +102,9 @@ public class Checker implements Visitor{
     }
 
     public Object visitComandoWhile(ComandoWhile c, Object o) {
-        Type eType = (Type)c.E.visit(this, null);
-        if(!eType.equalTo(Type.BOOL)) Compilador.compilerFrame.setOutputText("ERRO CONTEXTUAL! Condição inválida! " + 
-                "(Linha " + Compilador.currentLine + "| Coluna: " + Compilador.currentColumn + ")");
+        Tipo eTipo = (Tipo)c.E.visit(this, null);
+        if(!eTipo.equalTo(Tipo.BOOL_LIT)) Compilador.compilerFrame.setOutputText("ERRO CONTEXTUAL! Condição inválida! " + 
+                "(Linha " + Compilador.currentLine + " | Coluna: " + Compilador.currentColumn + ")");
         c.C.visit(this, null);
         return null;
     }
@@ -177,13 +180,14 @@ public class Checker implements Visitor{
         e.ES1.visit(this, null);
         e.ES2.visit(this, null);
         e.OR.visit(this, null);
-        return e.type;
+        e.tipo.kind = Tipo.BOOL_LIT;
+        return e.tipo;
     }
 
     public Object visitExpressaoSequencial(ExpressaoSequencial e, Object o) {
         e.E1.visit(this, null);
         e.E2.visit(this, null);
-        return e.type;
+        return null;
     }
 
     public Object visitExpressaoSimples(ExpressaoSimples e, Object o) {
@@ -191,44 +195,108 @@ public class Checker implements Visitor{
     }
 
     public Object visitFatorAdSequencial(FatorAdSequencial f, Object o) {
-        f.F1.visit(this, null);
-        f.F2.visit(this, null);
+        Tipo tipo = new TipoSimples("", Tipo.UND);
+        
+        Tipo fTipo1 = (Tipo)f.F1.visit(this, null);
+        Tipo fTipo2 = (Tipo)f.F2.visit(this, null);
         f.OA.visit(this, null);
-        return f.type;
+                
+        if (f.OA.spelling.toLowerCase().equals("or") && fTipo1.kind == Token.BOOL_LIT && fTipo2.kind == Token.BOOL_LIT) tipo.kind = Tipo.BOOL_LIT;
+        else 
+        {
+            if (fTipo1.kind == Token.TIPO_SIMPLES && fTipo2.kind == Token.TIPO_SIMPLES)
+            {
+                Byte bType1, bType2;
+                bType1 = Tipo.getTypeByte(((TipoSimples)fTipo1).spelling);
+                bType2 = Tipo.getTypeByte(((TipoSimples)fTipo2).spelling);
+                if (bType1 == Tipo.FLOAT_LIT || bType2 == Tipo.FLOAT_LIT) tipo.kind = Tipo.FLOAT_LIT;
+                else tipo.kind = Tipo.INT_LIT;
+            }
+            else if (fTipo1.kind == Tipo.FLOAT_LIT || fTipo2.kind == Tipo.FLOAT_LIT)
+            {
+                if ((fTipo1.kind != Tipo.BOOL_LIT) && (fTipo2.kind != Tipo.BOOL_LIT)) tipo.kind = Tipo.FLOAT_LIT;
+                else
+                {
+                    tipo.kind = Tipo.ERROR;
+                    Compilador.compilerFrame.setOutputText("ERRO CONTEXTUAL! Operação com valores incompatíveis! " + 
+                "(Linha " + Compilador.currentLine + " | Coluna: " + Compilador.currentColumn + ")");
+                }
+            }
+            else if (fTipo1.kind == Tipo.INT_LIT && fTipo2.kind == Tipo.INT_LIT) tipo.kind = Tipo.INT_LIT;
+            else {
+                //tipo agregado
+            }
+        }
+        return tipo;
     }
 
     public Object visitFatorChamadaFuncao(FatorChamadaFuncao f, Object o) {
         Declaracao d = idTable.retrieve(((IdentifierSimples)f.I).spelling);
         
-        if (d == null) Compilador.compilerFrame.setOutputText("ERRO CONTEXTUAL! Declaração da função inválida! " + 
-                "(Linha " + Compilador.currentLine + "| Coluna: " + Compilador.currentColumn + ")");
-        
-        f.E.visit(this, null);
-        return f.type;
+        if (!(d instanceof DeclaracaoFuncao) || d == null) Compilador.compilerFrame.setOutputText("ERRO CONTEXTUAL! Declaração da função inválida! " + 
+                "(Linha " + Compilador.currentLine + " | Coluna: " + Compilador.currentColumn + ")");
+        else 
+        {
+            f.E.visit(this, null);
+            return ((DeclaracaoFuncao)d).TS;
+        }
+        return Tipo.ERROR;
     }
 
     public Object visitFatorChamadaFuncaoSemArgs(FatorChamadaFuncaoSemArgs f, Object o) {
         Declaracao d = (Declaracao)f.I.declaracao.visit(this, null);
         
-        if (d == null) Compilador.compilerFrame.setOutputText("ERRO CONTEXTUAL! Declaração da função inválida! " + 
-                "(Linha " + Compilador.currentLine + "| Coluna: " + Compilador.currentColumn + ")");
-        
-        return f.type;
+        if (!(d instanceof DeclaracaoFuncaoSemArgs) || d == null) Compilador.compilerFrame.setOutputText("ERRO CONTEXTUAL! Declaração da função inválida! " + 
+                "(Linha " + Compilador.currentLine + " | Coluna: " + Compilador.currentColumn + ")");
+        else return ((DeclaracaoFuncaoSemArgs)d).TS;
+            
+        return Tipo.ERROR;
     }
 
+    //retorna Tipo
     public Object visitFatorId(FatorId f, Object o) {
-        return (Declaracao)f.I.declaracao.visit(this, null);
+        return ((DeclaracaoVariavel)f.I.declaracao.visit(this, null)).T;
     }
 
+    //retorno null?
     public Object visitFatorMulSequencial(FatorMulSequencial f, Object o) {
-        f.F1.visit(this, null);
-        f.F2.visit(this, null);
+        Tipo tipo = null;
+        tipo.kind = Tipo.ERROR;
+        Tipo fTipo1 = (Tipo)f.F1.visit(this, null);
+        Tipo fTipo2 = (Tipo)f.F2.visit(this, null);
         f.OM.visit(this, null);
-        return f.type;
+        
+        if (f.OM.spelling.toLowerCase().equals("and") && fTipo1.kind == Token.BOOL_LIT && fTipo2.kind == Token.BOOL_LIT) tipo.kind = Tipo.BOOL_LIT;
+        else 
+        {
+            if (fTipo1.kind == Token.TIPO_SIMPLES && fTipo2.kind == Token.TIPO_SIMPLES)
+            {
+                Byte bType1, bType2;
+                bType1 = Tipo.getTypeByte(((TipoSimples)fTipo1).spelling);
+                bType2 = Tipo.getTypeByte(((TipoSimples)fTipo2).spelling);
+                if (bType1 == Tipo.FLOAT_LIT || bType2 == Tipo.FLOAT_LIT) tipo.kind = Tipo.FLOAT_LIT;
+                else tipo.kind = Tipo.INT_LIT;
+            }
+            else if (fTipo1.kind == Tipo.FLOAT_LIT || fTipo2.kind == Tipo.FLOAT_LIT)
+            {
+                if ((fTipo1.kind != Tipo.BOOL_LIT) && (fTipo2.kind != Tipo.BOOL_LIT)) tipo.kind = Tipo.FLOAT_LIT;
+                else
+                {
+                    tipo.kind = Tipo.ERROR;
+                    Compilador.compilerFrame.setOutputText("ERRO CONTEXTUAL! Operação com valores incompatíveis! " + 
+                "(Linha " + Compilador.currentLine + " | Coluna: " + Compilador.currentColumn + ")");
+                }
+            }
+            else if (fTipo1.kind == Tipo.INT_LIT && fTipo2.kind == Tipo.INT_LIT) tipo.kind = Tipo.INT_LIT;
+            else {
+                //tipo agregado
+            }
+        }
+        return tipo;
     }
 
     public Object visitFatorExpressao(FatorExpressao f, Object o) {
-        return (Type)f.E.visit(this, null);
+        return (Tipo)f.E.visit(this, null);
     }
 
     public Object visitIdentifierSimples(IdentifierSimples i, Object o) {
@@ -242,23 +310,26 @@ public class Checker implements Visitor{
     }
 
     public Object visitLiteral(Literal l, Object o) {
-        //l.visit(this, null);
-        return null;
+        Tipo tipo = new TipoSimples(l.spelling, Tipo.ERROR);
+        
+        if(l.spelling.toLowerCase().equals("true") || l.spelling.toLowerCase().equals("false")) tipo.kind = Tipo.BOOL_LIT;
+        else {
+            tipo.kind = Tipo.INT_LIT;
+            if (l.spelling.contains(".")) tipo.kind = Tipo.FLOAT_LIT;
+        }
+        return tipo;
     }
 
     ///////////////////////////////////////////////////////////////////////////
     public Object visitOpAd(OpAd op, Object o) {
-        op.visit(this, null);
         return null;
     }
 
     public Object visitOpMul(OpMul op, Object o) {
-        op.visit(this, null);
         return null;
     }
 
     public Object visitOpRel(OpRel op, Object o) {
-        op.visit(this, null);
         return null;
     }
 
@@ -289,9 +360,9 @@ public class Checker implements Visitor{
     }
 
     public Object visitVariavelIndexada(VariavelIndexada v, Object o) {
-        if (!v.E.type.equalTo(Type.INTG))
+        if (!v.E.tipo.equalTo(Tipo.INT_LIT))
             Compilador.compilerFrame.setOutputText("ERRO CONTEXTUAL! Índice inválido! " + 
-                "(Linha " + Compilador.currentLine + "| Coluna: " + Compilador.currentColumn + ")");        
+                "(Linha " + Compilador.currentLine + " | Coluna: " + Compilador.currentColumn + ")");        
         return v.I.declaracao.visit(this, null);
     }
 }

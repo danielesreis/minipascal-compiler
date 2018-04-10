@@ -814,8 +814,9 @@ public class Printer implements Visitor{
         if (i instanceof IdentifierSequencial)
         {
             recursivePrint(((IdentifierSequencial)i).I1);
-            Compilador.compilerFrame.setAstText(((IdentifierSimples)(((IdentifierSequencial)i).I2)).spelling, true);
+            Compilador.compilerFrame.setAstText(", ", false);
+            Compilador.compilerFrame.setAstText(((IdentifierSimples)(((IdentifierSequencial)i).I2)).spelling, false);
         }
-        else Compilador.compilerFrame.setAstText(((IdentifierSimples)i).spelling, true);
+        else Compilador.compilerFrame.setAstText(((IdentifierSimples)i).spelling, false);
     }
 }
