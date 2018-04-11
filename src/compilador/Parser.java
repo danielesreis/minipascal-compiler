@@ -14,8 +14,12 @@ public class Parser {
         if(expectedTokenKind != Token.EOT) {
             if(expectedTokenKind != currentToken.kind) 
             {
-                Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: '" + Token.spellings[expectedTokenKind-1] + "' esperado mas '" + 
-                        Token.spellings[currentToken.kind-1] + "' encontrado (Linha " + Compilador.currentLine + " | Coluna " + Compilador.currentColumn + ")");
+                int line = (Compilador.currentLine == 1) ? 1 : Compilador.currentLine-1;
+                if (currentToken.kind == Token.ERROR)
+                    Compilador.compilerFrame.setOutputText("ERRO LÉXICO: '" + Token.spellings[expectedTokenKind-1] + "' esperado mas caractere inválido encontrado (Linha " + line + ")");
+                else
+                    Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: '" + Token.spellings[expectedTokenKind-1] + "' esperado mas '" + 
+                        Token.spellings[currentToken.kind-1] + "' encontrado (Linha " + line + ")");
             }
             else currentToken = scanner.scan();
         }
@@ -32,8 +36,10 @@ public class Parser {
         
         pAST = parsePrograma();
         if(currentToken.kind != Token.EOT) {
-            Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: End of text esperado, mas '" + Token.spellings[currentToken.kind-1] + 
-                    "' encontrado (Linha " + Compilador.currentLine + " | Coluna " + Compilador.currentColumn + ")");
+            int line = (Compilador.currentLine == 1) ? 1 : Compilador.currentLine-1;
+            if (currentToken.kind != Token.ERROR)
+                Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: End of text esperado, mas '" + Token.spellings[currentToken.kind-1] + 
+                    "' encontrado (Linha " + line + ")");
         }
         return pAST;
     }
@@ -53,6 +59,7 @@ public class Parser {
     private Comando parseComando() {
         Comando cAST = null, cAST2 = null, cAST3;
         Expressao eAST1 = null, eAST2, eAST3;
+        int line = (Compilador.currentLine == 1) ? 1 : Compilador.currentLine-1;
         switch(currentToken.kind) {
             
             case Token.IF:
@@ -143,17 +150,20 @@ public class Parser {
                         }
                         else {
                             Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Chamada de procedimento mal formulada! Símbolo encontrado: '" + 
-                                    Token.spellings[currentToken.kind-1] + "' (Linha " + Compilador.currentLine + " | Coluna " + Compilador.currentColumn + ")");
+                                    Token.spellings[currentToken.kind-1] + "' (Linha " + line + ")");
                         }
                         break;
                         
-                    default: Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Símbolo encontrado: '" + 
-                            Token.spellings[currentToken.kind-1] + "' (Linha " + Compilador.currentLine + " | Coluna " + Compilador.currentColumn + ")");
+                            
+                    default:    
+                                Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Símbolo encontrado: '" + 
+                                Token.spellings[currentToken.kind-1] + "' (Linha " + line + ")");
                 }
                 break;
         
-            default: Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Comando mal formulado! Símbolo encontrado: '" + 
-                    Token.spellings[currentToken.kind-1] + "' (Linha ] " + Compilador.currentLine + " | Coluna " + Compilador.currentColumn + ")");
+            default: 
+                Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Comando mal formulado! Símbolo encontrado: '" + 
+                Token.spellings[currentToken.kind-1] + "' (Linha ] " + line + ")");
         }
         return cAST;
     }
@@ -264,8 +274,9 @@ public class Parser {
                         break;
                         
                     default:
+                        int line = (Compilador.currentLine == 1) ? 1 : Compilador.currentLine-1;
                         Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Função mal formulada! Símbolo encontrado: '" + 
-                                Token.spellings[currentToken.kind-1] + "' (Linha " + Compilador.currentLine + " | Coluna " + Compilador.currentColumn + ")");
+                                Token.spellings[currentToken.kind-1] + "' (Linha " + line + ")");
                 }
                 break;
                 
@@ -299,14 +310,16 @@ public class Parser {
                         break;
                     
                     default:
+                        int line = (Compilador.currentLine == 1) ? 1 : Compilador.currentLine-1;
                         Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Procedure mal formulada! Símbolo encontrado: '" + 
-                                Token.spellings[currentToken.kind-1] + "' (Linha " + Compilador.currentLine + " | Coluna " + Compilador.currentColumn + ")");
+                                Token.spellings[currentToken.kind-1] + "' (Linha " + line + ")");
                 }
                 break;
                 
             default:
+                int line = (Compilador.currentLine == 1) ? 1 : Compilador.currentLine-1;
                 Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Declaração mal formulada! Símbolo encontrado: '" + 
-                        Token.spellings[currentToken.kind-1] + "' (Linha " + Compilador.currentLine + " | Coluna " + Compilador.currentColumn + ")");
+                        Token.spellings[currentToken.kind-1] + "' (Linha " + line + ")");
         }
         return decAST;
     }
@@ -363,6 +376,7 @@ public class Parser {
     private Fator parseFator() {
         Fator fAST = null;
         Expressao eAST = null;
+        int line = (Compilador.currentLine == 1) ? 1 : Compilador.currentLine-1;
         switch(currentToken.kind) {
            
             case Token.ID:
@@ -408,7 +422,7 @@ public class Parser {
                     }
                     else {
                         Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Chamada de procedimento mal formulada! Símbolo encontrado: '" + 
-                                Token.spellings[currentToken.kind-1] + "' (Linha " + Compilador.currentLine + " | Coluna " + Compilador.currentColumn + ")");
+                                Token.spellings[currentToken.kind-1] + "' (Linha " + line + ")");
                     }                    
                 }
                 
@@ -426,9 +440,8 @@ public class Parser {
                 fAST = new FatorExpressao(eAST);
                 accept(Token.RPAREN);
                 break;
-                
             default: Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Fator mal formulado! Símbolo encontrado: '" + 
-                    Token.spellings[currentToken.kind-1] + "' (Linha " + Compilador.currentLine + " | Coluna " + Compilador.currentColumn + ")");
+                    Token.spellings[currentToken.kind-1] + "' (Linha " + line + ")");
         }
         return fAST;
     }
@@ -452,8 +465,9 @@ public class Parser {
                 break;
             
             default: 
+                int line = (Compilador.currentLine == 1) ? 1 : Compilador.currentLine-1;
                 Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Parâmetros mal formulados! Símbolo encontrado: '" + 
-                        Token.spellings[currentToken.kind-1] + "' (Linha " + Compilador.currentLine + " | Coluna " + Compilador.currentColumn + ")");
+                        Token.spellings[currentToken.kind-1] + "' (Linha " + line + ")");
         }
         
         while(currentToken.kind == Token.COMMA) {
@@ -472,6 +486,7 @@ public class Parser {
 
     private Tipo parseTipo() {
         Tipo tAST = null;
+        int line = (Compilador.currentLine == 1) ? 1 : Compilador.currentLine-1;
         switch (currentToken.kind) {
             
             case Token.ARRAY:
@@ -485,13 +500,14 @@ public class Parser {
             
             default:
                 Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Tipo mal formulado! Símbolo encontrado: '" + 
-                        Token.spellings[currentToken.kind-1] + "' (Linha "  + Compilador.currentLine + " | Coluna " + Compilador.currentColumn + ")");
+                        Token.spellings[currentToken.kind-1] + "' (Linha "  + line + ")");
         }
         return tAST;
     }
    
     private TipoAgregado parseTipoAgregado() {
         TipoAgregado taAST = null;
+        int line = (Compilador.currentLine == 1) ? 1 : Compilador.currentLine-1;
         
         switch(currentToken.kind) {
             
@@ -523,11 +539,11 @@ public class Parser {
                         break;
                         
                     default: Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Tipo agregado mal formulado! Símbolo encontrado: '" + 
-                            Token.spellings[currentToken.kind-1] + "' (Linha " + Compilador.currentLine + " | Coluna " + Compilador.currentColumn + ")");
+                            Token.spellings[currentToken.kind-1] + "' (Linha " + line + ")");
                 }
                 break;
             default: Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Tipo agregado mal formulado! Símbolo encontrado: '" + 
-                    Token.spellings[currentToken.kind-1] + "' (Linha " + Compilador.currentLine + " | Coluna " + Compilador.currentColumn + ")");
+                    Token.spellings[currentToken.kind-1] + "' (Linha " + line + ")");
         }
         return taAST;
     }  

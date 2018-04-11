@@ -14,6 +14,7 @@ public abstract class Tipo extends AST{
         if (tipo.kind == Token.TIPO_SIMPLES) byteT = Tipo.getTypeByte(((TipoSimples)tipo).spelling);
         //else if (tipo.kind == Token.)
         
+        if(this.kind == INT_LIT && byteT == FLOAT_LIT) return true;
         return(this.kind == byteT || this.kind == ERROR || byteT == ERROR);
     }
     
