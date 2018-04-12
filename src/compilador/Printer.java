@@ -368,13 +368,13 @@ public class Printer implements Visitor{
         indent();
         if (d != null)
         {
+            if (d.I != null)
+            {
+                Compilador.compilerFrame.setAstText(((IdentifierSimples)d.I).spelling, false);
+            }
             if (d.TS != null)
             {
                 d.TS.visit(this, null);
-            }
-            if (d.I != null)
-            {
-                Compilador.compilerFrame.setAstText(((IdentifierSimples)d.I).spelling, true);
             }
             if (d.P != null)
             {
@@ -396,13 +396,13 @@ public class Printer implements Visitor{
         indent();
         if (d != null)
         {
+            if (d.I != null)
+            {
+                Compilador.compilerFrame.setAstText(((IdentifierSimples)d.I).spelling, false);
+            }
             if (d.TS != null)
             {
                 d.TS.visit(this, null);
-            }
-            if (d.I != null)
-            {
-                Compilador.compilerFrame.setAstText(((IdentifierSimples)d.I).spelling, true);
             }
             if (d.C != null) 
             {
@@ -812,7 +812,7 @@ public class Printer implements Visitor{
     {
         if (t != null)
         {
-            Compilador.compilerFrame.setAstText(" " + t.spelling, false);
+            Compilador.compilerFrame.setAstText(": " + t.spelling, true);
         }
         return null;
     }
@@ -869,7 +869,7 @@ public class Printer implements Visitor{
         {
             recursivePrintIdentifier(((IdentifierSequencial)i).I1, t);
             
-            Compilador.compilerFrame.setAstText("", true);
+            //Compilador.compilerFrame.setAstText("", true);
             indent();
             Compilador.compilerFrame.setAstText(((IdentifierSimples)(((IdentifierSequencial)i).I2)).spelling, false);
             
@@ -889,8 +889,13 @@ public class Printer implements Visitor{
         if (i instanceof IdentifierSequencial)
         {
             recursivePrintParametros(((IdentifierSequencial)i).I1);
-            Compilador.compilerFrame.setAstText(((IdentifierSimples)(((IdentifierSequencial)i).I2)).spelling, true);
+            Compilador.compilerFrame.setAstText(", ", false);
+            Compilador.compilerFrame.setAstText(((IdentifierSimples)(((IdentifierSequencial)i).I2)).spelling, false);
         }
-        else Compilador.compilerFrame.setAstText(((IdentifierSimples)i).spelling, true);
+        else
+        {
+            indent();
+            Compilador.compilerFrame.setAstText(((IdentifierSimples)i).spelling, false);
+        }
     }
 }
