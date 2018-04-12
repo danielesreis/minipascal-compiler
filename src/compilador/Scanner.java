@@ -30,7 +30,8 @@ public class Scanner {
                 else this.eotFlag = true;
             }
             else {
-                Compilador.compilerFrame.setOutputText("Caractere inválido!");
+                int line = (Compilador.currentLine == 1) ? 1 : Compilador.currentLine - 1;
+                Compilador.compilerFrame.setOutputText("ERRO LÉXICO: Caractere inválido! (Linha: " + line + ")");
             }
 	}
         
@@ -77,7 +78,9 @@ public class Scanner {
 		
                 case ' ': case '\t': case '\n': takeIt(); break;
 		
-                default: Compilador.compilerFrame.setOutputText("Separador inválido!");
+                default: 
+                            int line = (Compilador.currentLine == 1) ? 1 : Compilador.currentLine - 1;
+                            Compilador.compilerFrame.setOutputText("ERRO LÉXICO! Separador inválido! (Linha " + line + ")");
 		}
 	}
         

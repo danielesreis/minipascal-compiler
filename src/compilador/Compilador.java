@@ -28,10 +28,7 @@ public class Compilador {
         Checker checker = new Checker(idTable);
        
         switch(step) {
-           case 0: 
-                    p = parser.parse();
-                    break;
-           case 1: 
+           case 0: case 1: 
                     p = parser.parse();
                     break;
            case 2: 

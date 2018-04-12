@@ -18,7 +18,8 @@ public class Parser {
                 if (currentToken.kind == Token.ERROR)
                     Compilador.compilerFrame.setOutputText("ERRO LÉXICO: '" + Token.spellings[expectedTokenKind-1] + "' esperado mas caractere inválido encontrado (Linha " + line + ")");
                 else
-                    Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: '" + Token.spellings[expectedTokenKind-1] + "' esperado mas '" + 
+                    if(Compilador.step > 0)
+                        Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: '" + Token.spellings[expectedTokenKind-1] + "' esperado mas '" + 
                         Token.spellings[currentToken.kind-1] + "' encontrado (Linha " + line + ")");
             }
             else currentToken = scanner.scan();
@@ -38,7 +39,8 @@ public class Parser {
         if(currentToken.kind != Token.EOT) {
             int line = (Compilador.currentLine == 1) ? 1 : Compilador.currentLine-1;
             if (currentToken.kind != Token.ERROR)
-                Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: End of text esperado, mas '" + Token.spellings[currentToken.kind-1] + 
+                    if(Compilador.step > 0)
+                        Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: End of text esperado, mas '" + Token.spellings[currentToken.kind-1] + 
                     "' encontrado (Linha " + line + ")");
         }
         return pAST;
@@ -149,20 +151,23 @@ public class Parser {
                             cAST = new ComandoChamadaProcedimento(I, eAST1);
                         }
                         else {
-                            Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Chamada de procedimento mal formulada! Símbolo encontrado: '" + 
-                                    Token.spellings[currentToken.kind-1] + "' (Linha " + line + ")");
+                            if(Compilador.step > 0)
+                                Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Chamada de procedimento mal formulada! Símbolo encontrado: '" + 
+                                Token.spellings[currentToken.kind-1] + "' (Linha " + line + ")");
                         }
                         break;
                         
                             
                     default:    
-                                Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Símbolo encontrado: '" + 
-                                Token.spellings[currentToken.kind-1] + "' (Linha " + line + ")");
+                                if(Compilador.step > 0)
+                                    Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Símbolo encontrado: '" + 
+                                    Token.spellings[currentToken.kind-1] + "' (Linha " + line + ")");
                 }
                 break;
         
             default: 
-                Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Comando mal formulado! Símbolo encontrado: '" + 
+                    if(Compilador.step > 0)
+                        Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Comando mal formulado! Símbolo encontrado: '" + 
                 Token.spellings[currentToken.kind-1] + "' (Linha ] " + line + ")");
         }
         return cAST;
@@ -275,7 +280,8 @@ public class Parser {
                         
                     default:
                         int line = (Compilador.currentLine == 1) ? 1 : Compilador.currentLine-1;
-                        Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Função mal formulada! Símbolo encontrado: '" + 
+                            if(Compilador.step > 0)
+                                Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Função mal formulada! Símbolo encontrado: '" + 
                                 Token.spellings[currentToken.kind-1] + "' (Linha " + line + ")");
                 }
                 break;
@@ -311,14 +317,16 @@ public class Parser {
                     
                     default:
                         int line = (Compilador.currentLine == 1) ? 1 : Compilador.currentLine-1;
-                        Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Procedure mal formulada! Símbolo encontrado: '" + 
+                            if(Compilador.step > 0)
+                                Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Procedure mal formulada! Símbolo encontrado: '" + 
                                 Token.spellings[currentToken.kind-1] + "' (Linha " + line + ")");
                 }
                 break;
                 
             default:
                 int line = (Compilador.currentLine == 1) ? 1 : Compilador.currentLine-1;
-                Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Declaração mal formulada! Símbolo encontrado: '" + 
+                    if(Compilador.step > 0)
+                        Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Declaração mal formulada! Símbolo encontrado: '" + 
                         Token.spellings[currentToken.kind-1] + "' (Linha " + line + ")");
         }
         return decAST;
@@ -421,7 +429,8 @@ public class Parser {
                         fAST = new FatorChamadaFuncao(iAST, eAST1);
                     }
                     else {
-                        Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Chamada de procedimento mal formulada! Símbolo encontrado: '" + 
+                            if(Compilador.step > 0)
+                                Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Chamada de procedimento mal formulada! Símbolo encontrado: '" + 
                                 Token.spellings[currentToken.kind-1] + "' (Linha " + line + ")");
                     }                    
                 }
@@ -440,7 +449,9 @@ public class Parser {
                 fAST = new FatorExpressao(eAST);
                 accept(Token.RPAREN);
                 break;
-            default: Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Fator mal formulado! Símbolo encontrado: '" + 
+            default: 
+                if(Compilador.step > 0)
+                    Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Fator mal formulado! Símbolo encontrado: '" + 
                     Token.spellings[currentToken.kind-1] + "' (Linha " + line + ")");
         }
         return fAST;
@@ -466,7 +477,8 @@ public class Parser {
             
             default: 
                 int line = (Compilador.currentLine == 1) ? 1 : Compilador.currentLine-1;
-                Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Parâmetros mal formulados! Símbolo encontrado: '" + 
+                    if(Compilador.step > 0)
+                        Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Parâmetros mal formulados! Símbolo encontrado: '" + 
                         Token.spellings[currentToken.kind-1] + "' (Linha " + line + ")");
         }
         
@@ -499,7 +511,8 @@ public class Parser {
                 break;
             
             default:
-                Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Tipo mal formulado! Símbolo encontrado: '" + 
+                    if(Compilador.step > 0)
+                        Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Tipo mal formulado! Símbolo encontrado: '" + 
                         Token.spellings[currentToken.kind-1] + "' (Linha "  + line + ")");
         }
         return tAST;
@@ -535,14 +548,20 @@ public class Parser {
                         T = parseTipo();
                         
                         taAST = new TipoAgregado(L1, L2, T);
-                        if (op1 > op2) Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Índices inválidos!");
+                        if (op1 > op2) 
+                            if(Compilador.step > 0)
+                                Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Índices inválidos!");
                         break;
                         
-                    default: Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Tipo agregado mal formulado! Símbolo encontrado: '" + 
+                    default: 
+                        if(Compilador.step > 0)
+                            Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Tipo agregado mal formulado! Símbolo encontrado: '" + 
                             Token.spellings[currentToken.kind-1] + "' (Linha " + line + ")");
                 }
                 break;
-            default: Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Tipo agregado mal formulado! Símbolo encontrado: '" + 
+            default: 
+                if(Compilador.step > 0)
+                    Compilador.compilerFrame.setOutputText("ERRO SINTÁTICO: Tipo agregado mal formulado! Símbolo encontrado: '" + 
                     Token.spellings[currentToken.kind-1] + "' (Linha " + line + ")");
         }
         return taAST;
