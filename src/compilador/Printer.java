@@ -13,7 +13,6 @@ public class Printer implements Visitor{
     
     public void print (Programa p, Object o)
     {
-        Compilador.compilerFrame.setAstText("Iniciando impressao da arvore", true);
         p.visit(this, null);
     }
     

@@ -113,8 +113,8 @@ public class Checker implements Visitor{
     }
 
     public Object visitComandoSequencial(ComandoSequencial c, Object o) {
-        c.C1.visit(null, this);
-        c.C2.visit(null, this);
+        c.C1.visit(this, null);
+        c.C2.visit(this, null);
         return null;
     }
 
@@ -147,36 +147,36 @@ public class Checker implements Visitor{
     public Object visitDeclaracaoFuncao(DeclaracaoFuncao d, Object o) {
         idTable.enter(((IdentifierSimples)d.I).spelling, d);
         d.I.declaracao = d;
-        if(d.C != null) d.C.visit(this, null);
         d.I.visit(this, null);
         d.P.visit(this, null);
         d.TS.visit(this, null);
+        if(d.C != null) d.C.visit(this, null);
         return d.TS;
     }
 
     public Object visitDeclaracaoFuncaoSemArgs(DeclaracaoFuncaoSemArgs d, Object o) {
         idTable.enter(((IdentifierSimples)d.I).spelling, d);
         d.I.declaracao = d;
-        if (d.C != null) d.C.visit(this, null);
         d.I.visit(this, null);
         d.TS.visit(this, null);
+        if (d.C != null) d.C.visit(this, null);
         return d.TS;
     }
 
     public Object visitDeclaracaoProcedure(DeclaracaoProcedure d, Object o) {
         idTable.enter(((IdentifierSimples)d.I).spelling, d);
         d.I.declaracao = d; 
-        if (d.C != null) d.C.visit(this, null);
         d.I.visit(this, null);
         d.P.visit(this, null);
+        if (d.C != null) d.C.visit(this, null);
         return null;
     }
 
     public Object visitDeclaracaoProcedureSemArgs(DeclaracaoProcedureSemArgs d, Object o) {
         idTable.enter(((IdentifierSimples)d.I).spelling, d);
         d.I.declaracao = d;
-        if (d.C!= null) d.C.visit(this, null);
         d.I.visit(this, null);
+        if (d.C!= null) d.C.visit(this, null);
         return null;
     }
 
@@ -187,11 +187,13 @@ public class Checker implements Visitor{
     }
 
     public Object visitDeclaracaoVariavel(DeclaracaoVariavel d, Object o) {
-        idTable.enter(((IdentifierSimples)d.I).spelling, d);
+        if (d.I instanceof IdentifierSimples) idTable.enter(((IdentifierSimples)d.I).spelling, d);
+        else recursiveEnter((IdentifierSequencial)d.I, d);
+        
         Identifier i = d.I;
         i.declaracao = d;
-        d.I.visit(this, null);
-        d.T.visit(this, null);
+        //d.I.visit(this, null);
+        Tipo t = (Tipo)d.T.visit(this, null);
         return d.T;
     }
 
@@ -421,6 +423,16 @@ public class Checker implements Visitor{
         if (!v.E.tipo.equalTo(Tipo.INT_LIT))
             Compilador.compilerFrame.setOutputText("ERRO CONTEXTUAL! Índice inválido! " + "(Linha " + line + ")");        
         return v.I.declaracao.visit(this, null);
+    }
+    
+    public void recursiveEnter(Identifier i, DeclaracaoVariavel d) 
+    {
+        if (i instanceof IdentifierSequencial)
+        {
+            recursiveEnter(((IdentifierSequencial)i).I1, d);
+            idTable.enter(((IdentifierSimples)((IdentifierSequencial)i).I2).spelling, d);
+        }
+        else idTable.enter(((IdentifierSimples)i).spelling, d);
     }
 }
 
