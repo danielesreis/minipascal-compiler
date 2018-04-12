@@ -271,7 +271,14 @@ public class CompilerFrame extends javax.swing.JFrame {
         
         Compilador.startCompilation();
         if (outputText.getText().isEmpty()) 
-            outputText.setText("Compilado com sucesso!");
+        {
+            switch(Compilador.step) {
+                case 0: outputText.setText("Análise léxica bem sucedida!"); break;
+                case 1: outputText.setText("Análise sintática bem sucedida!"); break;
+                case 2: outputText.setText("Construção da árvore bem sucedida!"); break;
+                case 3: outputText.setText("Análise contextual bem sucedida!");
+            }
+        }
     }//GEN-LAST:event_compileButtonActionPerformed
 
     private void saveFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveFileButtonActionPerformed
