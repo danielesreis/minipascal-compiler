@@ -21,10 +21,9 @@ public abstract class Tipo extends AST{
     public static byte getTypeByte(String spelling) {
         Byte byteT;
         
-        if (spelling.toLowerCase().equals("integer")) byteT = Tipo.INT_LIT;
-        else if (spelling.toLowerCase().equals("real")) byteT = Tipo.FLOAT_LIT;
-        else if (spelling.toLowerCase().equals("boolean")) byteT = Tipo.BOOL_LIT;
-        else byteT = Tipo.ERROR;
+        if (spelling.equals("real") || spelling.contains(".")) byteT = Tipo.FLOAT_LIT;
+        else if (spelling.equals("boolean") || spelling.equals("true") || spelling.equals("false")) byteT = Tipo.BOOL_LIT;
+        else byteT = Tipo.INT_LIT;
         
         return byteT;
     }

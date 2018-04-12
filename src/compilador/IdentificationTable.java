@@ -5,6 +5,7 @@ import compilador.ast.DeclaracaoFuncaoSemArgs;
 import compilador.ast.DeclaracaoProcedure;
 import compilador.ast.DeclaracaoProcedureSemArgs;
 import compilador.ast.DeclaracaoVariavel;
+import compilador.ast.TipoSimples;
 import compilador.ast.Tipo;
 
 public final class IdentificationTable {
@@ -52,7 +53,7 @@ public final class IdentificationTable {
     }
     
     public void enter(String id, Declaracao declaracao) {
-        Tipo tipo = null;
+        Tipo tipo = new TipoSimples("", Tipo.UND);
         IdEntry entry = this.latest;
         boolean present = false, searching = true;
 

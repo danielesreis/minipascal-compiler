@@ -2,7 +2,7 @@ package compilador;
 import compilador.ast.*;
 
 public class Printer implements Visitor{
-    int pipe = 0;
+    int pipe = 0, flagTipoA = 0;
     
     public void indent()
     {
@@ -488,12 +488,14 @@ public class Printer implements Visitor{
         indent();
         if (d != null)
         {
-            if (d.I != null) recursivePrint(d.I);
+            if (d.I != null && d.T != null) recursivePrintIdentifier(d.I, d.T);
+            /*if (d.I != null) recursivePrint(d.I);
             if (d.T != null) 
             {
                 if (d.T instanceof TipoAgregado) ((TipoAgregado)d.T).visit(this, null);
                 if (d.T instanceof TipoSimples) ((TipoSimples)d.T).visit(this, null);
-            }
+            }*/
+            Compilador.compilerFrame.setAstText("", true);
         }
         return null;
     }
@@ -706,13 +708,21 @@ public class Printer implements Visitor{
     
     public Object visitIdentifierSequencial(IdentifierSequencial i, Object o)
     {
-        if (i != null) recursivePrint(i);
-        return null;
+        Compilador.compilerFrame.setAstText("", true);
+       // if (i != null) recursivePrint(i);
+       return null;
     }
     
     public Object visitLiteral(Literal l, Object o)
     {
-        Compilador.compilerFrame.setAstText(l.spelling, true);
+        /*Compilador.compilerFrame.setAstText(l.spelling, true);
+        return null;*/
+        
+        if (flagTipoA==1)
+            Compilador.compilerFrame.setAstText(l.spelling, false);
+        else
+            Compilador.compilerFrame.setAstText(l.spelling, true);
+
         return null;
     }
     
@@ -747,7 +757,7 @@ public class Printer implements Visitor{
         return null;
     }
     
-    public Object visitParametroSimples(ParametroSimples p, Object o)
+    /*public Object visitParametroSimples(ParametroSimples p, Object o)
     {
         if (p != null)
         {
@@ -758,16 +768,43 @@ public class Printer implements Visitor{
             }
         }
         return null;
+    }*/
+    
+    public Object visitParametroSimples(ParametroSimples p, Object o)
+    {
+        if (p != null)
+        {
+            if (p.I != null) recursivePrintParametros(p.I);
+            if (p.TS != null)
+            {
+                p.TS.visit(this, null);
+            }
+        }
+        return null;
     }
+
     
     public Object visitTipoAgregado(TipoAgregado t, Object o)
     {
-        if (t != null)
+        /*if (t != null)
         {
             if (t.L1 != null) t.L1.visit(this, null);
             if (t.L2 != null) t.L2.visit(this, null);
             if (t.T != null) t.T.visit(this, null);
         }
+        return null;*/
+        
+        flagTipoA = 1;
+        if (t != null)
+        {
+            Compilador.compilerFrame.setAstText("[", false);
+            if (t.L1 != null) t.L1.visit(this, null);
+            Compilador.compilerFrame.setAstText(" .. ", false);
+            if (t.L2 != null) t.L2.visit(this, null);
+            Compilador.compilerFrame.setAstText("] of", false);
+            if (t.T != null) t.T.visit(this, null);
+        }
+        flagTipoA = 0;
         return null;
     }
     
@@ -775,8 +812,9 @@ public class Printer implements Visitor{
     {
         if (t != null)
         {
-            Compilador.compilerFrame.setAstText(": " + t.spelling, true);
-        }return null;
+            Compilador.compilerFrame.setAstText(" " + t.spelling, false);
+        }
+        return null;
     }
     
     public Object visitVariavelId(VariavelId v, Object o)
@@ -809,7 +847,7 @@ public class Printer implements Visitor{
         return null;
     }
     
-    public void recursivePrint(Identifier i)
+    /*public void recursivePrint(Identifier i)
     {
         if (i instanceof IdentifierSequencial)
         {
@@ -818,5 +856,41 @@ public class Printer implements Visitor{
             Compilador.compilerFrame.setAstText(((IdentifierSimples)(((IdentifierSequencial)i).I2)).spelling, false);
         }
         else Compilador.compilerFrame.setAstText(((IdentifierSimples)i).spelling, false);
+    }*/
+    
+    public void recursivePrintIdentifier(Identifier i, Tipo t)
+    {
+        
+        int flag = 0;
+        if (t instanceof TipoAgregado) flag = 0;
+        if (t instanceof TipoSimples) flag = 1; 
+        
+        if (i instanceof IdentifierSequencial)
+        {
+            recursivePrintIdentifier(((IdentifierSequencial)i).I1, t);
+            
+            Compilador.compilerFrame.setAstText("", true);
+            indent();
+            Compilador.compilerFrame.setAstText(((IdentifierSimples)(((IdentifierSequencial)i).I2)).spelling, false);
+            
+            if (flag == 0) ((TipoAgregado)t).visit(this, null);
+            if (flag == 1) ((TipoSimples)t).visit(this, null);
+        }
+        else {
+            //indent();
+            Compilador.compilerFrame.setAstText(((IdentifierSimples)i).spelling, false);
+            if (flag == 0) ((TipoAgregado)t).visit(this, null);
+            if (flag == 1) ((TipoSimples)t).visit(this, null);
+        }
+    }
+    
+    public void recursivePrintParametros(Identifier i)
+    {
+        if (i instanceof IdentifierSequencial)
+        {
+            recursivePrintParametros(((IdentifierSequencial)i).I1);
+            Compilador.compilerFrame.setAstText(((IdentifierSimples)(((IdentifierSequencial)i).I2)).spelling, true);
+        }
+        else Compilador.compilerFrame.setAstText(((IdentifierSimples)i).spelling, true);
     }
 }
